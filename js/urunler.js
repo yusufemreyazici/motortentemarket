@@ -14,11 +14,39 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeader();
     initCart();
     initBrandFilters();
+    initCategoryCounts();
     initFilters();
     initSidebar();
     readURLParams();
     applyFilters();
 });
+
+// ===== CATEGORY COUNTS =====
+function initCategoryCounts() {
+    const countMap = {
+        all: products.length,
+        'elektrikli-motor-kabinleri': 0,
+        'kasal-motor-kabinleri': 0,
+        '2-tekerli-motor-tenteleri': 0,
+        '3-tekerli-motor-tenteleri': 0,
+        '4-tekerli-motor-tenteleri': 0,
+        '4-tekerli-motor-kabinleri': 0,
+    };
+    products.forEach(p => { if (p.category in countMap) countMap[p.category]++; });
+    const idMap = {
+        all: 'countAll',
+        'elektrikli-motor-kabinleri': 'countElektrikli',
+        'kasal-motor-kabinleri': 'countKasal',
+        '2-tekerli-motor-tenteleri': 'count2Tekerli',
+        '3-tekerli-motor-tenteleri': 'count3Tekerli',
+        '4-tekerli-motor-tenteleri': 'count4Tekerli',
+        '4-tekerli-motor-kabinleri': 'count4TekerliKabin',
+    };
+    Object.entries(idMap).forEach(([cat, id]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = countMap[cat];
+    });
+}
 
 // ===== URL PARAMS =====
 function readURLParams() {
@@ -29,6 +57,17 @@ function readURLParams() {
         const radio = document.querySelector(`input[name="category"][value="${cat}"]`);
         if (radio) radio.checked = true;
     }
+    updateNavActiveLink();
+}
+
+// ===== NAV ACTIVE LINK =====
+function updateNavActiveLink() {
+    document.querySelectorAll('.h2-nav-link').forEach(link => {
+        const href = link.getAttribute('href') || '';
+        const isAll = href === 'urunler.html' && currentCategory === 'all';
+        const hasCategory = href.includes(`kategori=${currentCategory}`);
+        link.classList.toggle('active', isAll || hasCategory);
+    });
 }
 
 // ===== BRAND FILTERS =====
@@ -53,6 +92,7 @@ function initFilters() {
             currentPage = 1;
             applyFilters();
             updateURL();
+            updateNavActiveLink();
         });
     });
 
