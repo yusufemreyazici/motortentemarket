@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Detay | Motor Tente Market</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-bar-left">
+                <span><i class="fas fa-phone-alt"></i> +90 (532) 774 89 27</span>
+                <span><i class="fas fa-envelope"></i> info@motortentemarket.com</span>
+                <span><i class="fas fa-map-marker-alt"></i> Büyükada, Adalar/İstanbul</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="social-links">
+                    <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="platform-links">
+                    <a href="#" class="platform-badge trendyol-badge" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
+                    <a href="#" class="platform-badge hepsiburada-badge" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
+                <div class="logo-text">
+                    <span class="logo-title">MOTOR TENTE</span>
+                    <span class="logo-subtitle">MARKET</span>
+                </div>
+            </a>
+            <nav class="nav" id="nav">
+                <a href="index.html" class="nav-link">Anasayfa</a>
+                <a href="urunler.html" class="nav-link active">Ürünler</a>
+                <a href="index.html#hakkimizda" class="nav-link">Hakkımızda</a>
+                <a href="index.html#neden-biz" class="nav-link">Neden Biz?</a>
+                <a href="index.html#iletisim" class="nav-link">İletişim</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" id="cartBtn" title="Sepeti Aç" aria-label="Sepeti Aç">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menüyü Aç" aria-label="Menüyü Aç">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumb -->
+    <section class="page-banner page-banner-sm">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Anasayfa</a>
+                <i class="fas fa-chevron-right"></i>
+                <a href="urunler.html">Ürünler</a>
+                <i class="fas fa-chevron-right"></i>
+                <span id="breadcrumbProduct">Ürün Detay</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Detail -->
+    <section class="product-detail">
+        <div class="container">
+            <div class="detail-grid">
+                <!-- Image Gallery -->
+                <div class="detail-gallery">
+                    <div class="gallery-main" id="galleryMain">
+                        <div class="gallery-placeholder">
+                            <i class="fas fa-motorcycle"></i>
+                        </div>
+                        <span class="detail-badge" id="detailBadge"></span>
+                    </div>
+                    <div class="gallery-features" id="galleryFeatures">
+                        <div class="gallery-feature-item">
+                            <i class="fas fa-tint-slash"></i>
+                            <span>Su Geçirmez</span>
+                        </div>
+                        <div class="gallery-feature-item">
+                            <i class="fas fa-sun"></i>
+                            <span>UV Koruma</span>
+                        </div>
+                        <div class="gallery-feature-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>Garantili</span>
+                        </div>
+                        <div class="gallery-feature-item">
+                            <i class="fas fa-truck"></i>
+                            <span>Hızlı Kargo</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Info -->
+                <div class="detail-info">
+                    <div class="detail-category" id="detailCategory"></div>
+                    <h1 class="detail-title" id="detailTitle"></h1>
+                    <div class="detail-brand" id="detailBrand"></div>
+
+                    <div class="detail-rating">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <span>4.5 / 5 (28 Değerlendirme)</span>
+                    </div>
+
+                    <div class="detail-price-box">
+                        <div class="detail-old-price" id="detailOldPrice"></div>
+                        <div class="detail-price" id="detailPrice"></div>
+                        <div class="detail-discount" id="detailDiscount"></div>
+                    </div>
+
+                    <div class="detail-desc" id="detailDesc"></div>
+
+                    <div class="detail-features-list" id="detailFeatures"></div>
+
+                    <div class="detail-actions">
+                        <div class="quantity-selector">
+                            <button class="qty-btn" id="qtyMinus">-</button>
+                            <input type="number" id="qtyInput" value="1" min="1">
+                            <button class="qty-btn" id="qtyPlus">+</button>
+                        </div>
+                        <button class="btn btn-primary detail-add-cart" id="addToCartBtn">
+                            <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                        </button>
+                        <a href="" class="btn btn-whatsapp" id="whatsappOrder" target="_blank">
+                            <i class="fab fa-whatsapp"></i> WhatsApp ile Sipariş
+                        </a>
+                    </div>
+
+                    <div class="detail-platforms">
+                        <h4>Bu ürünü diğer platformlardan da satın alabilirsiniz:</h4>
+                        <div class="detail-platform-links">
+                            <a href="#" class="detail-platform trendyol-bg" target="_blank">
+                                <i class="fas fa-shopping-bag"></i>
+                                <div>
+                                    <span>Trendyol'da</span>
+                                    <small>Satın Al</small>
+                                </div>
+                            </a>
+                            <a href="#" class="detail-platform hepsiburada-bg" target="_blank">
+                                <i class="fas fa-store"></i>
+                                <div>
+                                    <span>Hepsiburada'da</span>
+                                    <small>Satın Al</small>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="detail-guarantees">
+                        <div class="guarantee-item">
+                            <i class="fas fa-truck"></i>
+                            <div>
+                                <strong>Ücretsiz Kargo</strong>
+                                <small>500 TL üzeri siparişlerde</small>
+                            </div>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-undo"></i>
+                            <div>
+                                <strong>Kolay İade</strong>
+                                <small>14 gün içinde iade</small>
+                            </div>
+                        </div>
+                        <div class="guarantee-item">
+                            <i class="fas fa-shield-alt"></i>
+                            <div>
+                                <strong>Garanti</strong>
+                                <small>1 yıl üretici garantisi</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="detail-tabs">
+                <div class="tabs-header">
+                    <button class="tab-btn active" data-tab="description">Ürün Açıklaması</button>
+                    <button class="tab-btn" data-tab="specs">Teknik Özellikler</button>
+                    <button class="tab-btn" data-tab="shipping">Kargo & İade</button>
+                </div>
+                <div class="tabs-content">
+                    <div class="tab-panel active" id="tab-description">
+                        <div id="tabDescription"></div>
+                    </div>
+                    <div class="tab-panel" id="tab-specs">
+                        <table class="specs-table" id="specsTable"></table>
+                    </div>
+                    <div class="tab-panel" id="tab-shipping">
+                        <div class="shipping-info">
+                            <div class="shipping-item">
+                                <h4><i class="fas fa-truck"></i> Kargo Bilgileri</h4>
+                                <ul>
+                                    <li>Siparişler 1-3 iş günü içinde kargoya verilir.</li>
+                                    <li>500 TL ve üzeri siparişlerde kargo ücretsizdir.</li>
+                                    <li>Türkiye'nin her yerine teslimat yapılmaktadır.</li>
+                                    <li>Kargo takip numarası SMS ile bildirilir.</li>
+                                </ul>
+                            </div>
+                            <div class="shipping-item">
+                                <h4><i class="fas fa-undo"></i> İade Koşulları</h4>
+                                <ul>
+                                    <li>Ürün teslim tarihinden itibaren 14 gün içinde iade edilebilir.</li>
+                                    <li>Ürün kullanılmamış ve orijinal ambalajında olmalıdır.</li>
+                                    <li>İade kargo ücreti alıcıya aittir.</li>
+                                    <li>İade işlemleri için WhatsApp üzerinden iletişime geçiniz.</li>
+                                </ul>
+                            </div>
+                            <div class="shipping-item">
+                                <h4><i class="fas fa-credit-card"></i> Ödeme Seçenekleri</h4>
+                                <ul>
+                                    <li>Kredi kartı ile tek çekim veya taksit imkanı</li>
+                                    <li>Kapıda ödeme (nakit veya kart)</li>
+                                    <li>Havale / EFT</li>
+                                    <li>Tüm banka kartları geçerlidir</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Products -->
+            <div class="related-products">
+                <h2>Benzer Ürünler</h2>
+                <div class="product-grid related-grid" id="relatedProducts"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Sepetim</h3>
+                <button class="cart-close" id="cartClose" title="Sepeti Kapat" aria-label="Sepeti Kapat"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty"><i class="fas fa-shopping-basket"></i><p>Sepetiniz boş</p></div>
+            </div>
+            <div class="cart-footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Toplam:</span>
+                    <span id="cartTotal">0 TL</span>
+                </div>
+                <a href="https://wa.me/905327748927" class="btn btn-primary btn-full" target="_blank">
+                    <i class="fab fa-whatsapp"></i> WhatsApp ile Sipariş Ver
+                </a>
+                <p class="cart-note">Sipariş detayları WhatsApp üzerinden iletilecektir.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="logo footer-logo">
+                        <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
+                        <div class="logo-text">
+                            <span class="logo-title">MOTOR TENTE</span>
+                            <span class="logo-subtitle">MARKET</span>
+                        </div>
+                    </div>
+                    <p>50 yıllık tecrübe ile Büyükada'dan Türkiye'ye. Elektrikli motor ve scooter brandaları, kabinleri ve tenteleri.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Hızlı Linkler</h4>
+                    <a href="index.html">Anasayfa</a>
+                    <a href="urunler.html">Ürünler</a>
+                    <a href="index.html#hakkimizda">Hakkımızda</a>
+                    <a href="index.html#iletisim">İletişim</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Kategoriler</h4>
+                    <a href="urunler.html?kategori=elektrikli-motor-kabinleri">Elektrikli Motor Kabinleri</a>
+                    <a href="urunler.html?kategori=kasal-motor-kabinleri">Kasal Motor Kabinleri</a>
+                    <a href="urunler.html?kategori=4-tekerli-motor-tenteleri">4 Tekerlekli Tenteler</a>
+                    <a href="urunler.html?kategori=2-tekerli-motor-tenteleri">2 Tekerlekli Tenteler</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Mağazalarımız</h4>
+                    <a href="#" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
+                    <a href="#" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
+                    <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Motor Tente Market. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/905327748927?text=Merhaba,%20ürünleriniz%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile İletişim">
+        <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+    </a>
+    <button class="scroll-top" id="scrollTop" title="Yukarı Çık" aria-label="Yukarı Çık"><i class="fas fa-chevron-up"></i></button>
+
+    <script src="js/products-data.js"></script>
+    <script src="js/urun-detay.js"></script>
+</body>
+</html>

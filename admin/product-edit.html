@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürün Ekle/Düzenle | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="sidebar-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Genel</div>
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> Dashboard
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Katalog</div>
+                <a href="products.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-box"></i></span> Ürünler
+                </a>
+                <a href="product-edit.html" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-plus-circle"></i></span> Yeni Ürün Ekle
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Yönetim</div>
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span> Site Ayarları
+                </a>
+                <a href="../index.html" class="nav-item" target="_blank">
+                    <span class="nav-icon"><i class="fas fa-external-link-alt"></i></span> Siteyi Görüntüle
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user" id="logoutBtn" title="Çıkış Yap">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <strong id="userName">Admin</strong>
+                    <span>Çıkış Yap</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="color:var(--admin-text-muted);font-size:14px;"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <button class="topbar-btn" id="sidebarToggle" title="Menü" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="topbar-title" id="pageTitle">Yeni Ürün Ekle</span>
+            <div class="topbar-actions">
+                <a href="products.html" class="btn btn-ghost btn-sm">
+                    <i class="fas fa-arrow-left"></i> Geri
+                </a>
+                <button class="btn btn-primary btn-sm" id="saveBtn">
+                    <i class="fas fa-save"></i> Kaydet
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            <form id="productForm" novalidate>
+                <div style="display:grid; grid-template-columns:1fr 320px; gap:20px; align-items:start;">
+
+                    <!-- Sol kolon -->
+                    <div style="display:flex; flex-direction:column; gap:20px;">
+
+                        <!-- Temel Bilgiler -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-info-circle" style="color:var(--admin-primary);margin-right:8px;"></i>Temel Bilgiler</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
+                                <div class="form-group">
+                                    <label for="productName">Ürün Adı <span style="color:var(--admin-danger);">*</span></label>
+                                    <input type="text" id="productName" class="form-control" placeholder="örn. Yamaha NMAX 125 Tente" required>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="productBrand">Marka <span style="color:var(--admin-danger);">*</span></label>
+                                        <input type="text" id="productBrand" class="form-control" placeholder="örn. Yamaha">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productCategory">Kategori <span style="color:var(--admin-danger);">*</span></label>
+                                        <select id="productCategory" class="form-control" title="Kategori seçin">
+                                            <option value="">Seçiniz...</option>
+                                            <optgroup label="🛵 2 Tekerlekli Motorlar">
+                                                <option value="2-tekerli-motor-tenteleri">2 Tekerlekli — Tente</option>
+                                                <option value="elektrikli-motor-kabinleri">2 Tekerlekli — Elektrikli Kabin</option>
+                                                <option value="kasal-motor-kabinleri">2 Tekerlekli — Kasal Kabin</option>
+                                            </optgroup>
+                                            <optgroup label="🚗 3 Tekerlekli Motorlar">
+                                                <option value="3-tekerli-motor-tenteleri">3 Tekerlekli — Tente</option>
+                                                <option value="3-tekerli-motor-kabinleri">3 Tekerlekli — Kabin</option>
+                                            </optgroup>
+                                            <optgroup label="🚙 4 Tekerlekli Motorlar">
+                                                <option value="4-tekerli-motor-tenteleri">4 Tekerlekli — Tente</option>
+                                                <option value="4-tekerli-motor-kabinleri">4 Tekerlekli — Kabin</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="productDesc">Açıklama</label>
+                                    <textarea id="productDesc" class="form-control" rows="4" placeholder="Ürün hakkında kısa açıklama..."></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fiyatlandırma -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-tag" style="color:var(--admin-success);margin-right:8px;"></i>Fiyatlandırma</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="productPrice">Satış Fiyatı (TL) <span style="color:var(--admin-danger);">*</span></label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fas fa-lira-sign input-icon"></i>
+                                            <input type="number" id="productPrice" class="form-control" placeholder="0" min="0" step="0.01">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="productOldPrice">Eski Fiyat (TL) <span style="color:var(--admin-text-muted);font-weight:400;">(opsiyonel)</span></label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fas fa-lira-sign input-icon"></i>
+                                            <input type="number" id="productOldPrice" class="form-control" placeholder="0" min="0" step="0.01">
+                                        </div>
+                                        <div class="form-hint">Dolu ise indirim rozeti gösterilir.</div>
+                                    </div>
+                                </div>
+                                <div id="discountPreview" style="display:none; margin-top:8px; padding:10px 14px; background:rgba(34,197,94,0.1); border-radius:8px; border:1px solid rgba(34,197,94,0.2); font-size:13px; color:var(--admin-success);">
+                                    <i class="fas fa-percentage"></i> <span id="discountText"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Özellikler -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-list-check" style="color:var(--admin-info);margin-right:8px;"></i>Ürün Özellikleri</span>
+                                <span style="font-size:12px;color:var(--admin-text-muted);">Her satır bir özellik</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="feature-list" id="featureList">
+                                    <!-- JS ile doldurulur -->
+                                </div>
+                                <button type="button" class="add-feature-btn" id="addFeatureBtn">
+                                    <i class="fas fa-plus-circle"></i> Özellik Ekle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Görseller -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-images" style="color:var(--admin-warning);margin-right:8px;"></i>Ürün Görselleri</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="upload-area" id="uploadArea">
+                                    <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                                    <div class="upload-text">Görselleri buraya sürükleyin veya tıklayın</div>
+                                    <div class="upload-hint">PNG, JPG, WEBP — Maks. 5MB her biri</div>
+                                    <input type="file" id="imageInput" multiple accept="image/*" style="display:none;">
+                                </div>
+                                <div class="image-preview-grid" id="imageGrid"></div>
+                                <div class="form-hint" style="margin-top:8px;">
+                                    <i class="fas fa-info-circle"></i> İlk görsel kapak fotoğrafı olarak kullanılır.
+                                    <span style="color:var(--admin-warning);">Backend bağlandığında görseller sunucuya yüklenecek.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Sağ kolon -->
+                    <div style="display:flex; flex-direction:column; gap:20px;">
+
+                        <!-- Durum -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-toggle-on" style="color:var(--admin-success);margin-right:8px;"></i>Yayın Durumu</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+                                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                                    <input type="checkbox" id="productActive" checked style="width:16px;height:16px;accent-color:var(--admin-primary);">
+                                    <div>
+                                        <div style="font-size:13.5px;font-weight:500;">Aktif</div>
+                                        <div style="font-size:12px;color:var(--admin-text-muted);">Sitede görünür</div>
+                                    </div>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:12px;cursor:pointer;">
+                                    <input type="checkbox" id="productFeatured" style="width:16px;height:16px;accent-color:var(--admin-primary);">
+                                    <div>
+                                        <div style="font-size:13.5px;font-weight:500;">Öne Çıkan</div>
+                                        <div style="font-size:12px;color:var(--admin-text-muted);">Ana sayfada göster</div>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Badge -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-star" style="color:var(--admin-warning);margin-right:8px;"></i>Rozet</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:8px;">
+                                <div class="form-hint" style="margin-bottom:4px;">Ürün kartında gösterilecek rozet etiketi</div>
+                                <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--admin-surface2)'" onmouseout="this.style.background=''">
+                                    <input type="radio" name="badge" value="" checked style="accent-color:var(--admin-primary);"> <span style="font-size:13px;">Rozet Yok</span>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--admin-surface2)'" onmouseout="this.style.background=''">
+                                    <input type="radio" name="badge" value="Yeni" style="accent-color:var(--admin-primary);"> <span class="badge badge-success">Yeni</span>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--admin-surface2)'" onmouseout="this.style.background=''">
+                                    <input type="radio" name="badge" value="Çok Satan" style="accent-color:var(--admin-primary);"> <span class="badge badge-warning">Çok Satan</span>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--admin-surface2)'" onmouseout="this.style.background=''">
+                                    <input type="radio" name="badge" value="İndirim" style="accent-color:var(--admin-primary);"> <span class="badge badge-danger">İndirim</span>
+                                </label>
+                                <label style="display:flex;align-items:center;gap:10px;padding:8px;border-radius:8px;cursor:pointer;transition:background 0.15s;" onmouseover="this.style.background='var(--admin-surface2)'" onmouseout="this.style.background=''">
+                                    <input type="radio" name="badge" value="Özel Üretim" style="accent-color:var(--admin-primary);"> <span class="badge badge-purple">Özel Üretim</span>
+                                </label>
+                                <div class="form-group" style="margin-top:8px; padding-top:8px; border-top:1px solid var(--admin-border);">
+                                    <label for="customBadge" style="font-size:12px;">Özel Rozet Metni</label>
+                                    <input type="text" id="customBadge" class="form-control" placeholder="örn. Trend" style="font-size:13px;" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Platform Linkleri -->
+                        <div class="card">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-shopping-cart" style="color:var(--admin-info);margin-right:8px;"></i>Platform Linkleri</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+                                <div class="form-group">
+                                    <label for="linkTrendyol">
+                                        <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/trendyol.svg" style="width:14px;height:14px;filter:invert(1);margin-right:4px;" alt="">
+                                        Trendyol Linki
+                                    </label>
+                                    <input type="url" id="linkTrendyol" class="form-control" placeholder="https://trendyol.com/...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="linkHepsiburada">
+                                        <i class="fas fa-store" style="margin-right:4px;color:var(--admin-warning);"></i>
+                                        Hepsiburada Linki
+                                    </label>
+                                    <input type="url" id="linkHepsiburada" class="form-control" placeholder="https://hepsiburada.com/...">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kaydet Butonu -->
+                        <button type="submit" class="btn btn-primary btn-full" id="saveBtnBottom">
+                            <i class="fas fa-save"></i> Ürünü Kaydet
+                        </button>
+                        <button type="button" class="btn btn-ghost btn-full" onclick="window.location.href='products.html'">
+                            <i class="fas fa-times"></i> İptal
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="admin.js"></script>
+<script>
+    requireAuth();
+    loadUserInfo();
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const editId = urlParams.get('id');
+    let editProduct = null;
+
+    if (editId) {
+        editProduct = products.find(p => p.id === parseInt(editId));
+        if (editProduct) {
+            document.getElementById('pageTitle').textContent = 'Ürün Düzenle';
+            document.title = 'Düzenle: ' + editProduct.name + ' | Motor Tente Admin';
+            fillForm(editProduct);
+        }
+    }
+
+    // Özellik listesi
+    function addFeature(value = '') {
+        const list = document.getElementById('featureList');
+        const item = document.createElement('div');
+        item.className = 'feature-item';
+        item.innerHTML = `
+            <input type="text" placeholder="örn. Su geçirmez kumaş" value="${escHtml(value)}">
+            <button type="button" class="btn btn-icon" title="Kaldır" aria-label="Özelliği Kaldır" onclick="this.closest('.feature-item').remove()">
+                <i class="fas fa-times" style="color:var(--admin-danger);"></i>
+            </button>
+        `;
+        list.appendChild(item);
+    }
+
+    document.getElementById('addFeatureBtn').addEventListener('click', () => addFeature());
+
+    // Başlangıçta 2 boş özellik satırı
+    if (!editProduct) {
+        addFeature();
+        addFeature();
+    }
+
+    // Görsel yükleme
+    const uploadArea = document.getElementById('uploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const imageGrid = document.getElementById('imageGrid');
+    let uploadedImages = [];
+
+    uploadArea.addEventListener('click', () => imageInput.click());
+    uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); });
+    uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('drag-over'));
+    uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('drag-over');
+        handleFiles(e.dataTransfer.files);
+    });
+    imageInput.addEventListener('change', () => handleFiles(imageInput.files));
+
+    function handleFiles(files) {
+        Array.from(files).forEach(file => {
+            if (!file.type.startsWith('image/')) return;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImages.push({ src: e.target.result, name: file.name });
+                renderImageGrid();
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function renderImageGrid() {
+        imageGrid.innerHTML = uploadedImages.map((img, i) => `
+            <div class="image-preview-item">
+                <img src="${img.src}" alt="${escHtml(img.name)}">
+                ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:var(--admin-primary);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;">KAPAK</div>' : ''}
+                <div class="remove-img" onclick="removeImage(${i})" title="Kaldır" role="button" tabindex="0" aria-label="Görseli Kaldır">
+                    <i class="fas fa-times"></i>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function removeImage(i) {
+        uploadedImages.splice(i, 1);
+        renderImageGrid();
+    }
+
+    // İndirim hesabı
+    function updateDiscountPreview() {
+        const price = parseFloat(document.getElementById('productPrice').value);
+        const oldPrice = parseFloat(document.getElementById('productOldPrice').value);
+        const preview = document.getElementById('discountPreview');
+        if (oldPrice > price && price > 0) {
+            const pct = Math.round((1 - price / oldPrice) * 100);
+            document.getElementById('discountText').textContent = `%${pct} indirim uygulanıyor (${oldPrice.toLocaleString('tr-TR')} TL → ${price.toLocaleString('tr-TR')} TL)`;
+            preview.style.display = 'block';
+        } else {
+            preview.style.display = 'none';
+        }
+    }
+
+    document.getElementById('productPrice').addEventListener('input', updateDiscountPreview);
+    document.getElementById('productOldPrice').addEventListener('input', updateDiscountPreview);
+
+    // Formu doldur (düzenleme modu)
+    function fillForm(p) {
+        document.getElementById('productName').value = p.name || '';
+        document.getElementById('productBrand').value = p.brand || '';
+        document.getElementById('productCategory').value = p.category || '';
+        document.getElementById('productDesc').value = p.description || '';
+        document.getElementById('productPrice').value = p.price || '';
+        document.getElementById('productOldPrice').value = p.oldPrice || '';
+        document.getElementById('linkTrendyol').value = p.trendyolLink || '';
+        document.getElementById('linkHepsiburada').value = p.hepsiburadaLink || '';
+
+        if (p.badge) {
+            const radio = document.querySelector(`input[name="badge"][value="${p.badge}"]`);
+            if (radio) radio.checked = true;
+            else document.getElementById('customBadge').value = p.badge;
+        }
+
+        if (p.features && Array.isArray(p.features)) {
+            p.features.forEach(f => addFeature(f));
+        } else {
+            addFeature(); addFeature();
+        }
+
+        updateDiscountPreview();
+    }
+
+    // Form gönder
+    document.getElementById('productForm').addEventListener('submit', handleSave);
+    document.getElementById('saveBtn').addEventListener('click', () => document.getElementById('productForm').requestSubmit());
+
+    function handleSave(e) {
+        e.preventDefault();
+
+        const name = document.getElementById('productName').value.trim();
+        const brand = document.getElementById('productBrand').value.trim();
+        const category = document.getElementById('productCategory').value;
+        const price = parseFloat(document.getElementById('productPrice').value);
+
+        if (!name) { showToast('Ürün adı zorunludur.', 'error'); return; }
+        if (!brand) { showToast('Marka zorunludur.', 'error'); return; }
+        if (!category) { showToast('Kategori seçiniz.', 'error'); return; }
+        if (!price || price <= 0) { showToast('Geçerli bir fiyat giriniz.', 'error'); return; }
+
+        const selectedBadge = document.querySelector('input[name="badge"]:checked')?.value || '';
+        const customBadge = document.getElementById('customBadge').value.trim();
+        const features = Array.from(document.querySelectorAll('.feature-item input'))
+            .map(i => i.value.trim()).filter(Boolean);
+
+        const payload = {
+            id: editProduct ? editProduct.id : Date.now(),
+            name,
+            brand,
+            category,
+            description: document.getElementById('productDesc').value.trim(),
+            price,
+            oldPrice: parseFloat(document.getElementById('productOldPrice').value) || null,
+            badge: customBadge || selectedBadge || null,
+            features,
+            trendyolLink: document.getElementById('linkTrendyol').value.trim(),
+            hepsiburadaLink: document.getElementById('linkHepsiburada').value.trim(),
+            isActive: document.getElementById('productActive').checked,
+            images: uploadedImages.map(i => i.name),
+        };
+
+        console.log('Kaydedilecek ürün:', payload);
+
+        // TODO: Backend hazır olunca aktif et
+        // const method = editProduct ? 'PUT' : 'POST';
+        // const url = editProduct ? `/api/products/${payload.id}` : '/api/products';
+        // const res = await fetch(url, {
+        //     method,
+        //     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') },
+        //     body: JSON.stringify(payload)
+        // });
+
+        showToast(editProduct ? 'Ürün güncellendi! (Demo mod)' : 'Ürün eklendi! (Demo mod)', 'success');
+        setTimeout(() => window.location.href = 'products.html', 1500);
+    }
+
+    function escHtml(str) {
+        return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+</script>
+</body>
+</html>

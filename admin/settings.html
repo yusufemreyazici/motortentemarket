@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site Ayarları | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="sidebar-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Genel</div>
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> Dashboard
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Katalog</div>
+                <a href="products.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-box"></i></span> Ürünler
+                </a>
+                <a href="product-edit.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-plus-circle"></i></span> Yeni Ürün Ekle
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Yönetim</div>
+                <a href="settings.html" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span> Site Ayarları
+                </a>
+                <a href="../index.html" class="nav-item" target="_blank">
+                    <span class="nav-icon"><i class="fas fa-external-link-alt"></i></span> Siteyi Görüntüle
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user" id="logoutBtn" title="Çıkış Yap">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <strong id="userName">Admin</strong>
+                    <span>Çıkış Yap</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="color:var(--admin-text-muted);font-size:14px;"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <button class="topbar-btn" id="sidebarToggle" title="Menü" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="topbar-title">Site Ayarları</span>
+            <div class="topbar-actions">
+                <button class="btn btn-primary btn-sm" id="saveAllBtn">
+                    <i class="fas fa-save"></i> Tümünü Kaydet
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            <div class="settings-grid">
+
+                <!-- Sol: Ayar menüsü -->
+                <div class="settings-nav">
+                    <div class="settings-nav-item active" data-target="contact">
+                        <i class="fas fa-phone" style="width:18px;text-align:center;"></i> İletişim
+                    </div>
+                    <div class="settings-nav-item" data-target="social">
+                        <i class="fas fa-share-alt" style="width:18px;text-align:center;"></i> Sosyal Medya
+                    </div>
+                    <div class="settings-nav-item" data-target="platforms">
+                        <i class="fas fa-shopping-bag" style="width:18px;text-align:center;"></i> Platformlar
+                    </div>
+                    <div class="settings-nav-item" data-target="hero">
+                        <i class="fas fa-image" style="width:18px;text-align:center;"></i> Hero Slider
+                    </div>
+                    <div class="settings-nav-item" data-target="account">
+                        <i class="fas fa-user-shield" style="width:18px;text-align:center;"></i> Hesap
+                    </div>
+                </div>
+
+                <!-- Sağ: Panel içerikleri -->
+                <div>
+
+                    <!-- İletişim -->
+                    <div class="settings-panel active" id="panel-contact">
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-phone" style="color:var(--admin-primary);margin-right:8px;"></i>İletişim Bilgileri</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="phone1">Telefon 1</label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fas fa-phone input-icon"></i>
+                                            <input type="tel" id="phone1" class="form-control" value="+90 (216) 382 00 86" placeholder="+90 (212) 000 00 00">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="phone2">Telefon 2</label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fas fa-phone input-icon"></i>
+                                            <input type="tel" id="phone2" class="form-control" value="+90 (216) 382 00 87" placeholder="+90 (212) 000 00 00">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="whatsapp">WhatsApp Numarası</label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fab fa-whatsapp input-icon" style="color:#25D366;"></i>
+                                            <input type="tel" id="whatsapp" class="form-control" value="+905321234567" placeholder="+905xxxxxxxxx">
+                                        </div>
+                                        <div class="form-hint">Başında + ve ülke kodu ile yazın (örn. +905001234567)</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="email">E-posta</label>
+                                        <div class="input-icon-wrap">
+                                            <i class="fas fa-envelope input-icon"></i>
+                                            <input type="email" id="email" class="form-control" value="info@motortentemarket.com" placeholder="info@siteniz.com">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Adres</label>
+                                    <textarea id="address" class="form-control" rows="2">Büyükada Maden Mah. Zağnospaşa Cad. No:20/B, Adalar/İSTANBUL</textarea>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="workHours">Çalışma Saatleri</label>
+                                        <input type="text" id="workHours" class="form-control" value="Pzt-Cts: 09:00-18:00" placeholder="Pzt-Cts: 09:00-18:00">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mapLat">Harita Koordinatları</label>
+                                        <input type="text" id="mapLat" class="form-control" value="40.8739006, 29.1308495" placeholder="enlem, boylam">
+                                        <div class="form-hint">Google Maps'ten pin koordinatı</div>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="saveSection('contact')">
+                                    <i class="fas fa-save"></i> İletişim Bilgilerini Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sosyal Medya -->
+                    <div class="settings-panel" id="panel-social">
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-share-alt" style="color:var(--admin-primary);margin-right:8px;"></i>Sosyal Medya Linkleri</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+                                <div class="form-group">
+                                    <label for="instagram"><i class="fab fa-instagram" style="color:#E1306C;margin-right:6px;"></i>Instagram</label>
+                                    <input type="url" id="instagram" class="form-control" placeholder="https://instagram.com/hesabınız">
+                                </div>
+                                <div class="form-group">
+                                    <label for="facebook"><i class="fab fa-facebook" style="color:#1877F2;margin-right:6px;"></i>Facebook</label>
+                                    <input type="url" id="facebook" class="form-control" placeholder="https://facebook.com/sayfanız">
+                                </div>
+                                <div class="form-group">
+                                    <label for="youtube"><i class="fab fa-youtube" style="color:#FF0000;margin-right:6px;"></i>YouTube</label>
+                                    <input type="url" id="youtube" class="form-control" placeholder="https://youtube.com/@kanalınız">
+                                </div>
+                                <div class="form-group">
+                                    <label for="twitter"><i class="fab fa-x-twitter" style="margin-right:6px;"></i>X (Twitter)</label>
+                                    <input type="url" id="twitter" class="form-control" placeholder="https://x.com/hesabınız">
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="saveSection('social')">
+                                    <i class="fas fa-save"></i> Sosyal Medyayı Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Platformlar -->
+                    <div class="settings-panel" id="panel-platforms">
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-shopping-bag" style="color:var(--admin-primary);margin-right:8px;"></i>Satış Platformları</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:14px;">
+                                <div class="form-group">
+                                    <label for="trendyolStore">Trendyol Mağaza Linki</label>
+                                    <input type="url" id="trendyolStore" class="form-control" placeholder="https://trendyol.com/butik/mağazanız">
+                                </div>
+                                <div class="form-group">
+                                    <label for="hepsiburadaStore">Hepsiburada Mağaza Linki</label>
+                                    <input type="url" id="hepsiburadaStore" class="form-control" placeholder="https://hepsiburada.com/magaza/...">
+                                </div>
+                                <div class="form-group">
+                                    <label for="n11Store">N11 Mağaza Linki</label>
+                                    <input type="url" id="n11Store" class="form-control" placeholder="https://n11.com/magaza/...">
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="saveSection('platforms')">
+                                    <i class="fas fa-save"></i> Platformları Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hero Slider -->
+                    <div class="settings-panel" id="panel-hero">
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-image" style="color:var(--admin-primary);margin-right:8px;"></i>Ana Sayfa Hero Slider</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:20px;">
+
+                                <!-- Slayt 1 -->
+                                <div style="border:1px solid var(--admin-border);border-radius:10px;padding:16px;">
+                                    <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--admin-primary);">
+                                        <i class="fas fa-circle" style="font-size:8px;margin-right:6px;"></i>Slayt 1
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;gap:12px;">
+                                        <div class="form-group">
+                                            <label for="slide1Title">Başlık</label>
+                                            <input type="text" id="slide1Title" class="form-control" value="Motorunuzu Her Koşuldan Koruyun">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide1Sub">Alt Metin</label>
+                                            <input type="text" id="slide1Sub" class="form-control" value="Premium kalite motor tente ve kabinleri">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide1Btn">Buton Metni</label>
+                                            <input type="text" id="slide1Btn" class="form-control" value="Ürünleri İncele">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Slayt 2 -->
+                                <div style="border:1px solid var(--admin-border);border-radius:10px;padding:16px;">
+                                    <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:#8b5cf6;">
+                                        <i class="fas fa-circle" style="font-size:8px;margin-right:6px;"></i>Slayt 2
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;gap:12px;">
+                                        <div class="form-group">
+                                            <label for="slide2Title">Başlık</label>
+                                            <input type="text" id="slide2Title" class="form-control" value="Elektrikli Motora Özel Tasarım">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide2Sub">Alt Metin</label>
+                                            <input type="text" id="slide2Sub" class="form-control" value="E-scooter ve elektrikli motosiklet kabinleri">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide2Btn">Buton Metni</label>
+                                            <input type="text" id="slide2Btn" class="form-control" value="Modelleri Gör">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Slayt 3 -->
+                                <div style="border:1px solid var(--admin-border);border-radius:10px;padding:16px;">
+                                    <div style="font-size:13px;font-weight:600;margin-bottom:12px;color:var(--admin-success);">
+                                        <i class="fas fa-circle" style="font-size:8px;margin-right:6px;"></i>Slayt 3
+                                    </div>
+                                    <div style="display:flex;flex-direction:column;gap:12px;">
+                                        <div class="form-group">
+                                            <label for="slide3Title">Başlık</label>
+                                            <input type="text" id="slide3Title" class="form-control" value="Ücretsiz Kargo &amp; Hızlı Teslimat">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide3Sub">Alt Metin</label>
+                                            <input type="text" id="slide3Sub" class="form-control" value="Tüm Türkiye'ye kapıda ödeme seçeneği">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="slide3Btn">Buton Metni</label>
+                                            <input type="text" id="slide3Btn" class="form-control" value="Hemen Sipariş Ver">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <button type="button" class="btn btn-primary" onclick="saveSection('hero')">
+                                    <i class="fas fa-save"></i> Slider'ı Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hesap -->
+                    <div class="settings-panel" id="panel-account">
+                        <div class="card settings-section">
+                            <div class="card-header">
+                                <span class="card-title"><i class="fas fa-user-shield" style="color:var(--admin-primary);margin-right:8px;"></i>Hesap Güvenliği</span>
+                            </div>
+                            <div class="card-body" style="display:flex;flex-direction:column;gap:16px;">
+
+                                <div style="padding:14px;background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;font-size:13px;color:var(--admin-text-muted);">
+                                    <i class="fas fa-info-circle" style="color:var(--admin-primary);margin-right:6px;"></i>
+                                    Şifre değişikliği backend bağlandıktan sonra aktif olacak.
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="accountEmail">E-posta Adresi</label>
+                                    <input type="email" id="accountEmail" class="form-control" value="admin@motortentemarket.com">
+                                </div>
+                                <div class="form-group">
+                                    <label for="currentPass">Mevcut Şifre</label>
+                                    <input type="password" id="currentPass" class="form-control" placeholder="••••••••">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="newPass">Yeni Şifre</label>
+                                        <input type="password" id="newPass" class="form-control" placeholder="••••••••">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassConfirm">Yeni Şifre (Tekrar)</label>
+                                        <input type="password" id="newPassConfirm" class="form-control" placeholder="••••••••">
+                                    </div>
+                                </div>
+                                <div class="form-hint">
+                                    <i class="fas fa-shield-alt"></i> Şifre en az 8 karakter, 1 büyük harf ve 1 rakam içermelidir.
+                                </div>
+                                <button type="button" class="btn btn-primary" onclick="saveSection('account')">
+                                    <i class="fas fa-key"></i> Şifreyi Güncelle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="admin.js"></script>
+<script>
+    requireAuth();
+    loadUserInfo();
+
+    // Ayar paneli navigasyonu
+    document.querySelectorAll('.settings-nav-item').forEach(item => {
+        item.addEventListener('click', () => {
+            document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+            document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+            item.classList.add('active');
+            document.getElementById('panel-' + item.dataset.target).classList.add('active');
+        });
+    });
+
+    // URL hash ile direkt panel açma (örn: settings.html#contact)
+    if (window.location.hash) {
+        const target = window.location.hash.replace('#', '');
+        const navItem = document.querySelector(`[data-target="${target}"]`);
+        if (navItem) navItem.click();
+    }
+
+    function saveSection(section) {
+        // TODO: Backend bağlandığında her section için API çağrısı ekle
+        // Örnek:
+        // await fetch('/api/settings', {
+        //     method: 'PUT',
+        //     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') },
+        //     body: JSON.stringify({ section, data: getSectionData(section) })
+        // });
+        showToast('Ayarlar kaydedildi! (Demo mod — backend bağlandığında gerçek kayıt yapılacak)', 'success');
+    }
+
+    document.getElementById('saveAllBtn').addEventListener('click', () => {
+        saveSection('all');
+    });
+</script>
+</body>
+</html>

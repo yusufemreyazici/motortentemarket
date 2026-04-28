@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler | Motor Tente Market</title>
+    <meta name="description" content="Elektrikli motor kabinleri, kasal motor kabinleri, 2-4 tekerlekli motor tenteleri. Tüm ürünlerimizi inceleyin.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+            <div class="top-bar-left">
+                <span><i class="fas fa-phone-alt"></i> +90 (532) 774 89 27</span>
+                <span><i class="fas fa-envelope"></i> info@motortentemarket.com</span>
+                <span><i class="fas fa-map-marker-alt"></i> Büyükada, Adalar/İstanbul</span>
+            </div>
+            <div class="top-bar-right">
+                <div class="social-links">
+                    <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+                <div class="platform-links">
+                    <a href="#" class="platform-badge trendyol-badge" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
+                    <a href="#" class="platform-badge hepsiburada-badge" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container header-inner">
+            <a href="index.html" class="logo">
+                <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
+                <div class="logo-text">
+                    <span class="logo-title">MOTOR TENTE</span>
+                    <span class="logo-subtitle">MARKET</span>
+                </div>
+            </a>
+            <nav class="nav" id="nav">
+                <a href="index.html" class="nav-link">Anasayfa</a>
+                <a href="urunler.html" class="nav-link active">Ürünler</a>
+                <a href="index.html#hakkimizda" class="nav-link">Hakkımızda</a>
+                <a href="index.html#neden-biz" class="nav-link">Neden Biz?</a>
+                <a href="index.html#iletisim" class="nav-link">İletişim</a>
+            </nav>
+            <div class="header-actions">
+                <button class="cart-btn" id="cartBtn" title="Sepeti Aç" aria-label="Sepeti Aç">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menüyü Aç" aria-label="Menüyü Aç">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Banner -->
+    <section class="page-banner">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="index.html">Anasayfa</a>
+                <i class="fas fa-chevron-right"></i>
+                <span id="breadcrumbCurrent">Tüm Ürünler</span>
+            </div>
+            <h1 id="pageTitle">Ürünlerimiz</h1>
+            <p id="pageDesc">Elektrikli motor kabinleri, kasal motor kabinleri ve motor tenteleri</p>
+        </div>
+    </section>
+
+    <!-- Products Layout -->
+    <section class="products-page">
+        <div class="container">
+            <div class="products-layout">
+
+                <!-- Sidebar -->
+                <aside class="sidebar" id="sidebar">
+                    <div class="sidebar-header-mobile">
+                        <h3>Filtreler</h3>
+                        <button class="sidebar-close" id="sidebarClose"><i class="fas fa-times"></i></button>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="sidebar-section">
+                        <div class="sidebar-search">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Ürün veya marka ara...">
+                        </div>
+                    </div>
+
+                    <!-- Categories -->
+                    <div class="sidebar-section">
+                        <h4>Kategoriler</h4>
+                        <div class="sidebar-categories">
+                            <label class="sidebar-radio">
+                                <input type="radio" name="category" value="all" checked>
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Tüm Ürünler</span>
+                                <span class="radio-count" id="countAll">30</span>
+                            </label>
+                            <!-- 2 Tekerlekli -->
+                            <div class="sidebar-cat-group">🛵 2 Tekerlekli</div>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="elektrikli-motor-kabinleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Elektrikli Kabin</span>
+                                <span class="radio-count" id="countElektrikli">9</span>
+                            </label>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="kasal-motor-kabinleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Kasal Kabin</span>
+                                <span class="radio-count" id="countKasal">8</span>
+                            </label>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="2-tekerli-motor-tenteleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Tente</span>
+                                <span class="radio-count" id="count2Tekerli">6</span>
+                            </label>
+                            <!-- 3 Tekerlekli -->
+                            <div class="sidebar-cat-group">🚗 3 Tekerlekli</div>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="3-tekerli-motor-tenteleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Tente</span>
+                                <span class="radio-count" id="count3Tekerli">1</span>
+                            </label>
+                            <!-- 4 Tekerlekli -->
+                            <div class="sidebar-cat-group">🚙 4 Tekerlekli</div>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="4-tekerli-motor-tenteleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Tente</span>
+                                <span class="radio-count" id="count4Tekerli">5</span>
+                            </label>
+                            <label class="sidebar-radio sidebar-radio--sub">
+                                <input type="radio" name="category" value="4-tekerli-motor-kabinleri">
+                                <span class="radio-custom"></span>
+                                <span class="radio-label">Kabin</span>
+                                <span class="radio-count" id="count4TekerliKabin">1</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Brands -->
+                    <div class="sidebar-section">
+                        <h4>Markalar</h4>
+                        <div class="sidebar-brands" id="brandFilters">
+                            <!-- Filled by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Price Range -->
+                    <div class="sidebar-section">
+                        <h4>Fiyat Aralığı</h4>
+                        <div class="price-range">
+                            <div class="price-inputs">
+                                <input type="number" id="priceMin" placeholder="Min TL">
+                                <span>-</span>
+                                <input type="number" id="priceMax" placeholder="Max TL">
+                            </div>
+                            <button class="btn-price-filter" id="applyPrice">Uygula</button>
+                        </div>
+                    </div>
+
+                    <!-- Quick Filters -->
+                    <div class="sidebar-section">
+                        <h4>Hızlı Filtre</h4>
+                        <div class="quick-filters">
+                            <label class="sidebar-check">
+                                <input type="checkbox" id="filterNew">
+                                <span class="check-custom"></span>
+                                <span>Yeni Ürünler</span>
+                            </label>
+                            <label class="sidebar-check">
+                                <input type="checkbox" id="filterDiscount">
+                                <span class="check-custom"></span>
+                                <span>İndirimli Ürünler</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-primary btn-full sidebar-apply" id="clearFilters">
+                        <i class="fas fa-undo"></i> Filtreleri Temizle
+                    </button>
+                </aside>
+
+                <!-- Main Content -->
+                <div class="products-main">
+                    <!-- Toolbar -->
+                    <div class="products-toolbar">
+                        <div class="toolbar-left">
+                            <button class="filter-toggle" id="filterToggle">
+                                <i class="fas fa-sliders-h"></i> Filtreler
+                            </button>
+                            <span class="result-count" id="resultCount">30 ürün bulundu</span>
+                        </div>
+                        <div class="toolbar-right">
+                            <div class="sort-select">
+                                <select id="sortSelect">
+                                    <option value="default">Varsayılan Sıralama</option>
+                                    <option value="price-asc">Fiyat: Düşükten Yükseğe</option>
+                                    <option value="price-desc">Fiyat: Yüksekten Düşüğe</option>
+                                    <option value="name-asc">A-Z Sıralama</option>
+                                    <option value="name-desc">Z-A Sıralama</option>
+                                    <option value="newest">En Yeniler</option>
+                                </select>
+                            </div>
+                            <div class="view-toggle">
+                                <button class="view-btn active" data-view="grid" id="viewGrid"><i class="fas fa-th"></i></button>
+                                <button class="view-btn" data-view="list" id="viewList"><i class="fas fa-list"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Filters -->
+                    <div class="active-filters" id="activeFilters" style="display: none;"></div>
+
+                    <!-- Product Grid -->
+                    <div class="product-grid" id="productGrid">
+                        <!-- Products loaded by JS -->
+                    </div>
+
+                    <!-- No Results -->
+                    <div class="no-results" id="noResults" style="display: none;">
+                        <i class="fas fa-search"></i>
+                        <h3>Sonuç Bulunamadı</h3>
+                        <p>Arama kriterlerinize uygun ürün bulunamadı. Filtreleri değiştirmeyi deneyin.</p>
+                        <button class="btn btn-primary" onclick="clearAllFilters()">Filtreleri Temizle</button>
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-overlay" id="cartOverlay">
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-header">
+                <h3><i class="fas fa-shopping-cart"></i> Sepetim</h3>
+                <button class="cart-close" id="cartClose" title="Sepeti Kapat" aria-label="Sepeti Kapat"><i class="fas fa-times"></i></button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <div class="cart-empty"><i class="fas fa-shopping-basket"></i><p>Sepetiniz boş</p></div>
+            </div>
+            <div class="cart-footer" id="cartFooter" style="display: none;">
+                <div class="cart-total">
+                    <span>Toplam:</span>
+                    <span id="cartTotal">0 TL</span>
+                </div>
+                <a href="https://wa.me/905327748927?text=Merhaba,%20sipari%C5%9F%20vermek%20istiyorum." class="btn btn-primary btn-full" target="_blank" rel="noopener noreferrer">
+                    <i class="fab fa-whatsapp"></i> WhatsApp ile Sipariş Ver
+                </a>
+                <p class="cart-note">Sipariş detayları WhatsApp üzerinden iletilecektir.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <div class="logo footer-logo">
+                        <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
+                        <div class="logo-text">
+                            <span class="logo-title">MOTOR TENTE</span>
+                            <span class="logo-subtitle">MARKET</span>
+                        </div>
+                    </div>
+                    <p>50 yıllık tecrübe ile Büyükada'dan Türkiye'ye. Elektrikli motor ve scooter brandaları, kabinleri ve tenteleri.</p>
+                    <div class="footer-social">
+                        <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Hızlı Linkler</h4>
+                    <a href="index.html">Anasayfa</a>
+                    <a href="urunler.html">Ürünler</a>
+                    <a href="index.html#hakkimizda">Hakkımızda</a>
+                    <a href="index.html#iletisim">İletişim</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Kategoriler</h4>
+                    <a href="urunler.html?kategori=elektrikli-motor-kabinleri">2 Tek. — Elektrikli Kabin</a>
+                    <a href="urunler.html?kategori=kasal-motor-kabinleri">2 Tek. — Kasal Kabin</a>
+                    <a href="urunler.html?kategori=2-tekerli-motor-tenteleri">2 Tek. — Tente</a>
+                    <a href="urunler.html?kategori=3-tekerli-motor-tenteleri">3 Tek. — Tente</a>
+                    <a href="urunler.html?kategori=4-tekerli-motor-tenteleri">4 Tek. — Tente</a>
+                    <a href="urunler.html?kategori=4-tekerli-motor-kabinleri">4 Tek. — Kabin</a>
+                </div>
+                <div class="footer-links">
+                    <h4>Mağazalarımız</h4>
+                    <a href="#" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
+                    <a href="#" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
+                    <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Motor Tente Market. Tüm hakları saklıdır.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/905327748927?text=Merhaba,%20ürünleriniz%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile İletişim">
+        <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
+    </a>
+
+    <button class="scroll-top" id="scrollTop" title="Yukarı Çık" aria-label="Yukarı Çık"><i class="fas fa-chevron-up"></i></button>
+
+    <script src="js/products-data.js"></script>
+    <script src="js/urunler.js"></script>
+</body>
+</html>

@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Giriş | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="login-page">
+    <div class="login-card">
+        <div class="login-logo">
+            <div class="login-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="login-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+
+        <h1 class="login-title">Hoş Geldiniz</h1>
+        <p class="login-subtitle">Devam etmek için giriş yapın</p>
+
+        <div class="login-alert" id="loginAlert">
+            <i class="fas fa-exclamation-circle"></i>
+            <span id="loginAlertMsg">Kullanıcı adı veya şifre hatalı.</span>
+        </div>
+
+        <form id="loginForm" novalidate>
+            <div class="form-group">
+                <label for="loginEmail">E-posta</label>
+                <div class="input-icon-wrap">
+                    <i class="fas fa-envelope input-icon"></i>
+                    <input type="email" id="loginEmail" class="form-control"
+                           placeholder="admin@motortentemarket.com" autocomplete="email" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="loginPassword">Şifre</label>
+                <div class="input-icon-wrap" style="position:relative;">
+                    <i class="fas fa-lock input-icon"></i>
+                    <input type="password" id="loginPassword" class="form-control"
+                           placeholder="••••••••" autocomplete="current-password" required>
+                    <button type="button" class="password-toggle" id="togglePassword"
+                            title="Şifreyi göster/gizle" aria-label="Şifreyi göster/gizle">
+                        <i class="fas fa-eye" id="toggleIcon"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="loginBtn" style="margin-top:8px;">
+                <i class="fas fa-sign-in-alt"></i>
+                <span>Giriş Yap</span>
+            </button>
+        </form>
+
+        <p style="text-align:center; margin-top:24px; font-size:12px; color:var(--admin-text-muted);">
+            <i class="fas fa-shield-alt"></i> Güvenli bağlantı · Motor Tente Market © 2024
+        </p>
+    </div>
+</div>
+
+<script>
+    // Giriş yapılmışsa dashboard'a yönlendir
+    if (localStorage.getItem('adminToken')) {
+        window.location.href = 'index.html';
+    }
+
+    const form = document.getElementById('loginForm');
+    const alert = document.getElementById('loginAlert');
+    const alertMsg = document.getElementById('loginAlertMsg');
+    const loginBtn = document.getElementById('loginBtn');
+
+    // Şifre göster/gizle
+    document.getElementById('togglePassword').addEventListener('click', () => {
+        const input = document.getElementById('loginPassword');
+        const icon = document.getElementById('toggleIcon');
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+        } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+        }
+    });
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+
+        if (!email || !password) {
+            showAlert('Lütfen tüm alanları doldurun.');
+            return;
+        }
+
+        // Loading durumu
+        loginBtn.disabled = true;
+        loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Giriş yapılıyor...</span>';
+
+        try {
+            // TODO: Backend hazır olunca bu kısmı aktif et
+            // const res = await fetch('/api/auth/login', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify({ email, password })
+            // });
+            // const data = await res.json();
+            // if (!res.ok) throw new Error(data.message || 'Giriş başarısız.');
+            // localStorage.setItem('adminToken', data.token);
+            // localStorage.setItem('adminUser', JSON.stringify(data.user));
+            // window.location.href = 'index.html';
+
+            // --- DEMO MOD (Backend yokken) ---
+            await new Promise(r => setTimeout(r, 800)); // sahte gecikme
+            if (email === 'admin@motortentemarket.com' && password === 'admin123') {
+                localStorage.setItem('adminToken', 'demo-token-' + Date.now());
+                localStorage.setItem('adminUser', JSON.stringify({ name: 'Admin', email, role: 'Admin' }));
+                window.location.href = 'index.html';
+            } else {
+                throw new Error('E-posta veya şifre hatalı.');
+            }
+            // --- DEMO MOD SONU ---
+
+        } catch (err) {
+            showAlert(err.message);
+            loginBtn.disabled = false;
+            loginBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> <span>Giriş Yap</span>';
+        }
+    });
+
+    function showAlert(msg) {
+        alertMsg.textContent = msg;
+        alert.classList.add('show');
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="sidebar-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Genel</div>
+                <a href="index.html" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-chart-pie"></i></span>
+                    Dashboard
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Katalog</div>
+                <a href="products.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-box"></i></span>
+                    Ürünler
+                    <span class="nav-badge" id="productCount">30</span>
+                </a>
+                <a href="product-edit.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-plus-circle"></i></span>
+                    Yeni Ürün Ekle
+                </a>
+            </div>
+
+            <div class="nav-section">
+                <div class="nav-section-title">Yönetim</div>
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span>
+                    Site Ayarları
+                </a>
+                <a href="../index.html" class="nav-item" target="_blank">
+                    <span class="nav-icon"><i class="fas fa-external-link-alt"></i></span>
+                    Siteyi Görüntüle
+                </a>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="sidebar-user" id="logoutBtn" title="Çıkış Yap">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <strong id="userName">Admin</strong>
+                    <span>Çıkış Yap</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="color:var(--admin-text-muted); font-size:14px;"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+        <!-- Topbar -->
+        <div class="admin-topbar">
+            <button class="topbar-btn" id="sidebarToggle" title="Menü" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="topbar-title">Dashboard</span>
+            <div class="topbar-actions">
+                <a href="../index.html" target="_blank" class="btn btn-ghost btn-sm">
+                    <i class="fas fa-eye"></i> Siteyi Gör
+                </a>
+                <a href="product-edit.html" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Yeni Ürün
+                </a>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="admin-content">
+
+            <!-- Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon blue"><i class="fas fa-box"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statProducts">30</div>
+                        <div class="stat-label">Toplam Ürün</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon green"><i class="fas fa-tags"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value">4</div>
+                        <div class="stat-label">Kategori</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon orange"><i class="fas fa-fire"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statBadged">0</div>
+                        <div class="stat-label">Öne Çıkan Ürün</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon purple"><i class="fas fa-percent"></i></div>
+                    <div class="stat-info">
+                        <div class="stat-value" id="statDiscounted">0</div>
+                        <div class="stat-label">İndirimli Ürün</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row -->
+            <div style="display:grid; grid-template-columns:1fr 340px; gap:20px; margin-bottom:20px;">
+
+                <!-- Recent Products -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-clock" style="color:var(--admin-primary);margin-right:8px;"></i>Son Eklenen Ürünler</span>
+                        <a href="products.html" class="btn btn-ghost btn-sm">Tümünü Gör</a>
+                    </div>
+                    <div class="table-wrap">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Ürün</th>
+                                    <th>Kategori</th>
+                                    <th>Fiyat</th>
+                                    <th>Durum</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="recentProducts">
+                                <!-- JS ile doldurulur -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="card">
+                    <div class="card-header">
+                        <span class="card-title"><i class="fas fa-layer-group" style="color:var(--admin-primary);margin-right:8px;"></i>Kategoriler</span>
+                    </div>
+                    <div class="card-body" id="categoryStats">
+                        <!-- JS ile doldurulur -->
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-bolt" style="color:var(--admin-warning);margin-right:8px;"></i>Hızlı İşlemler</span>
+                </div>
+                <div class="card-body" style="display:flex; gap:12px; flex-wrap:wrap;">
+                    <a href="product-edit.html" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Yeni Ürün Ekle
+                    </a>
+                    <a href="products.html" class="btn btn-ghost">
+                        <i class="fas fa-list"></i> Ürünleri Yönet
+                    </a>
+                    <a href="settings.html" class="btn btn-ghost">
+                        <i class="fas fa-cog"></i> Ayarlar
+                    </a>
+                    <a href="settings.html#contact" class="btn btn-ghost">
+                        <i class="fas fa-phone"></i> İletişim Bilgileri
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="admin.js"></script>
+<script>
+    requireAuth();
+    loadUserInfo();
+
+    // Stats
+    const badged = products.filter(p => p.badge).length;
+    const discounted = products.filter(p => p.oldPrice).length;
+    document.getElementById('statProducts').textContent = products.length;
+    document.getElementById('statBadged').textContent = badged;
+    document.getElementById('statDiscounted').textContent = discounted;
+    document.getElementById('productCount').textContent = products.length;
+
+    // Recent products (son 5)
+    const recent = [...products].slice(0, 5);
+    const tbody = document.getElementById('recentProducts');
+    tbody.innerHTML = recent.map(p => `
+        <tr>
+            <td>
+                <div class="product-cell">
+                    <div class="product-thumb"><i class="fas fa-motorcycle"></i></div>
+                    <div>
+                        <div class="product-name">${p.name}</div>
+                        <div class="product-brand">${p.brand}</div>
+                    </div>
+                </div>
+            </td>
+            <td><span class="badge badge-info">${categoryLabel(p.category)}</span></td>
+            <td style="font-weight:600;">${p.price.toLocaleString('tr-TR')} TL</td>
+            <td>${p.badge ? `<span class="badge badge-warning">${p.badge}</span>` : '<span class="badge badge-success">Aktif</span>'}</td>
+            <td>
+                <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle">
+                    <i class="fas fa-edit"></i>
+                </a>
+            </td>
+        </tr>
+    `).join('');
+
+    // Category stats
+    const cats = [
+        { key: 'elektrikli-motor-kabinleri', label: 'Elektrikli Motor Kabinleri', icon: 'fa-bolt', color: 'blue' },
+        { key: 'kasal-motor-kabinleri', label: 'Kasal Motor Kabinleri', icon: 'fa-shield-alt', color: 'green' },
+        { key: '4-tekerli-motor-tenteleri', label: '4 Tekerlekli Tenteler', icon: 'fa-umbrella', color: 'orange' },
+        { key: '2-tekerli-motor-tenteleri', label: '2 Tekerlekli Tenteler', icon: 'fa-motorcycle', color: 'purple' },
+    ];
+
+    document.getElementById('categoryStats').innerHTML = cats.map(c => {
+        const count = products.filter(p => p.category === c.key).length;
+        const pct = Math.round(count / products.length * 100);
+        return `
+            <div style="margin-bottom:18px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-size:13px;font-weight:500;">${c.label}</span>
+                    <span style="font-size:13px;color:var(--admin-text-muted);">${count} ürün</span>
+                </div>
+                <div style="background:var(--admin-bg);border-radius:4px;height:6px;overflow:hidden;">
+                    <div style="height:100%;width:${pct}%;background:var(--admin-primary);border-radius:4px;transition:width 1s;"></div>
+                </div>
+            </div>
+        `;
+    }).join('');
+
+    function categoryLabel(cat) {
+        const map = {
+            'elektrikli-motor-kabinleri': 'Elektrikli',
+            'kasal-motor-kabinleri': 'Kasal',
+            '4-tekerli-motor-tenteleri': '4 Tekerlekli',
+            '2-tekerli-motor-tenteleri': '2 Tekerlekli',
+        };
+        return map[cat] || cat;
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ürünler | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="sidebar-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Genel</div>
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> Dashboard
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Katalog</div>
+                <a href="products.html" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-box"></i></span> Ürünler
+                    <span class="nav-badge" id="productCount">30</span>
+                </a>
+                <a href="product-edit.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-plus-circle"></i></span> Yeni Ürün Ekle
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Yönetim</div>
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span> Site Ayarları
+                </a>
+                <a href="../index.html" class="nav-item" target="_blank">
+                    <span class="nav-icon"><i class="fas fa-external-link-alt"></i></span> Siteyi Görüntüle
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user" id="logoutBtn" title="Çıkış Yap">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <strong id="userName">Admin</strong>
+                    <span>Çıkış Yap</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="color:var(--admin-text-muted);font-size:14px;"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <button class="topbar-btn" id="sidebarToggle" title="Menü" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="topbar-title">Ürün Yönetimi</span>
+            <div class="topbar-actions">
+                <a href="product-edit.html" class="btn btn-primary btn-sm">
+                    <i class="fas fa-plus"></i> Yeni Ürün
+                </a>
+            </div>
+        </div>
+
+        <div class="admin-content">
+            <div class="card">
+                <!-- Toolbar -->
+                <div class="card-header" style="flex-wrap:wrap; gap:12px;">
+                    <div class="toolbar" style="flex:1;">
+                        <div class="search-box">
+                            <i class="fas fa-search"></i>
+                            <input type="text" id="searchInput" placeholder="Ürün adı, marka ara...">
+                        </div>
+                        <select class="select-control" id="catFilter" title="Kategori Filtresi">
+                            <option value="">Tüm Kategoriler</option>
+                            <optgroup label="🛵 2 Tekerlekli">
+                                <option value="2-tekerli-motor-tenteleri">2 Tekerlekli — Tente</option>
+                                <option value="elektrikli-motor-kabinleri">2 Tekerlekli — Elektrikli Kabin</option>
+                                <option value="kasal-motor-kabinleri">2 Tekerlekli — Kasal Kabin</option>
+                            </optgroup>
+                            <optgroup label="🚗 3 Tekerlekli">
+                                <option value="3-tekerli-motor-tenteleri">3 Tekerlekli — Tente</option>
+                                <option value="3-tekerli-motor-kabinleri">3 Tekerlekli — Kabin</option>
+                            </optgroup>
+                            <optgroup label="🚙 4 Tekerlekli">
+                                <option value="4-tekerli-motor-tenteleri">4 Tekerlekli — Tente</option>
+                                <option value="4-tekerli-motor-kabinleri">4 Tekerlekli — Kabin</option>
+                            </optgroup>
+                        </select>
+                        <select class="select-control" id="badgeFilter" title="Durum Filtresi">
+                            <option value="">Tüm Durumlar</option>
+                            <option value="badge">Öne Çıkanlar</option>
+                            <option value="discount">İndirimli</option>
+                        </select>
+                    </div>
+                    <span class="result-info" id="resultInfo" style="font-size:13px;color:var(--admin-text-muted);white-space:nowrap;"></span>
+                </div>
+
+                <!-- Table -->
+                <div class="table-wrap">
+                    <table id="productTable">
+                        <thead>
+                            <tr>
+                                <th style="width:40px;">
+                                    <input type="checkbox" id="selectAll" title="Tümünü Seç" aria-label="Tümünü Seç">
+                                </th>
+                                <th>Ürün</th>
+                                <th>Kategori</th>
+                                <th>Marka</th>
+                                <th>Fiyat</th>
+                                <th>Eski Fiyat</th>
+                                <th>Badge</th>
+                                <th style="text-align:right;">İşlemler</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productTbody">
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Empty -->
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <i class="fas fa-box-open"></i>
+                    <h3>Ürün Bulunamadı</h3>
+                    <p>Arama kriterlerinize uygun ürün yok.</p>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="paginationWrap">
+                    <span class="pagination-info" id="paginationInfo"></span>
+                    <div class="pagination-btns" id="paginationBtns"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal-overlay" id="deleteModal">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="modal-title"><i class="fas fa-trash" style="color:var(--admin-danger);margin-right:8px;"></i>Ürünü Sil</span>
+            <button class="modal-close" id="modalClose" title="Kapat" aria-label="Kapat"><i class="fas fa-times"></i></button>
+        </div>
+        <p style="color:var(--admin-text-muted);font-size:14px;line-height:1.6;">
+            <strong id="deleteProductName" style="color:var(--admin-text);"></strong> ürününü silmek istediğinize emin misiniz?
+            Bu işlem geri alınamaz.
+        </p>
+        <div class="modal-footer">
+            <button class="btn btn-ghost" id="cancelDelete">İptal</button>
+            <button class="btn btn-danger" id="confirmDelete"><i class="fas fa-trash"></i> Sil</button>
+        </div>
+    </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="../js/products-data.js"></script>
+<script src="admin.js"></script>
+<script>
+    requireAuth();
+    loadUserInfo();
+
+    const PER_PAGE = 10;
+    let currentPage = 1;
+    let filtered = [...products];
+    let deleteTargetId = null;
+
+    document.getElementById('productCount').textContent = products.length;
+
+    const catLabels = {
+        'elektrikli-motor-kabinleri': 'Elektrikli',
+        'kasal-motor-kabinleri': 'Kasal',
+        '4-tekerli-motor-tenteleri': '4 Tekerlekli',
+        '2-tekerli-motor-tenteleri': '2 Tekerlekli',
+    };
+
+    function renderTable() {
+        const start = (currentPage - 1) * PER_PAGE;
+        const page = filtered.slice(start, start + PER_PAGE);
+        const tbody = document.getElementById('productTbody');
+
+        document.getElementById('resultInfo').textContent = `${filtered.length} ürün`;
+
+        if (filtered.length === 0) {
+            document.getElementById('emptyState').style.display = 'block';
+            document.getElementById('productTable').style.display = 'none';
+            document.getElementById('paginationWrap').style.display = 'none';
+            return;
+        }
+
+        document.getElementById('emptyState').style.display = 'none';
+        document.getElementById('productTable').style.display = 'table';
+        document.getElementById('paginationWrap').style.display = 'flex';
+
+        tbody.innerHTML = page.map(p => `
+            <tr>
+                <td><input type="checkbox" class="row-check" data-id="${p.id}" aria-label="${p.name} seç"></td>
+                <td>
+                    <div class="product-cell">
+                        <div class="product-thumb"><i class="fas fa-motorcycle"></i></div>
+                        <div>
+                            <div class="product-name">${p.name}</div>
+                            <div class="product-brand">ID: ${p.id}</div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="badge badge-info">${catLabels[p.category] || p.category}</span></td>
+                <td style="color:var(--admin-text-muted);">${p.brand}</td>
+                <td style="font-weight:600; color:var(--admin-success);">${p.price.toLocaleString('tr-TR')} TL</td>
+                <td style="color:var(--admin-text-muted); text-decoration:line-through; font-size:12px;">
+                    ${p.oldPrice ? p.oldPrice.toLocaleString('tr-TR') + ' TL' : '—'}
+                </td>
+                <td>
+                    ${p.badge ? `<span class="badge badge-warning">${p.badge}</span>` : '<span style="color:var(--admin-text-muted);font-size:12px;">—</span>'}
+                </td>
+                <td>
+                    <div style="display:flex;gap:6px;justify-content:flex-end;">
+                        <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle" aria-label="Düzenle">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="btn btn-danger btn-sm btn-icon delete-btn" data-id="${p.id}" data-name="${p.name}" title="Sil" aria-label="Sil">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        `).join('');
+
+        // Pagination
+        const totalPages = Math.ceil(filtered.length / PER_PAGE);
+        document.getElementById('paginationInfo').textContent =
+            `${start + 1}–${Math.min(start + PER_PAGE, filtered.length)} / ${filtered.length} ürün`;
+
+        const btns = document.getElementById('paginationBtns');
+        btns.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', () => { currentPage = i; renderTable(); });
+            btns.appendChild(btn);
+        }
+
+        // Delete buttons
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                deleteTargetId = parseInt(btn.dataset.id);
+                document.getElementById('deleteProductName').textContent = btn.dataset.name;
+                document.getElementById('deleteModal').classList.add('active');
+            });
+        });
+    }
+
+    function applyFilters() {
+        const q = document.getElementById('searchInput').value.toLowerCase();
+        const cat = document.getElementById('catFilter').value;
+        const badge = document.getElementById('badgeFilter').value;
+
+        filtered = products.filter(p => {
+            const matchQ = !q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q);
+            const matchCat = !cat || p.category === cat;
+            const matchBadge = !badge ||
+                (badge === 'badge' && p.badge) ||
+                (badge === 'discount' && p.oldPrice);
+            return matchQ && matchCat && matchBadge;
+        });
+        currentPage = 1;
+        renderTable();
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('catFilter').addEventListener('change', applyFilters);
+    document.getElementById('badgeFilter').addEventListener('change', applyFilters);
+
+    // Select all
+    document.getElementById('selectAll').addEventListener('change', (e) => {
+        document.querySelectorAll('.row-check').forEach(c => c.checked = e.target.checked);
+    });
+
+    // Delete modal
+    document.getElementById('modalClose').addEventListener('click', () => {
+        document.getElementById('deleteModal').classList.remove('active');
+    });
+    document.getElementById('cancelDelete').addEventListener('click', () => {
+        document.getElementById('deleteModal').classList.remove('active');
+    });
+    document.getElementById('confirmDelete').addEventListener('click', () => {
+        document.getElementById('deleteModal').classList.remove('active');
+        // TODO: API çağrısı — DELETE /api/products/{deleteTargetId}
+        showToast('Ürün silindi. (Demo mod — backend bağlandığında gerçek silme yapılacak)', 'info');
+    });
+
+    renderTable();
+</script>
+</body>
+</html>
