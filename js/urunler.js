@@ -203,18 +203,18 @@ function renderProducts(filtered) {
 
     if (viewMode === 'list') {
         grid.innerHTML = pageItems.map(p => `
-            <div class="product-card product-card-list" onclick="window.location.href='urun-detay.html?id=${p.id}#${p.id}'">
+            <a class="product-card product-card-list" href="urun-detay.html?id=${p.id}">
                 <div class="product-image">
-                    <i class="fas fa-motorcycle"></i>
+                    <i class="fas fa-motorcycle" aria-hidden="true"></i>
                     ${p.badge ? `<span class="product-badge ${p.isNew ? 'new' : ''}">${p.badge}</span>` : ''}
                 </div>
                 <div class="product-info">
                     <div class="product-category">${p.categoryLabel}</div>
                     <h3 class="product-title">${p.name}</h3>
-                    <div class="product-brand"><i class="fas fa-tag"></i> ${p.brand}</div>
+                    <div class="product-brand"><i class="fas fa-tag" aria-hidden="true"></i> ${p.brand}</div>
                     <p class="product-desc-list">${p.description}</p>
                     <div class="product-features-list">
-                        ${p.features.slice(0, 3).map(f => `<span class="feature-tag"><i class="fas fa-check"></i> ${f}</span>`).join('')}
+                        ${p.features.slice(0, 3).map(f => `<span class="feature-tag"><i class="fas fa-check" aria-hidden="true"></i> ${f}</span>`).join('')}
                     </div>
                     <div class="product-bottom">
                         <div class="product-price">
@@ -222,16 +222,16 @@ function renderProducts(filtered) {
                             ${formatPrice(p.price)}
                         </div>
                         <div class="product-list-actions">
-                            <button class="btn btn-primary btn-sm" onclick="event.stopPropagation(); addToCart(${p.id})">
-                                <i class="fas fa-shopping-cart"></i> Sepete Ekle
+                            <button class="btn btn-primary btn-sm" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${p.id})" aria-label="Sepete Ekle">
+                                <i class="fas fa-shopping-cart" aria-hidden="true"></i> Sepete Ekle
                             </button>
-                            <a href="urun-detay.html?id=${p.id}#${p.id}" class="btn btn-outline-dark btn-sm" onclick="event.stopPropagation();">
-                                <i class="fas fa-eye"></i> Detay
+                            <a href="urun-detay.html?id=${p.id}" class="btn btn-outline-dark btn-sm" onclick="event.stopPropagation();">
+                                <i class="fas fa-eye" aria-hidden="true"></i> Detay
                             </a>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
         `).join('');
     } else {
         grid.innerHTML = pageItems.map(p => productCardHTML(p)).join('');

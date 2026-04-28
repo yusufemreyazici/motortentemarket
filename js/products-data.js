@@ -172,23 +172,23 @@ function productCardHTML(p) {
     const tagLabel = isBest ? 'ÇOK SATAN' : p.isNew ? 'YENİ' : p.oldPrice ? 'İNDİRİM' : '';
     const reviewCount = 50 + (p.id * 23) % 350;
 
-    return `<div class="prod2" onclick="window.location.href='urun-detay.html?id=${p.id}'">
+    return `<a class="prod2" href="urun-detay.html?id=${p.id}">
         <div class="prod2-img">
-            <i class="fas fa-${icon}"></i>
+            <i class="fas fa-${icon}" aria-hidden="true"></i>
             <div class="prod2-tags">
                 ${tagClass ? `<span class="prod2-tag ${tagClass}">${tagLabel}</span>` : ''}
             </div>
-            <button class="prod2-fav" onclick="event.stopPropagation()" title="Favorilere Ekle"><i class="far fa-heart"></i></button>
+            <button class="prod2-fav" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Favorilere Ekle"><i class="far fa-heart" aria-hidden="true"></i></button>
             <div class="prod2-quick">
-                <button onclick="event.stopPropagation(); window.location.href='urun-detay.html?id=${p.id}'"><i class="fas fa-eye"></i> İncele</button>
-                <button class="cart" onclick="event.stopPropagation(); addToCart(${p.id})"><i class="fas fa-shopping-bag"></i> Sepete Ekle</button>
+                <button onclick="event.preventDefault(); event.stopPropagation(); window.location.href='urun-detay.html?id=${p.id}'" aria-label="Ürünü İncele"><i class="fas fa-eye" aria-hidden="true"></i> İncele</button>
+                <button class="cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${p.id})" aria-label="Sepete Ekle"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Sepete Ekle</button>
             </div>
         </div>
         <div class="prod2-info">
             <div class="prod2-cat">${p.categoryLabel}</div>
             <h3 class="prod2-title">${p.name}</h3>
             <div class="prod2-rating">
-                <span class="stars">★★★★★</span>
+                <span class="stars" aria-hidden="true">★★★★★</span>
                 <span>4.8 (${reviewCount} yorum)</span>
             </div>
             <div class="prod2-foot">
@@ -196,8 +196,8 @@ function productCardHTML(p) {
                     ${p.oldPrice ? `<small>${formatPrice(p.oldPrice)}</small>` : ''}
                     <strong>${new Intl.NumberFormat('tr-TR').format(p.price)}<span> TL</span></strong>
                 </div>
-                <span class="prod2-stock"><i class="fas fa-circle"></i> Stokta</span>
+                <span class="prod2-stock"><i class="fas fa-circle" aria-hidden="true"></i> Stokta</span>
             </div>
         </div>
-    </div>`;
+    </a>`;
 }
