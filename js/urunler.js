@@ -91,10 +91,14 @@ function initFilters() {
         applyFilters();
     });
 
-    // Search
+    // Search (sidebar + header)
     document.getElementById('searchInput').addEventListener('input', () => {
         currentPage = 1;
         applyFilters();
+    });
+    document.getElementById('headerSearch')?.addEventListener('input', (e) => {
+        const si = document.getElementById('searchInput');
+        if (si) { si.value = e.target.value; currentPage = 1; applyFilters(); }
     });
 
     // View toggle
@@ -155,7 +159,7 @@ function renderProducts(filtered) {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
 
-    grid.className = viewMode === 'list' ? 'product-grid list-view' : 'product-grid';
+    grid.className = viewMode === 'list' ? 'product-grid list-view' : 'product-grid prods2-page';
 
     if (viewMode === 'list') {
         grid.innerHTML = pageItems.map(p => `

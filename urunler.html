@@ -13,55 +13,67 @@
 </head>
 <body>
 
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="container top-bar-inner">
-            <div class="top-bar-left">
-                <span><i class="fas fa-phone-alt"></i> +90 (532) 774 89 27</span>
-                <span><i class="fas fa-envelope"></i> info@motortentemarket.com</span>
-                <span><i class="fas fa-map-marker-alt"></i> Büyükada, Adalar/İstanbul</span>
-            </div>
-            <div class="top-bar-right">
-                <div class="social-links">
-                    <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                </div>
-                <div class="platform-links">
-                    <a href="#" class="platform-badge trendyol-badge" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
-                    <a href="#" class="platform-badge hepsiburada-badge" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
-                </div>
-            </div>
-        </div>
+    <!-- Announcement Bar -->
+    <div class="announce">
+        <span class="announce-item"><i class="fas fa-shipping-fast"></i> 2.500 TL üzeri <strong>ücretsiz kargo</strong></span>
+        <span class="pipe">·</span>
+        <span class="announce-item"><i class="fas fa-shield-halved"></i> Tüm ürünlerde <strong>2 yıl garanti</strong></span>
+        <span class="pipe">·</span>
+        <span class="announce-item"><i class="fas fa-headset"></i> WhatsApp <strong>+90 532 774 89 27</strong></span>
     </div>
 
     <!-- Header -->
-    <header class="header" id="header">
-        <div class="container header-inner">
-            <a href="index.html" class="logo">
-                <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
-                <div class="logo-text">
-                    <span class="logo-title">MOTOR TENTE</span>
-                    <span class="logo-subtitle">MARKET</span>
+    <header class="h2" id="header">
+        <div class="container h2-row">
+            <a href="index.html" class="brand">
+                <svg class="emblem" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="b1u" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e4d8c"/><stop offset="55%" stop-color="#1a56db"/><stop offset="100%" stop-color="#0f3a8c"/></linearGradient>
+                        <linearGradient id="b2u" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient>
+                    </defs>
+                    <path d="M38 3 L67 12 V36 C67 54 54 67 38 73 C22 67 9 54 9 36 V12 Z" fill="url(#b1u)"/>
+                    <path d="M22 21 H54 L52 25 H24 Z" fill="url(#b2u)"/>
+                    <g transform="translate(38,42)" fill="#fff"><path d="M-15 11 V-7 C-15 -10 -13 -12 -10 -12 H-7 L-2 -3 L0 -8 L2 -3 L7 -12 H10 C13 -12 15 -10 15 -7 V11 H10 V-5 L5 4 H-5 L-10 -5 V11 Z"/></g>
+                    <g transform="translate(38,58)"><circle r="6" fill="rgba(255,255,255,.12)"/><path d="M0 -3.5 L1 -1 L3.6 -0.6 L1.7 1.2 L2.2 3.8 L0 2.5 L-2.2 3.8 L-1.7 1.2 L-3.6 -0.6 L-1 -1 Z" fill="url(#b2u)"/></g>
+                </svg>
+                <div class="word">
+                    <span class="top">MOTOR&nbsp;TENTE</span>
+                    <div class="rule"></div>
+                    <div class="bot"><span>MARKET</span><span class="est">EST. 1974</span></div>
                 </div>
             </a>
-            <nav class="nav" id="nav">
-                <a href="index.html" class="nav-link">Anasayfa</a>
-                <a href="urunler.html" class="nav-link active">Ürünler</a>
-                <a href="index.html#hakkimizda" class="nav-link">Hakkımızda</a>
-                <a href="index.html#neden-biz" class="nav-link">Neden Biz?</a>
-                <a href="index.html#iletisim" class="nav-link">İletişim</a>
-            </nav>
-            <div class="header-actions">
-                <button class="cart-btn" id="cartBtn" title="Sepeti Aç" aria-label="Sepeti Aç">
-                    <i class="fas fa-shopping-cart"></i>
-                    <span class="cart-count" id="cartCount">0</span>
-                </button>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" title="Menüyü Aç" aria-label="Menüyü Aç">
-                    <span></span><span></span><span></span>
-                </button>
+            <div class="h2-search">
+                <i class="fas fa-search"></i>
+                <input type="text" id="headerSearch" placeholder="Marka, model veya ürün ara...">
+            </div>
+            <div class="h2-actions">
+                <a href="index.html" class="h2-action"><i class="fas fa-home"></i> Anasayfa</a>
+                <a href="#" class="h2-action cart" id="cartBtn">
+                    <i class="fas fa-shopping-bag"></i> Sepet
+                    <span class="badge-c" id="cartCount">0</span>
+                </a>
+                <button class="h2-mobile-btn" id="mobileMenuBtn" aria-label="Menü"><i class="fas fa-bars"></i></button>
             </div>
         </div>
     </header>
+
+    <!-- Category Nav -->
+    <nav class="h2-nav" id="nav">
+        <div class="container h2-nav-row">
+            <a href="urunler.html" class="h2-nav-link active"><i class="fas fa-th"></i> Tüm Kategoriler</a>
+            <a href="urunler.html?kategori=elektrikli-motor-kabinleri" class="h2-nav-link">Elektrikli Kabin</a>
+            <a href="urunler.html?kategori=kasal-motor-kabinleri" class="h2-nav-link">Kasal Kabin</a>
+            <a href="urunler.html?kategori=2-tekerli-motor-tenteleri" class="h2-nav-link">2 Tek. Tente</a>
+            <a href="urunler.html?kategori=3-tekerli-motor-tenteleri" class="h2-nav-link">3 Tek. Tente</a>
+            <a href="urunler.html?kategori=4-tekerli-motor-tenteleri" class="h2-nav-link">4 Tek. Tente</a>
+            <a href="urunler.html?kategori=4-tekerli-motor-kabinleri" class="h2-nav-link">4 Tek. Kabin</a>
+            <span class="h2-nav-spacer"></span>
+            <div class="h2-nav-meta">
+                <span><i class="fas fa-circle"></i> 29 ürün stokta</span>
+                <span><i class="fas fa-truck"></i> Aynı gün kargo</span>
+            </div>
+        </div>
+    </nav>
 
     <!-- Page Banner -->
     <section class="page-banner">
@@ -255,7 +267,7 @@
             <div class="cart-items" id="cartItems">
                 <div class="cart-empty"><i class="fas fa-shopping-basket"></i><p>Sepetiniz boş</p></div>
             </div>
-            <div class="cart-footer" id="cartFooter" style="display: none;">
+            <div class="cart-footer cart-footer--hidden" id="cartFooter">
                 <div class="cart-total">
                     <span>Toplam:</span>
                     <span id="cartTotal">0 TL</span>
@@ -269,59 +281,69 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="f2">
         <div class="container">
-            <div class="footer-grid">
-                <div class="footer-about">
-                    <div class="logo footer-logo">
-                        <div class="logo-icon"><i class="fas fa-motorcycle"></i></div>
-                        <div class="logo-text">
-                            <span class="logo-title">MOTOR TENTE</span>
-                            <span class="logo-subtitle">MARKET</span>
+            <div class="f2-grid">
+                <div class="f2-about">
+                    <a href="index.html" class="brand">
+                        <svg class="emblem" viewBox="0 0 76 76" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="fb1u" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e4d8c"/><stop offset="55%" stop-color="#1a56db"/><stop offset="100%" stop-color="#0f3a8c"/></linearGradient>
+                                <linearGradient id="fb2u" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#fbbf24"/><stop offset="100%" stop-color="#f59e0b"/></linearGradient>
+                            </defs>
+                            <path d="M38 3 L67 12 V36 C67 54 54 67 38 73 C22 67 9 54 9 36 V12 Z" fill="url(#fb1u)"/>
+                            <path d="M22 21 H54 L52 25 H24 Z" fill="url(#fb2u)"/>
+                            <g transform="translate(38,42)" fill="#fff"><path d="M-15 11 V-7 C-15 -10 -13 -12 -10 -12 H-7 L-2 -3 L0 -8 L2 -3 L7 -12 H10 C13 -12 15 -10 15 -7 V11 H10 V-5 L5 4 H-5 L-10 -5 V11 Z"/></g>
+                            <g transform="translate(38,58)"><circle r="6" fill="rgba(255,255,255,.12)"/><path d="M0 -3.5 L1 -1 L3.6 -0.6 L1.7 1.2 L2.2 3.8 L0 2.5 L-2.2 3.8 L-1.7 1.2 L-3.6 -0.6 L-1 -1 Z" fill="url(#fb2u)"/></g>
+                        </svg>
+                        <div class="word">
+                            <span class="top">MOTOR&nbsp;TENTE</span>
+                            <div class="rule"></div>
+                            <div class="bot"><span>MARKET</span><span class="est">EST. 1974</span></div>
                         </div>
-                    </div>
-                    <p>50 yıllık tecrübe ile Büyükada'dan Türkiye'ye. Elektrikli motor ve scooter brandaları, kabinleri ve tenteleri.</p>
-                    <div class="footer-social">
-                        <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    </a>
+                    <p>1974'ten beri Büyükada'da el emeğiyle. Her dikiş elden geçer, her kalıp aracınıza özel çıkar.</p>
+                    <div class="f2-soc">
+                        <a href="https://instagram.com/motortentemarket" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i></a>
+                        <a href="https://facebook.com/elektriklimotorbranda" target="_blank" rel="noopener noreferrer"><i class="fab fa-facebook-f"></i></a>
+                        <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
-                <div class="footer-links">
-                    <h4>Hızlı Linkler</h4>
-                    <a href="index.html">Anasayfa</a>
-                    <a href="urunler.html">Ürünler</a>
-                    <a href="index.html#hakkimizda">Hakkımızda</a>
-                    <a href="index.html#iletisim">İletişim</a>
-                </div>
-                <div class="footer-links">
+                <div>
                     <h4>Kategoriler</h4>
-                    <a href="urunler.html?kategori=elektrikli-motor-kabinleri">2 Tek. — Elektrikli Kabin</a>
-                    <a href="urunler.html?kategori=kasal-motor-kabinleri">2 Tek. — Kasal Kabin</a>
-                    <a href="urunler.html?kategori=2-tekerli-motor-tenteleri">2 Tek. — Tente</a>
-                    <a href="urunler.html?kategori=3-tekerli-motor-tenteleri">3 Tek. — Tente</a>
-                    <a href="urunler.html?kategori=4-tekerli-motor-tenteleri">4 Tek. — Tente</a>
-                    <a href="urunler.html?kategori=4-tekerli-motor-kabinleri">4 Tek. — Kabin</a>
+                    <a href="urunler.html?kategori=elektrikli-motor-kabinleri">Elektrikli Kabin</a>
+                    <a href="urunler.html?kategori=kasal-motor-kabinleri">Kasal Kabin</a>
+                    <a href="urunler.html?kategori=2-tekerli-motor-tenteleri">2 Tek. Tente</a>
+                    <a href="urunler.html?kategori=3-tekerli-motor-tenteleri">3 Tek. Tente</a>
+                    <a href="urunler.html?kategori=4-tekerli-motor-tenteleri">4 Tek. Tente</a>
+                    <a href="urunler.html">Özel Ölçü</a>
                 </div>
-                <div class="footer-links">
-                    <h4>Mağazalarımız</h4>
-                    <a href="#" target="_blank"><i class="fas fa-shopping-bag"></i> Trendyol</a>
-                    <a href="#" target="_blank"><i class="fas fa-store"></i> Hepsiburada</a>
-                    <a href="https://wa.me/905327748927" target="_blank" rel="noopener noreferrer"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                <div>
+                    <h4>Kurumsal</h4>
+                    <a href="index.html">Anasayfa</a>
+                    <a href="#">Hakkımızda</a>
+                    <a href="#">Hikayemiz</a>
+                    <a href="#">İletişim</a>
+                </div>
+                <div>
+                    <h4>Yardım</h4>
+                    <a href="#">Kargo &amp; Teslimat</a>
+                    <a href="#">İade &amp; Değişim</a>
+                    <a href="#">Garanti</a>
+                    <a href="#">SSS</a>
                 </div>
             </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Motor Tente Market. Tüm hakları saklıdır.</p>
+            <div class="f2-bot">
+                <span>© 2026 Motor Tente Market — Büyükada, İstanbul. Tüm hakları saklıdır.</span>
+                <div class="f2-pay"><span>VISA</span><span>MASTER</span><span>HAVALE</span><span>KAPIDA ÖDEME</span></div>
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Float -->
-    <a href="https://wa.me/905327748927?text=Merhaba,%20ürünleriniz%20hakkında%20bilgi%20almak%20istiyorum." class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp ile İletişim">
-        <i class="fab fa-whatsapp"></i><span>WhatsApp</span>
-    </a>
+    <!-- WhatsApp FAB -->
+    <a class="fab2" href="https://wa.me/905327748927?text=Merhaba,%20ürünleriniz%20hakkında%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener noreferrer" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
 
-    <button class="scroll-top" id="scrollTop" title="Yukarı Çık" aria-label="Yukarı Çık"><i class="fas fa-chevron-up"></i></button>
+    <button class="scroll-top" id="scrollTop" aria-label="Yukarı"><i class="fas fa-chevron-up"></i></button>
 
     <script src="js/products-data.js"></script>
     <script src="js/urunler.js"></script>

@@ -162,25 +162,41 @@ function initHeader() {
     scrollTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 }
 
-// Product card HTML generator
+// Product card HTML generator (v2 design)
 function productCardHTML(p) {
-    return `<div class="product-card" onclick="window.location.href='urun-detay.html?id=${p.id}#${p.id}'">
-        <div class="product-image">
-            <i class="fas fa-motorcycle"></i>
-            ${p.badge ? `<span class="product-badge ${p.isNew ? 'new' : ''}">${p.badge}</span>` : ''}
+    const cat = p.category || '';
+    const icon = (['elektrikli-motor-kabinleri','kasal-motor-kabinleri','2-tekerli-motor-tenteleri'].includes(cat))
+        ? 'motorcycle' : cat === '3-tekerli-motor-tenteleri' ? 'car-side' : 'car';
+    const isBest = p.badge === 'Çok Satan' || p.badge === 'En Popüler';
+    const tagClass = isBest ? 'bestseller' : p.isNew ? 'new' : p.oldPrice ? 'sale' : '';
+    const tagLabel = isBest ? 'ÇOK SATAN' : p.isNew ? 'YENİ' : p.oldPrice ? 'İNDİRİM' : '';
+    const reviewCount = 50 + (p.id * 23) % 350;
+
+    return `<div class="prod2" onclick="window.location.href='urun-detay.html?id=${p.id}'">
+        <div class="prod2-img">
+            <i class="fas fa-${icon}"></i>
+            <div class="prod2-tags">
+                ${tagClass ? `<span class="prod2-tag ${tagClass}">${tagLabel}</span>` : ''}
+            </div>
+            <button class="prod2-fav" onclick="event.stopPropagation()" title="Favorilere Ekle"><i class="far fa-heart"></i></button>
+            <div class="prod2-quick">
+                <button onclick="event.stopPropagation(); window.location.href='urun-detay.html?id=${p.id}'"><i class="fas fa-eye"></i> İncele</button>
+                <button class="cart" onclick="event.stopPropagation(); addToCart(${p.id})"><i class="fas fa-shopping-bag"></i> Sepete Ekle</button>
+            </div>
         </div>
-        <div class="product-info">
-            <div class="product-category">${p.categoryLabel}</div>
-            <h3 class="product-title">${p.name}</h3>
-            <div class="product-brand"><i class="fas fa-tag"></i> ${p.brand}</div>
-            <div class="product-bottom">
-                <div class="product-price">
+        <div class="prod2-info">
+            <div class="prod2-cat">${p.categoryLabel}</div>
+            <h3 class="prod2-title">${p.name}</h3>
+            <div class="prod2-rating">
+                <span class="stars">★★★★★</span>
+                <span>4.8 (${reviewCount} yorum)</span>
+            </div>
+            <div class="prod2-foot">
+                <div class="prod2-price">
                     ${p.oldPrice ? `<small>${formatPrice(p.oldPrice)}</small>` : ''}
-                    ${formatPrice(p.price)}
+                    <strong>${new Intl.NumberFormat('tr-TR').format(p.price)}<span> TL</span></strong>
                 </div>
-                <button class="product-cart-btn" onclick="event.stopPropagation(); addToCart(${p.id})" title="Sepete Ekle">
-                    <i class="fas fa-plus"></i>
-                </button>
+                <span class="prod2-stock"><i class="fas fa-circle"></i> Stokta</span>
             </div>
         </div>
     </div>`;
