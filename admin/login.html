@@ -102,28 +102,21 @@
         loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Giriş yapılıyor...</span>';
 
         try {
-            // TODO: Backend hazır olunca bu kısmı aktif et
-            // const res = await fetch('/api/auth/login', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify({ email, password })
-            // });
-            // const data = await res.json();
-            // if (!res.ok) throw new Error(data.message || 'Giriş başarısız.');
-            // localStorage.setItem('adminToken', data.token);
-            // localStorage.setItem('adminUser', JSON.stringify(data.user));
-            // window.location.href = 'index.html';
+            const apiBase = window.location.port === '3000' ? 'http://localhost:5275' : '';
+            const res  = await fetch(apiBase + '/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password })
+            });
+            const data = await res.json().catch(() => ({}));
 
-            // --- DEMO MOD (Backend yokken) ---
-            await new Promise(r => setTimeout(r, 800)); // sahte gecikme
-            if (email === 'admin@motortentemarket.com' && password === 'admin123') {
-                localStorage.setItem('adminToken', 'demo-token-' + Date.now());
-                localStorage.setItem('adminUser', JSON.stringify({ name: 'Admin', email, role: 'Admin' }));
-                window.location.href = 'index.html';
-            } else {
-                throw new Error('E-posta veya şifre hatalı.');
-            }
-            // --- DEMO MOD SONU ---
+            if (res.status === 401) throw new Error('E-posta veya şifre hatalı.');
+            if (!res.ok) throw new Error(data.error || data.message || 'Giriş başarısız.');
+
+            localStorage.setItem('adminToken',       data.token);
+            localStorage.setItem('adminTokenExpiry', data.expiresAt);
+            localStorage.setItem('adminUser',        JSON.stringify(data.user));
+            window.location.href = 'index.html';
 
         } catch (err) {
             showAlert(err.message);

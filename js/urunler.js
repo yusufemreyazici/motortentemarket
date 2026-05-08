@@ -1,51 +1,92 @@
 // ===== PRODUCTS PAGE =====
 let currentCategory = 'all';
-let selectedBrands = [];
-let priceMin = 0;
-let priceMax = Infinity;
-let filterNew = false;
-let filterDiscount = false;
-let sortBy = 'default';
-let viewMode = 'grid';
-let currentPage = 1;
+let selectedBrands  = [];
+let priceMin        = null;
+let priceMax        = null;
+let filterNew       = false;
+let filterDiscount  = false;
+let sortBy          = 'newest';
+let viewMode        = 'grid';
+let currentPage     = 1;
 const ITEMS_PER_PAGE = 12;
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
     initHeader();
-    initCart();
-    initBrandFilters();
-    initCategoryCounts();
     initFilters();
     initSidebar();
     readURLParams();
-    applyFilters();
+    updateCategoryCounts();
+    await Promise.all([fetchBrands(), applyFilters()]);
 });
 
-// ===== CATEGORY COUNTS =====
-function initCategoryCounts() {
-    const countMap = {
-        all: products.length,
-        'elektrikli-motor-kabinleri': 0,
-        'kasal-motor-kabinleri': 0,
-        '2-tekerli-motor-tenteleri': 0,
-        '3-tekerli-motor-tenteleri': 0,
-        '4-tekerli-motor-tenteleri': 0,
-        '4-tekerli-motor-kabinleri': 0,
-    };
-    products.forEach(p => { if (p.category in countMap) countMap[p.category]++; });
-    const idMap = {
-        all: 'countAll',
-        'elektrikli-motor-kabinleri': 'countElektrikli',
-        'kasal-motor-kabinleri': 'countKasal',
-        '2-tekerli-motor-tenteleri': 'count2Tekerli',
-        '3-tekerli-motor-tenteleri': 'count3Tekerli',
-        '4-tekerli-motor-tenteleri': 'count4Tekerli',
-        '4-tekerli-motor-kabinleri': 'count4TekerliKabin',
-    };
-    Object.entries(idMap).forEach(([cat, id]) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = countMap[cat];
-    });
+// ===== API =====
+async function fetchBrands() {
+    try {
+        const resp = await fetch(API_BASE + '/api/brands');
+        if (!resp.ok) throw new Error();
+        const brands = await resp.json();
+        renderBrandFilters(brands);
+    } catch {
+        if (typeof getBrandsLocally === 'function') renderBrandFilters(getBrandsLocally());
+    }
+}
+
+async function applyFilters() {
+    const search = (document.getElementById('searchInput')?.value || '').trim();
+
+    const params = new URLSearchParams();
+    if (currentCategory !== 'all') params.set('category', currentCategory);
+    selectedBrands.forEach(b => params.append('brand', b));
+    if (priceMin !== null) params.set('priceMin', priceMin);
+    if (priceMax !== null) params.set('priceMax', priceMax);
+    if (filterNew)      params.set('isNew', 'true');
+    if (filterDiscount) params.set('hasDiscount', 'true');
+    if (search)         params.set('search', search);
+    params.set('sortBy', sortBy === 'default' ? 'newest' : sortBy);
+    params.set('page', currentPage);
+    params.set('pageSize', ITEMS_PER_PAGE);
+
+    const grid = document.getElementById('productGrid');
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:#888;"><i class="fas fa-spinner fa-spin fa-2x"></i></div>`;
+
+    try {
+        const resp = await fetch(`${API_BASE}/api/products?${params}`);
+        if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+        const data = await resp.json();
+
+        // Populate cache for addToCart
+        data.items.forEach(p => { window._productCache[p.id] = p; });
+
+        renderProducts(data.items);
+        renderPagination(data.totalCount, data.totalPages);
+        updateActiveFilters();
+        updatePageTitle();
+
+        document.getElementById('resultCount').textContent = `${data.totalCount} ürün bulundu`;
+        const empty = data.items.length === 0;
+        document.getElementById('noResults').style.display   = empty ? 'block' : 'none';
+        document.getElementById('productGrid').style.display  = empty ? 'none'  : '';
+        document.getElementById('pagination').style.display   = empty ? 'none'  : '';
+    } catch {
+        if (typeof filterProductsLocally === 'function') {
+            const data = filterProductsLocally(params);
+            data.items.forEach(p => { window._productCache[p.id] = p; });
+            renderProducts(data.items);
+            renderPagination(data.totalCount, data.totalPages);
+            updateActiveFilters();
+            updatePageTitle();
+            document.getElementById('resultCount').textContent = `${data.totalCount} ürün bulundu`;
+            const empty = data.items.length === 0;
+            document.getElementById('noResults').style.display  = empty ? 'block' : 'none';
+            document.getElementById('productGrid').style.display = empty ? 'none'  : '';
+            document.getElementById('pagination').style.display  = empty ? 'none'  : '';
+        } else {
+            grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:60px;color:#888;">
+                <i class="fas fa-exclamation-triangle fa-2x" style="margin-bottom:12px;display:block;"></i>
+                Ürünler yüklenirken bir hata oluştu.
+            </div>`;
+        }
+    }
 }
 
 // ===== URL PARAMS =====
@@ -57,6 +98,13 @@ function readURLParams() {
         const radio = document.querySelector(`input[name="category"][value="${cat}"]`);
         if (radio) radio.checked = true;
     }
+    const ara = params.get('ara');
+    if (ara) {
+        const si = document.getElementById('searchInput');
+        if (si) si.value = ara;
+        const hi = document.getElementById('headerSearch');
+        if (hi) hi.value = ara;
+    }
     updateNavActiveLink();
 }
 
@@ -64,28 +112,78 @@ function readURLParams() {
 function updateNavActiveLink() {
     document.querySelectorAll('.h2-nav-link').forEach(link => {
         const href = link.getAttribute('href') || '';
-        const isAll = href === 'urunler.html' && currentCategory === 'all';
+        const isAll       = href === 'urunler.html' && currentCategory === 'all';
         const hasCategory = href.includes(`kategori=${currentCategory}`);
         link.classList.toggle('active', isAll || hasCategory);
     });
 }
 
 // ===== BRAND FILTERS =====
-function initBrandFilters() {
-    const brands = [...new Set(products.map(p => p.brand))].sort();
+function renderBrandFilters(brands) {
     const container = document.getElementById('brandFilters');
+
+    const brandCounts = {};
+    if (typeof products !== 'undefined') {
+        products.forEach(p => { if (p.brand) brandCounts[p.brand] = (brandCounts[p.brand] || 0) + 1; });
+    }
+
     container.innerHTML = brands.map(b => `
         <label class="sidebar-check">
             <input type="checkbox" value="${b}" class="brand-checkbox">
             <span class="check-custom"></span>
-            <span>${b}</span>
+            <span class="brand-label">${b}</span>
+            <span class="brand-count">${brandCounts[b] || 0}</span>
         </label>
     `).join('');
+
+    container.addEventListener('change', () => {
+        selectedBrands = [...document.querySelectorAll('.brand-checkbox:checked')].map(cb => cb.value);
+        currentPage = 1;
+        applyFilters();
+        updateFilterBadge();
+    });
+
+    // Marka arama
+    document.getElementById('brandSearch')?.addEventListener('input', e => {
+        const q = e.target.value.toLowerCase();
+        container.querySelectorAll('.sidebar-check').forEach(label => {
+            const name = label.querySelector('.brand-label').textContent.toLowerCase();
+            label.style.display = name.includes(q) ? '' : 'none';
+        });
+    });
+}
+
+function updateFilterBadge() {
+    const total = selectedBrands.length +
+        (currentCategory !== 'all' ? 1 : 0) +
+        (priceMin !== null || priceMax !== null ? 1 : 0) +
+        (filterNew ? 1 : 0) + (filterDiscount ? 1 : 0);
+
+    const badge = document.getElementById('filterBadge');
+    const brandBadge = document.getElementById('brandSelectedBadge');
+
+    if (badge) { badge.textContent = total || ''; badge.style.display = total > 0 ? 'inline-flex' : 'none'; }
+    if (brandBadge) { brandBadge.textContent = selectedBrands.length || ''; brandBadge.style.display = selectedBrands.length > 0 ? 'inline-flex' : 'none'; }
+}
+
+function updateCategoryCounts() {
+    if (typeof products === 'undefined') return;
+    const counts = {};
+    products.forEach(p => { counts.all = (counts.all || 0) + 1; counts[p.category] = (counts[p.category] || 0) + 1; });
+    const map = {
+        all: 'countAll',
+        '2-tekerlekli': 'count2',
+        '3-tekerlekli': 'count3',
+        '4-tekerlekli': 'count4',
+    };
+    Object.entries(map).forEach(([cat, id]) => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = counts[cat] || 0;
+    });
 }
 
 // ===== INIT FILTERS =====
 function initFilters() {
-    // Category
     document.querySelectorAll('input[name="category"]').forEach(radio => {
         radio.addEventListener('change', () => {
             currentCategory = radio.value;
@@ -96,153 +194,76 @@ function initFilters() {
         });
     });
 
-    // Brands
-    document.getElementById('brandFilters').addEventListener('change', () => {
-        selectedBrands = [...document.querySelectorAll('.brand-checkbox:checked')].map(cb => cb.value);
-        currentPage = 1;
-        applyFilters();
-    });
-
-    // Price
     document.getElementById('applyPrice').addEventListener('click', () => {
-        priceMin = parseInt(document.getElementById('priceMin').value) || 0;
-        priceMax = parseInt(document.getElementById('priceMax').value) || Infinity;
+        const min = parseInt(document.getElementById('priceMin').value);
+        const max = parseInt(document.getElementById('priceMax').value);
+        priceMin = isNaN(min) ? null : min;
+        priceMax = isNaN(max) ? null : max;
         currentPage = 1;
         applyFilters();
     });
 
-    // Quick filters
     document.getElementById('filterNew').addEventListener('change', (e) => {
-        filterNew = e.target.checked;
-        currentPage = 1;
-        applyFilters();
+        filterNew = e.target.checked; currentPage = 1; applyFilters();
     });
 
     document.getElementById('filterDiscount').addEventListener('change', (e) => {
-        filterDiscount = e.target.checked;
-        currentPage = 1;
-        applyFilters();
+        filterDiscount = e.target.checked; currentPage = 1; applyFilters();
     });
 
-    // Sort
     document.getElementById('sortSelect').addEventListener('change', (e) => {
-        sortBy = e.target.value;
-        currentPage = 1;
-        applyFilters();
+        sortBy = e.target.value; currentPage = 1; applyFilters();
     });
 
-    // Search (sidebar + header)
     document.getElementById('searchInput').addEventListener('input', () => {
-        currentPage = 1;
-        applyFilters();
+        currentPage = 1; applyFilters();
     });
     document.getElementById('headerSearch')?.addEventListener('input', (e) => {
         const si = document.getElementById('searchInput');
         if (si) { si.value = e.target.value; currentPage = 1; applyFilters(); }
     });
+    document.getElementById('mobileSearchInput')?.addEventListener('input', (e) => {
+        const si = document.getElementById('searchInput');
+        if (si) { si.value = e.target.value; currentPage = 1; applyFilters(); }
+    });
 
-    // View toggle
     document.getElementById('viewGrid').addEventListener('click', () => setView('grid'));
     document.getElementById('viewList').addEventListener('click', () => setView('list'));
-
-    // Clear filters
     document.getElementById('clearFilters').addEventListener('click', clearAllFilters);
 }
 
 // ===== SIDEBAR MOBILE =====
 function initSidebar() {
     const sidebar = document.getElementById('sidebar');
-    const toggle = document.getElementById('filterToggle');
-    const close = document.getElementById('sidebarClose');
-
+    const toggle  = document.getElementById('filterToggle');
+    const close   = document.getElementById('sidebarClose');
     toggle?.addEventListener('click', () => sidebar.classList.add('active'));
-    close?.addEventListener('click', () => sidebar.classList.remove('active'));
-}
-
-// ===== APPLY FILTERS =====
-function applyFilters() {
-    const search = (document.getElementById('searchInput')?.value || '').toLowerCase();
-
-    let filtered = products.filter(p => {
-        if (currentCategory !== 'all' && p.category !== currentCategory) return false;
-        if (selectedBrands.length > 0 && !selectedBrands.includes(p.brand)) return false;
-        if (p.price < priceMin || p.price > priceMax) return false;
-        if (filterNew && !p.isNew) return false;
-        if (filterDiscount && !p.oldPrice) return false;
-        if (search && !p.name.toLowerCase().includes(search) && !p.brand.toLowerCase().includes(search)) return false;
-        return true;
-    });
-
-    // Sort
-    switch (sortBy) {
-        case 'price-asc': filtered.sort((a, b) => a.price - b.price); break;
-        case 'price-desc': filtered.sort((a, b) => b.price - a.price); break;
-        case 'name-asc': filtered.sort((a, b) => a.name.localeCompare(b.name, 'tr')); break;
-        case 'name-desc': filtered.sort((a, b) => b.name.localeCompare(a.name, 'tr')); break;
-        case 'newest': filtered.sort((a, b) => (b.isNew ? 1 : 0) - (a.isNew ? 1 : 0)); break;
-    }
-
-    renderProducts(filtered);
-    renderPagination(filtered.length);
-    updateActiveFilters();
-    updatePageTitle();
-
-    document.getElementById('resultCount').textContent = `${filtered.length} ürün bulundu`;
-    document.getElementById('noResults').style.display = filtered.length === 0 ? 'block' : 'none';
-    document.getElementById('productGrid').style.display = filtered.length === 0 ? 'none' : '';
-    document.getElementById('pagination').style.display = filtered.length === 0 ? 'none' : '';
+    close?.addEventListener('click',  () => sidebar.classList.remove('active'));
 }
 
 // ===== RENDER =====
-function renderProducts(filtered) {
+function renderProducts(items) {
     const grid = document.getElementById('productGrid');
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const pageItems = filtered.slice(start, start + ITEMS_PER_PAGE);
-
-    grid.className = viewMode === 'list' ? 'product-grid list-view' : 'product-grid prods2-page';
-
     if (viewMode === 'list') {
-        grid.innerHTML = pageItems.map(p => `
-            <a class="product-card product-card-list" href="urun-detay.html?id=${p.id}">
-                <div class="product-image">
-                    <i class="fas fa-motorcycle" aria-hidden="true"></i>
-                    ${p.badge ? `<span class="product-badge ${p.isNew ? 'new' : ''}">${p.badge}</span>` : ''}
-                </div>
-                <div class="product-info">
-                    <div class="product-category">${p.categoryLabel}</div>
-                    <h3 class="product-title">${p.name}</h3>
-                    <div class="product-brand"><i class="fas fa-tag" aria-hidden="true"></i> ${p.brand}</div>
-                    <p class="product-desc-list">${p.description}</p>
-                    <div class="product-features-list">
-                        ${p.features.slice(0, 3).map(f => `<span class="feature-tag"><i class="fas fa-check" aria-hidden="true"></i> ${f}</span>`).join('')}
-                    </div>
-                    <div class="product-bottom">
-                        <div class="product-price">
-                            ${p.oldPrice ? `<small>${formatPrice(p.oldPrice)}</small>` : ''}
-                            ${formatPrice(p.price)}
-                        </div>
-                        <div class="product-list-actions">
-                            <button class="btn btn-primary btn-sm" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${p.id})" aria-label="Sepete Ekle">
-                                <i class="fas fa-shopping-cart" aria-hidden="true"></i> Sepete Ekle
-                            </button>
-                            <a href="urun-detay.html?id=${p.id}" class="btn btn-outline-dark btn-sm" onclick="event.stopPropagation();">
-                                <i class="fas fa-eye" aria-hidden="true"></i> Detay
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </a>
-        `).join('');
+        grid.className = 'pcard-list';
+        grid.innerHTML = items.map(p => productRowHTML(p)).join('');
     } else {
-        grid.innerHTML = pageItems.map(p => productCardHTML(p)).join('');
+        grid.className = 'pcard-grid';
+        grid.innerHTML = items.map(p => productCardHTML(p)).join('');
     }
+    // Save current URL so product detail "Geri Dön" can restore filter state
+    grid.querySelectorAll('.pcard-link').forEach(a => {
+        a.addEventListener('click', () => {
+            sessionStorage.setItem('productListReferrer', window.location.href);
+        }, { once: true });
+    });
+    // Apply dynamic WA links if settings already loaded
+    if (window._siteSettings) applySettingsToDOM(window._siteSettings);
 }
 
 // ===== PAGINATION =====
-function renderPagination(total) {
-    const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+function renderPagination(totalCount, totalPages) {
     const pagination = document.getElementById('pagination');
-
     if (totalPages <= 1) { pagination.innerHTML = ''; return; }
 
     let html = '';
@@ -280,16 +301,22 @@ function updateActiveFilters() {
     let tags = [];
 
     if (currentCategory !== 'all') {
-        const catLabel = products.find(p => p.category === currentCategory)?.categoryLabel || currentCategory;
-        tags.push(`<span class="active-filter-tag">${catLabel} <button onclick="removeFilter('category')"><i class="fas fa-times"></i></button></span>`);
+        const catNames = {
+            '2-tekerlekli': '2 Tekerlekli',
+            '3-tekerlekli': '3 Tekerlekli',
+            '4-tekerlekli': '4 Tekerlekli',
+        };
+        tags.push(`<span class="active-filter-tag">${catNames[currentCategory] || currentCategory} <button onclick="removeFilter('category')"><i class="fas fa-times"></i></button></span>`);
     }
     selectedBrands.forEach(b => {
         tags.push(`<span class="active-filter-tag">${b} <button onclick="removeFilter('brand','${b}')"><i class="fas fa-times"></i></button></span>`);
     });
-    if (priceMin > 0 || priceMax < Infinity) {
-        tags.push(`<span class="active-filter-tag">${formatPrice(priceMin)} - ${priceMax < Infinity ? formatPrice(priceMax) : '...'} <button onclick="removeFilter('price')"><i class="fas fa-times"></i></button></span>`);
+    if (priceMin !== null || priceMax !== null) {
+        const lo = priceMin !== null ? formatPrice(priceMin) : '0 TL';
+        const hi = priceMax !== null ? formatPrice(priceMax) : '...';
+        tags.push(`<span class="active-filter-tag">${lo} - ${hi} <button onclick="removeFilter('price')"><i class="fas fa-times"></i></button></span>`);
     }
-    if (filterNew) tags.push(`<span class="active-filter-tag">Yeni Ürünler <button onclick="removeFilter('new')"><i class="fas fa-times"></i></button></span>`);
+    if (filterNew)      tags.push(`<span class="active-filter-tag">Yeni Ürünler <button onclick="removeFilter('new')"><i class="fas fa-times"></i></button></span>`);
     if (filterDiscount) tags.push(`<span class="active-filter-tag">İndirimli <button onclick="removeFilter('discount')"><i class="fas fa-times"></i></button></span>`);
 
     container.style.display = tags.length > 0 ? 'flex' : 'none';
@@ -308,18 +335,14 @@ function removeFilter(type, value) {
             selectedBrands = selectedBrands.filter(b => b !== value);
             break;
         case 'price':
-            priceMin = 0; priceMax = Infinity;
+            priceMin = null; priceMax = null;
             document.getElementById('priceMin').value = '';
             document.getElementById('priceMax').value = '';
             break;
         case 'new':
-            filterNew = false;
-            document.getElementById('filterNew').checked = false;
-            break;
+            filterNew = false; document.getElementById('filterNew').checked = false; break;
         case 'discount':
-            filterDiscount = false;
-            document.getElementById('filterDiscount').checked = false;
-            break;
+            filterDiscount = false; document.getElementById('filterDiscount').checked = false; break;
     }
     currentPage = 1;
     applyFilters();
@@ -328,37 +351,37 @@ function removeFilter(type, value) {
 
 function clearAllFilters() {
     currentCategory = 'all';
-    selectedBrands = [];
-    priceMin = 0;
-    priceMax = Infinity;
-    filterNew = false;
-    filterDiscount = false;
-    currentPage = 1;
+    selectedBrands  = [];
+    priceMin        = null;
+    priceMax        = null;
+    filterNew       = false;
+    filterDiscount  = false;
+    sortBy          = 'newest';
+    currentPage     = 1;
 
     document.querySelector('input[name="category"][value="all"]').checked = true;
     document.querySelectorAll('.brand-checkbox').forEach(cb => cb.checked = false);
-    document.getElementById('priceMin').value = '';
-    document.getElementById('priceMax').value = '';
-    document.getElementById('filterNew').checked = false;
+    document.getElementById('priceMin').value  = '';
+    document.getElementById('priceMax').value  = '';
+    document.getElementById('filterNew').checked      = false;
     document.getElementById('filterDiscount').checked = false;
-    document.getElementById('searchInput').value = '';
-    document.getElementById('sortSelect').value = 'default';
-    sortBy = 'default';
+    document.getElementById('searchInput').value      = '';
+    document.getElementById('sortSelect').value       = 'newest';
+    const bs = document.getElementById('brandSearch');
+    if (bs) { bs.value = ''; document.querySelectorAll('#brandFilters .sidebar-check').forEach(l => l.style.display = ''); }
 
     applyFilters();
     updateURL();
+    updateFilterBadge();
 }
 
 // ===== PAGE TITLE UPDATE =====
 function updatePageTitle() {
     const categoryNames = {
-        'all': 'Tüm Ürünler',
-        'elektrikli-motor-kabinleri': '2 Tekerlekli — Elektrikli Kabin',
-        'kasal-motor-kabinleri': '2 Tekerlekli — Kasal Kabin',
-        '2-tekerli-motor-tenteleri': '2 Tekerlekli — Tente',
-        '3-tekerli-motor-tenteleri': '3 Tekerlekli — Tente',
-        '4-tekerli-motor-tenteleri': '4 Tekerlekli — Tente',
-        '4-tekerli-motor-kabinleri': '4 Tekerlekli — Kabin',
+        'all':           'Tüm Ürünler',
+        '2-tekerlekli':  '2 Tekerlekli',
+        '3-tekerlekli':  '3 Tekerlekli',
+        '4-tekerlekli':  '4 Tekerlekli',
     };
     const title = categoryNames[currentCategory] || 'Tüm Ürünler';
     document.getElementById('pageTitle').textContent = title;

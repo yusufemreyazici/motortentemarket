@@ -1,157 +1,92 @@
-// ===== SHARED PRODUCT DATA =====
-const products = [
-    // 2 Tekerlekli — Elektrikli Kabin
-    { id: 1, name: "Arora Viento Elektrikli Motor Kabini", brand: "Arora", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 14999, oldPrice: 17499, badge: "Çok Satan", isNew: false, description: "Arora Viento elektrikli motor için özel tasarlanmış, %100 su geçirmez kabin. Dayanıklı kumaş yapısı ile uzun ömürlü kullanım sağlar. Kolay montaj ve söküm özelliği.", features: ["Su Geçirmez", "UV Koruma", "Kolay Montaj", "Fermuarlı Kapı", "Havalandırma Penceresi"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.2 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Arora Viento" } },
-    { id: 2, name: "Motolux Nirvana Elektrikli Motor Kabini", brand: "Motolux", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 15499, oldPrice: 18999, badge: "", isNew: true, description: "Motolux Nirvana modeli için birebir uyumlu elektrikli motor kabini. Premium kumaş ile üretilmiştir. Rüzgar ve yağmura karşı tam koruma.", features: ["Su Geçirmez", "Rüzgar Geçirmez", "Premium Kumaş", "Reflektör", "Kolay Montaj"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.5 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Motolux Nirvana" } },
-    { id: 3, name: "Yuki YK Elektrikli Motor Kabini", brand: "Yuki", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 13750, oldPrice: 15999, badge: "", isNew: false, description: "Yuki YK serisi elektrikli motorlar için özel üretim kabin. Hafif ve dayanıklı yapısıyla günlük kullanıma idealdir.", features: ["Su Geçirmez", "Hafif Yapı", "Dayanıklı", "Kolay Montaj", "Elastik Kenar"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "2.8 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Yuki YK Serisi" } },
-    { id: 4, name: "Kuba Optimus Elektrikli Motor Kabini", brand: "Kuba", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 14250, oldPrice: null, badge: "", isNew: true, description: "Kuba Optimus modeline özel tam uyumlu kabin. Güçlü dikiş yapısı ve premium su geçirmez kumaş.", features: ["Su Geçirmez", "Güçlü Dikiş", "UV Koruma", "Havalandırma", "Reflektör"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.0 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Kuba Optimus" } },
-    { id: 5, name: "Volta VSX Elektrikli Motor Kabini", brand: "Volta", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 16499, oldPrice: 19999, badge: "Yeni Sezon", isNew: true, description: "Volta VSX için premium kabin çözümü. Çift kat su geçirmez kumaş, güçlendirilmiş iskelet yapısı.", features: ["Çift Kat Kumaş", "Su Geçirmez", "Güçlü İskelet", "Kolay Montaj", "Taşıma Çantası"], specs: { "Malzeme": "Çift Kat Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.0 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Volta VSX" } },
-    { id: 6, name: "RKS Lorry Elektrikli Motor Kabini", brand: "RKS", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 13999, oldPrice: 16499, badge: "", isNew: false, description: "RKS Lorry elektrikli motor için tam koruma sağlayan kabin. Geniş iç hacim ve kolay giriş-çıkış.", features: ["Su Geçirmez", "Geniş Hacim", "Fermuarlı", "UV Koruma", "Dayanıklı"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.3 kg", "Garanti": "1 Yıl", "Uyumlu Model": "RKS Lorry" } },
-    { id: 7, name: "Arora Falcon Elektrikli Motor Kabini", brand: "Arora", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 15250, oldPrice: null, badge: "", isNew: false, description: "Arora Falcon modeli için özel tasarım kabin. Aerodinamik yapısı ile rüzgar direncini minimize eder.", features: ["Aerodinamik", "Su Geçirmez", "Kolay Montaj", "Reflektör", "Havalandırma"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.1 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Arora Falcon" } },
-    { id: 8, name: "Motolux Ceo Elektrikli Motor Kabini", brand: "Motolux", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 16999, oldPrice: 19499, badge: "Premium", isNew: true, description: "Motolux Ceo için premium seri kabin. En kaliteli kumaş ve aksesuar seçenekleri ile donatılmıştır.", features: ["Premium Kumaş", "Su Geçirmez", "Isı Yalıtım", "LED Aydınlatma", "Fermuarlı Kapı"], specs: { "Malzeme": "Premium Çift Kat Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.2 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Motolux Ceo" } },
-    { id: 27, name: "Arora Mobilite Elektrikli Motor Kabini", brand: "Arora", category: "elektrikli-motor-kabinleri", categoryLabel: "2 Tekerlekli — Elektrikli Kabin", price: 15999, oldPrice: 18499, badge: "", isNew: false, description: "Arora Mobilite serisi için tam uyumlu kabin. Şehir içi kullanım için ideal tasarım.", features: ["Su Geçirmez", "Şehir İçi", "Kompakt", "Kolay Montaj", "Reflektör"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.4 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Arora Mobilite" } },
-    // 2 Tekerlekli — Kasal Kabin
-    { id: 9, name: "Arora Kargo Kasal Motor Kabini", brand: "Arora", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 12499, oldPrice: 14999, badge: "Çok Satan", isNew: false, description: "Arora kasal motor modelleri için özel üretim kasa kabini. Yük taşımacılığında üstün koruma sağlar.", features: ["Su Geçirmez", "Yük Koruma", "Güçlü Bağlantı", "UV Koruma", "Dayanıklı"], specs: { "Malzeme": "Ağır Hizmet Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.5 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Arora Kargo" } },
-    { id: 10, name: "Motolux Cargo Kasal Motor Kabini", brand: "Motolux", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 11999, oldPrice: null, badge: "", isNew: false, description: "Motolux Cargo serisi için tam uyumlu kasa kabini. Güçlendirilmiş dikiş ve su geçirmez yapı.", features: ["Su Geçirmez", "Güçlü Dikiş", "Kolay Söküm", "Havalandırma", "Reflektör"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.0 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Motolux Cargo" } },
-    { id: 11, name: "Yuki Kargo Kasal Motor Kabini", brand: "Yuki", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 11499, oldPrice: 13999, badge: "", isNew: true, description: "Yuki kargo motorları için özel tasarım kasa kabini. Hafif ama dayanıklı yapısı ile uzun ömürlü.", features: ["Su Geçirmez", "Hafif", "Dayanıklı", "Kolay Montaj", "UV Koruma"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "3.8 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Yuki Kargo" } },
-    { id: 12, name: "Kuba Kargo Kasal Motor Kabini", brand: "Kuba", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 12999, oldPrice: null, badge: "", isNew: false, description: "Kuba kargo motor serisi için profesyonel kabin. Ticari kullanım için idealdir.", features: ["Su Geçirmez", "Ticari Kalite", "Güçlü Bağlantı", "Kolay Erişim", "Reflektör"], specs: { "Malzeme": "Ağır Hizmet Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.3 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Kuba Kargo" } },
-    { id: 13, name: "RKS Kargo Kasal Motor Kabini", brand: "RKS", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 11750, oldPrice: 13499, badge: "", isNew: false, description: "RKS kargo motorları için özel üretim kasa kabini. Geniş hacimli ve su geçirmez.", features: ["Su Geçirmez", "Geniş Hacim", "Dayanıklı", "Kolay Montaj", "UV Koruma"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.1 kg", "Garanti": "1 Yıl", "Uyumlu Model": "RKS Kargo" } },
-    { id: 14, name: "Mondial Kargostar Kasal Motor Kabini", brand: "Mondial", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 12250, oldPrice: null, badge: "Yeni", isNew: true, description: "Mondial Kargostar modeli için tam uyumlu kasa kabini. Profesyonel teslimatçılar için ideal.", features: ["Su Geçirmez", "Profesyonel", "Güçlü Dikiş", "Reflektör", "Havalandırma"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.2 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Mondial Kargostar" } },
-    { id: 28, name: "Motolux Nirvana Plus Kasal Kabini", brand: "Motolux", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 13499, oldPrice: null, badge: "Yeni", isNew: true, description: "Motolux Nirvana Plus kasal motor modeli için özel üretim kasa kabini.", features: ["Su Geçirmez", "Güçlü Yapı", "Premium Kumaş", "Kolay Erişim", "UV Koruma"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.4 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Motolux Nirvana Plus" } },
-    { id: 30, name: "Kuba Süper Kasal Motor Kabini", brand: "Kuba", category: "kasal-motor-kabinleri", categoryLabel: "2 Tekerlekli — Kasal Kabin", price: 13250, oldPrice: 15499, badge: "", isNew: false, description: "Kuba süper kargo modeli için güçlendirilmiş kasa kabini. Ağır yük taşımacılığı için ideal.", features: ["Güçlendirilmiş", "Su Geçirmez", "Ağır Yük", "Dayanıklı", "UV Koruma"], specs: { "Malzeme": "Ağır Hizmet Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "5.0 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Kuba Süper" } },
-    // 2 Tekerlekli — Tente
-    { id: 21, name: "2 Tekerlekli Motosiklet Tentesi - Small", brand: "Universal", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 4750, oldPrice: 5999, badge: "En Uygun", isNew: false, description: "Küçük boy motosikletler için universal tente. Scooter ve küçük motorlar için ideal boyut.", features: ["Universal", "Su Geçirmez", "Hafif", "Kolay Kullanım", "Taşıma Çantası"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "1.2 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Universal - 50-125cc" } },
-    { id: 22, name: "2 Tekerlekli Motosiklet Tentesi - Medium", brand: "Universal", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 5250, oldPrice: null, badge: "", isNew: false, description: "Orta boy motosikletler için universal tente. 125-250cc motorlar için ideal boyut.", features: ["Universal", "Su Geçirmez", "UV Koruma", "Elastik Kenar", "Dayanıklı"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "1.5 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Universal - 125-250cc" } },
-    { id: 23, name: "2 Tekerlekli Motosiklet Tentesi - Large", brand: "Universal", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 5999, oldPrice: 6999, badge: "", isNew: false, description: "Büyük boy motosikletler için geniş tente. Touring ve adventure motorlar için ideal.", features: ["Büyük Boy", "Su Geçirmez", "UV Koruma", "Güçlü Kumaş", "Taşıma Çantası"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "1.8 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Universal - 250cc+" } },
-    { id: 24, name: "Elektrikli Scooter Brandası", brand: "Universal", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 4250, oldPrice: null, badge: "Çok Satan", isNew: false, description: "Elektrikli scooterlar için özel tasarım branda. Hafif ve kompakt yapısı ile her yere taşınabilir.", features: ["Scooter Uyumlu", "Su Geçirmez", "Hafif", "Kompakt", "Kolay Kullanım"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "0.9 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Universal - Elektrikli Scooter" } },
-    { id: 25, name: "Premium Motosiklet Brandası - XL", brand: "Motor Tente Market", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 7499, oldPrice: 8999, badge: "Premium", isNew: true, description: "Premium kalite XL boy motosiklet brandası. Çift kat kumaş, güçlendirilmiş dikişler ve reflektörler.", features: ["Premium Kalite", "Çift Kat", "Su Geçirmez", "Reflektör", "Kilit Deliği"], specs: { "Malzeme": "Premium Çift Kat Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "2.2 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Universal - XL" } },
-    { id: 26, name: "Kışlık Motosiklet Tentesi", brand: "Motor Tente Market", category: "2-tekerli-motor-tenteleri", categoryLabel: "2 Tekerlekli — Tente", price: 6999, oldPrice: null, badge: "Yeni Sezon", isNew: true, description: "Kış ayları için özel üretim kalın motosiklet tentesi. Kar ve buzlanmaya karşı ekstra koruma.", features: ["Kışlık", "Kalın Kumaş", "Su Geçirmez", "Kar Dayanımlı", "UV Koruma"], specs: { "Malzeme": "Kalın Polyester + İç Astar", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "2.5 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Universal" } },
-    // 3 Tekerlekli — Tente
-    { id: 15, name: "Akeso Yagi 3 Tekerlekli Motor Brandası", brand: "Akeso", category: "3-tekerli-motor-tenteleri", categoryLabel: "3 Tekerlekli — Tente", price: 19499, oldPrice: 22999, badge: "En Popüler", isNew: false, description: "Akeso Yagi 3 tekerlekli motor için özel tasarım branda. Tam koruma sağlayan geniş yapısı ile aracınızı her yönden korur.", features: ["Tam Koruma", "Su Geçirmez", "UV Koruma", "Elastik Kenar", "Taşıma Çantası"], specs: { "Malzeme": "Premium Çift Kat Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "5.5 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Akeso Yagi" } },
-    // 4 Tekerlekli — Tente
-    { id: 16, name: "Arora 4 Tekerlekli Motor Tentesi", brand: "Arora", category: "4-tekerli-motor-tenteleri", categoryLabel: "4 Tekerlekli — Tente", price: 18499, oldPrice: null, badge: "", isNew: true, description: "Arora 4 tekerlekli motor modelleri için geniş tente. Premium kumaş ve güçlü dikiş ile uzun ömürlü.", features: ["Geniş Kesim", "Su Geçirmez", "Premium Kumaş", "Kolay Örtme", "UV Koruma"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "5.0 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Arora 4 Tekerlekli" } },
-    { id: 17, name: "Motolux Golfcar Tentesi", brand: "Motolux", category: "4-tekerli-motor-tenteleri", categoryLabel: "4 Tekerlekli — Tente", price: 17999, oldPrice: 20999, badge: "", isNew: false, description: "Motolux Golfcar modeli için birebir uyumlu tente. Kolay açılıp kapanma mekanizması.", features: ["Su Geçirmez", "Kolay Kullanım", "Dayanıklı", "Havalandırma", "Reflektör"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.8 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Motolux Golfcar" } },
-    { id: 18, name: "Yuki 4 Tekerlekli Motor Tentesi", brand: "Yuki", category: "4-tekerli-motor-tenteleri", categoryLabel: "4 Tekerlekli — Tente", price: 16999, oldPrice: null, badge: "", isNew: false, description: "Yuki 4 tekerlekli araçlar için tam koruma tentesi. Tüm modellere uyumlu universal tasarım.", features: ["Universal Tasarım", "Su Geçirmez", "UV Koruma", "Elastik Bant", "Taşıma Çantası"], specs: { "Malzeme": "Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "4.5 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Yuki 4 Tekerlekli" } },
-    { id: 19, name: "Kuba 4 Tekerlekli Elektrikli Araç Brandası", brand: "Kuba", category: "4-tekerli-motor-tenteleri", categoryLabel: "4 Tekerlekli — Tente", price: 17499, oldPrice: 19999, badge: "", isNew: true, description: "Kuba elektrikli 4 tekerlekli araçlar için özel branda. Tam kapama ile üstün koruma.", features: ["Tam Kapama", "Su Geçirmez", "Premium Kumaş", "Kolay Montaj", "UV Koruma"], specs: { "Malzeme": "Premium Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "5.2 kg", "Garanti": "1 Yıl", "Uyumlu Model": "Kuba 4 Tekerlekli" } },
-    { id: 20, name: "Volta 4 Tekerlekli Motor Brandası", brand: "Volta", category: "4-tekerli-motor-tenteleri", categoryLabel: "4 Tekerlekli — Tente", price: 18999, oldPrice: null, badge: "Premium", isNew: true, description: "Volta 4 tekerlekli elektrikli araçlar için premium seri branda. En kaliteli malzeme ve işçilik.", features: ["Premium Seri", "Su Geçirmez", "Çift Kat", "UV Koruma", "LED Reflektör"], specs: { "Malzeme": "Premium Çift Kat Polyester", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "5.8 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Volta 4 Tekerlekli" } },
-    { id: 29, name: "Akeso 4 Tekerlekli Tam Kabin", brand: "Akeso", category: "4-tekerli-motor-kabinleri", categoryLabel: "4 Tekerlekli — Kabin", price: 21999, oldPrice: 24999, badge: "Premium", isNew: true, description: "Akeso 4 tekerlekli araçlar için tam kapalı kabin sistemi. En üst düzey koruma.", features: ["Tam Kabin", "Su Geçirmez", "Isı Yalıtım", "Pencereli", "Premium"], specs: { "Malzeme": "Premium Çift Kat Polyester + PVC", "Su Geçirmezlik": "%100", "UV Koruma": "Var", "Ağırlık": "7.0 kg", "Garanti": "2 Yıl", "Uyumlu Model": "Akeso 4 Tekerlekli" } },
-];
+// ===== API BASE — dev: static server :3000, backend :5275 | prod: same origin =====
+const API_BASE = window.location.port === '3000' ? 'http://localhost:5275' : '';
 
-// ===== SHARED UTILITIES =====
+// ===== PRODUCT CACHE =====
+window._productCache = {};
+
+// ===== UTILITIES =====
 function formatPrice(price) {
     return new Intl.NumberFormat('tr-TR').format(price) + ' TL';
 }
 
-function getProductById(id) {
-    return products.find(p => p.id === parseInt(id));
-}
-
-function generateSlug(name) {
-    return name.toLowerCase()
+function normalizeTR(s) {
+    return (s || '').toLowerCase()
         .replace(/ğ/g, 'g').replace(/ü/g, 'u').replace(/ş/g, 's')
-        .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c')
-        .replace(/[^a-z0-9]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
-}
-
-// ===== SHARED CART =====
-let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-
-function initCart() {
-    document.getElementById('cartBtn')?.addEventListener('click', openCart);
-    document.getElementById('cartClose')?.addEventListener('click', closeCart);
-    document.getElementById('cartOverlay')?.addEventListener('click', (e) => {
-        if (e.target === e.currentTarget) closeCart();
-    });
-    updateCartUI();
-}
-
-function openCart() {
-    document.getElementById('cartOverlay').classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeCart() {
-    document.getElementById('cartOverlay').classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-function addToCart(productId, qty = 1) {
-    const product = getProductById(productId);
-    if (!product) return;
-    const existing = cart.find(item => item.id === productId);
-    if (existing) { existing.qty += qty; } else { cart.push({ id: productId, qty }); }
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartUI();
-    showNotification(`${product.name} sepete eklendi!`);
-}
-
-function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    updateCartUI();
-}
-
-function updateCartUI() {
-    const countEl = document.getElementById('cartCount');
-    const itemsEl = document.getElementById('cartItems');
-    const footerEl = document.getElementById('cartFooter');
-    const totalEl = document.getElementById('cartTotal');
-    if (!countEl) return;
-
-    const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
-    countEl.textContent = totalItems;
-
-    if (cart.length === 0) {
-        itemsEl.innerHTML = `<div class="cart-empty"><i class="fas fa-shopping-basket"></i><p>Sepetiniz boş</p></div>`;
-        footerEl.classList.add('cart-footer--hidden');
-        return;
-    }
-
-    let total = 0;
-    itemsEl.innerHTML = cart.map(item => {
-        const product = getProductById(item.id);
-        if (!product) return '';
-        total += product.price * item.qty;
-        return `<div class="cart-item">
-            <div class="cart-item-img"><i class="fas fa-motorcycle"></i></div>
-            <div class="cart-item-info">
-                <div class="cart-item-name">${product.name}</div>
-                <div class="cart-item-price">${item.qty}x ${formatPrice(product.price)}</div>
-            </div>
-            <button class="cart-item-remove" onclick="removeFromCart(${item.id})"><i class="fas fa-trash-alt"></i></button>
-        </div>`;
-    }).join('');
-
-    totalEl.textContent = formatPrice(total);
-    footerEl.classList.remove('cart-footer--hidden');
-
-    const orderText = cart.map(item => {
-        const p = getProductById(item.id);
-        return p ? `${item.qty}x ${p.name} (${formatPrice(p.price)})` : '';
-    }).filter(Boolean).join('\n');
-    const link = footerEl.querySelector('a');
-    if (link) link.href = `https://wa.me/905327748927?text=${encodeURIComponent(`Merhaba, sipariş vermek istiyorum:\n\n${orderText}\n\nToplam: ${formatPrice(total)}`)}`;
-}
-
-function showNotification(message) {
-    const notif = document.createElement('div');
-    notif.style.cssText = 'position:fixed;top:90px;right:24px;background:#22c55e;color:#fff;padding:14px 24px;border-radius:12px;font-size:14px;font-weight:600;z-index:3000;box-shadow:0 8px 24px rgba(34,197,94,0.3);display:flex;align-items:center;gap:10px;animation:slideInRight .3s ease;';
-    notif.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-    document.body.appendChild(notif);
-    if (!document.getElementById('notifStyle')) {
-        const s = document.createElement('style'); s.id = 'notifStyle';
-        s.textContent = '@keyframes slideInRight{from{transform:translateX(100px);opacity:0}to{transform:translateX(0);opacity:1}}';
-        document.head.appendChild(s);
-    }
-    setTimeout(() => { notif.style.transition = 'opacity .3s,transform .3s'; notif.style.opacity = '0'; notif.style.transform = 'translateX(100px)'; setTimeout(() => notif.remove(), 300); }, 2500);
+        .replace(/ı/g, 'i').replace(/ö/g, 'o').replace(/ç/g, 'c');
 }
 
 // ===== SHARED HEADER & SCROLL =====
 function initHeader() {
     const btn = document.getElementById('mobileMenuBtn');
     const nav = document.getElementById('nav');
-    btn?.addEventListener('click', () => { btn.classList.toggle('active'); nav.classList.toggle('active'); });
-    document.querySelectorAll('.nav-link').forEach(link => link.addEventListener('click', () => { btn?.classList.remove('active'); nav?.classList.remove('active'); }));
+
+    // Drawer içeriğini yalnızca mobilde oluştur
+    if (nav && window.innerWidth <= 768) {
+        nav.innerHTML = `
+        <div class="drawer-head">
+            <div class="drawer-brand">
+                <svg viewBox="0 0 76 76" width="32" height="32" xmlns="http://www.w3.org/2000/svg">
+                    <defs><linearGradient id="dg1" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1e4d8c"/><stop offset="100%" stop-color="#1a56db"/></linearGradient></defs>
+                    <path d="M38 3 L67 12 V36 C67 54 54 67 38 73 C22 67 9 54 9 36 V12 Z" fill="url(#dg1)"/>
+                    <path d="M22 21 H54 L52 25 H24 Z" fill="#fbbf24"/>
+                    <g transform="translate(38,42)" fill="#fff"><path d="M-15 11 V-7 C-15 -10 -13 -12 -10 -12 H-7 L-2 -3 L0 -8 L2 -3 L7 -12 H10 C13 -12 15 -10 15 -7 V11 H10 V-5 L5 4 H-5 L-10 -5 V11 Z"/></g>
+                </svg>
+                <span>Motor Tente Market</span>
+            </div>
+            <button class="drawer-close" id="drawerClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="drawer-body">
+            <div class="drawer-section-label">Kategoriler</div>
+            <a href="urunler.html" class="drawer-link"><i class="fas fa-th-large"></i><span>Tüm Ürünler</span></a>
+            <a href="urunler.html?kategori=2-tekerlekli" class="drawer-link"><i class="fas fa-motorcycle"></i><span>2 Tekerlekli</span></a>
+            <a href="urunler.html?kategori=3-tekerlekli" class="drawer-link"><i class="fas fa-car-side"></i><span>3 Tekerlekli</span></a>
+            <a href="urunler.html?kategori=4-tekerlekli" class="drawer-link"><i class="fas fa-car"></i><span>4 Tekerlekli</span></a>
+
+            <div class="drawer-divider"></div>
+            <div class="drawer-section-label">Hızlı Erişim</div>
+            <a href="siparis-ver.html" class="drawer-link drawer-link--highlight"><i class="fas fa-pen-ruler"></i><span>Özel Sipariş Ver</span></a>
+            <a href="hakkimizda.html" class="drawer-link"><i class="fas fa-store"></i><span>Hakkımızda</span></a>
+            <a href="iletisim.html" class="drawer-link"><i class="fas fa-phone"></i><span>İletişim</span></a>
+
+            <div class="drawer-divider"></div>
+            <div class="drawer-section-label">Yardım</div>
+            <a href="kargo-teslimat.html" class="drawer-link"><i class="fas fa-truck"></i><span>Kargo &amp; Teslimat</span></a>
+            <a href="iade-degisim.html" class="drawer-link"><i class="fas fa-undo"></i><span>İade &amp; Değişim</span></a>
+            <a href="garanti.html" class="drawer-link"><i class="fas fa-shield-halved"></i><span>Garanti</span></a>
+            <a href="sss.html" class="drawer-link"><i class="fas fa-circle-question"></i><span>Sık Sorulan Sorular</span></a>
+            <a href="kurulum-rehberi.html" class="drawer-link"><i class="fas fa-wrench"></i><span>Kurulum Rehberi</span></a>
+        </div>
+        <div class="drawer-foot">
+            <a href="https://wa.me/905327748927?text=Merhaba,%20bilgi%20almak%20istiyorum." target="_blank" rel="noopener" class="drawer-wa"><i class="fab fa-whatsapp"></i> WhatsApp ile Yaz</a>
+            <p class="drawer-copy">© 2026 Motor Tente Market<br>Büyükada, İstanbul · EST. 1974</p>
+        </div>`;
+    }
+
+    // Overlay
+    const overlay = document.createElement('div');
+    overlay.id = 'navOverlay';
+    overlay.style.cssText = 'display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:1000;backdrop-filter:blur(2px);transition:opacity .32s;';
+    document.body.appendChild(overlay);
+
+    function openMenu() {
+        btn?.classList.add('active');
+        nav?.classList.add('active');
+        overlay.style.display = 'block';
+        requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMenu() {
+        btn?.classList.remove('active');
+        nav?.classList.remove('active');
+        overlay.style.opacity = '0';
+        setTimeout(() => { overlay.style.display = 'none'; }, 320);
+        document.body.style.overflow = '';
+    }
+
+    btn?.addEventListener('click', () => nav?.classList.contains('active') ? closeMenu() : openMenu());
+    overlay.addEventListener('click', closeMenu);
+    document.getElementById('drawerClose')?.addEventListener('click', closeMenu);
+    document.querySelectorAll('#nav .drawer-link').forEach(link => link.addEventListener('click', closeMenu));
 
     const header = document.getElementById('header');
     const scrollTopBtn = document.getElementById('scrollTop');
@@ -160,44 +95,336 @@ function initHeader() {
         scrollTopBtn?.classList.toggle('visible', window.scrollY > 400);
     });
     scrollTopBtn?.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    const srch = document.querySelector('.h2-search input');
+    if (srch && srch.id !== 'headerSearch') {
+        srch.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && srch.value.trim())
+                window.location.href = 'urunler.html?ara=' + encodeURIComponent(srch.value.trim());
+        });
+    }
+
+    // Footer accordion (mobil)
+    if (window.innerWidth <= 768) {
+        document.querySelectorAll('.f2-grid > div:not(.f2-about)').forEach(col => {
+            const h4 = col.querySelector('h4');
+            if (!h4) return;
+            const links = col.querySelectorAll('a');
+            if (!links.length) return;
+
+            const wrap = document.createElement('div');
+            wrap.className = 'f2-col-links';
+            links.forEach(a => wrap.appendChild(a));
+
+            h4.classList.add('f2-col-toggle');
+            const chevron = document.createElement('i');
+            chevron.className = 'fas fa-chevron-down f2-chevron';
+            h4.appendChild(chevron);
+
+            col.appendChild(wrap);
+
+            h4.addEventListener('click', () => {
+                const open = wrap.classList.toggle('open');
+                h4.classList.toggle('open', open);
+            });
+        });
+    }
+
+    // Duyuru barı mobil rotasyonu
+    if (window.innerWidth <= 640) {
+        const items = document.querySelectorAll('.announce-item');
+        if (items.length > 1) {
+            let idx = 0;
+            items[0].classList.add('ann-active');
+            setInterval(() => {
+                items[idx].classList.remove('ann-active');
+                idx = (idx + 1) % items.length;
+                items[idx].classList.add('ann-active');
+            }, 3000);
+        }
+    }
+
+    // Favori ikonu header'a inject et
+    const actions = document.querySelector('.h2-actions');
+    // Mobil arama toggle
+    const searchToggleBtn = document.getElementById('searchToggleBtn');
+    const mobileSearchBar = document.getElementById('mobileSearchBar');
+    const mobileSearchInput = document.getElementById('mobileSearchInput');
+    if (searchToggleBtn && mobileSearchBar) {
+        searchToggleBtn.addEventListener('click', () => {
+            const open = mobileSearchBar.style.display === 'block';
+            mobileSearchBar.style.display = open ? 'none' : 'block';
+            if (!open) mobileSearchInput?.focus();
+        });
+        mobileSearchInput?.addEventListener('keydown', e => {
+            if (e.key === 'Enter' && mobileSearchInput.value.trim())
+                window.location.href = 'urunler.html?ara=' + encodeURIComponent(mobileSearchInput.value.trim());
+        });
+    }
+
+    // Site settings — load from API and apply to DOM (fire-and-forget)
+    initSiteSettings();
 }
 
-// Product card HTML generator (v2 design)
-function productCardHTML(p) {
-    const cat = p.category || '';
-    const icon = (['elektrikli-motor-kabinleri','kasal-motor-kabinleri','2-tekerli-motor-tenteleri'].includes(cat))
-        ? 'motorcycle' : cat === '3-tekerli-motor-tenteleri' ? 'car-side' : 'car';
-    const isBest = p.badge === 'Çok Satan' || p.badge === 'En Popüler';
-    const tagClass = isBest ? 'bestseller' : p.isNew ? 'new' : p.oldPrice ? 'sale' : '';
-    const tagLabel = isBest ? 'ÇOK SATAN' : p.isNew ? 'YENİ' : p.oldPrice ? 'İNDİRİM' : '';
-    const reviewCount = 50 + (p.id * 23) % 350;
+// ===== SITE SETTINGS — fetch from API, update DOM elements =====
+async function initSiteSettings() {
+    try {
+        const resp = await fetch(`${API_BASE}/api/settings`);
+        if (!resp.ok) return;
+        const s = await resp.json();
+        window._siteSettings = s;
+        applySettingsToDOM(s);
+    } catch {}
+}
 
-    return `<a class="prod2" href="urun-detay.html?id=${p.id}">
-        <div class="prod2-img">
-            <i class="fas fa-${icon}" aria-hidden="true"></i>
-            <div class="prod2-tags">
-                ${tagClass ? `<span class="prod2-tag ${tagClass}">${tagLabel}</span>` : ''}
-            </div>
-            <button class="prod2-fav" onclick="event.preventDefault(); event.stopPropagation();" aria-label="Favorilere Ekle"><i class="far fa-heart" aria-hidden="true"></i></button>
-            <div class="prod2-quick">
-                <button onclick="event.preventDefault(); event.stopPropagation(); window.location.href='urun-detay.html?id=${p.id}'" aria-label="Ürünü İncele"><i class="fas fa-eye" aria-hidden="true"></i> İncele</button>
-                <button class="cart" onclick="event.preventDefault(); event.stopPropagation(); addToCart(${p.id})" aria-label="Sepete Ekle"><i class="fas fa-shopping-bag" aria-hidden="true"></i> Sepete Ekle</button>
-            </div>
-        </div>
-        <div class="prod2-info">
-            <div class="prod2-cat">${p.categoryLabel}</div>
-            <h3 class="prod2-title">${p.name}</h3>
-            <div class="prod2-rating">
-                <span class="stars" aria-hidden="true">★★★★★</span>
-                <span>4.8 (${reviewCount} yorum)</span>
-            </div>
-            <div class="prod2-foot">
-                <div class="prod2-price">
-                    ${p.oldPrice ? `<small>${formatPrice(p.oldPrice)}</small>` : ''}
-                    <strong>${new Intl.NumberFormat('tr-TR').format(p.price)}<span> TL</span></strong>
-                </div>
-                <span class="prod2-stock"><i class="fas fa-circle" aria-hidden="true"></i> Stokta</span>
-            </div>
-        </div>
-    </a>`;
+function applySettingsToDOM(s) {
+    if (!s) return;
+
+    // Social links in footer (.f2-soc)
+    document.querySelectorAll('.f2-soc a').forEach(a => {
+        const h = a.getAttribute('href') || '';
+        if (s.instagram && h.includes('instagram.com')) a.href = s.instagram;
+        else if (s.facebook && h.includes('facebook.com')) a.href = s.facebook;
+        else if (s.youTube && h.includes('youtube.com')) a.href = s.youTube;
+        else if (s.twitter && (h.includes('twitter.com') || h.includes('x.com'))) a.href = s.twitter;
+    });
+
+    // All WhatsApp links everywhere in the page
+    if (s.whatsApp) {
+        const num = s.whatsApp.replace(/\D/g, '');
+        document.querySelectorAll('a[href*="wa.me"]').forEach(a => {
+            const old = a.getAttribute('href');
+            const qs = old.includes('?') ? '?' + old.split('?').slice(1).join('?') : '';
+            a.href = `https://wa.me/${num}${qs}`;
+        });
+    }
+}
+
+// ===== PRODUCT CARD HTML =====
+function _pcardIcon(p) {
+    const c = p.category || '';
+    if (c === '4-tekerlekli') return 'car';
+    return 'car-side';
+}
+function _pcardBadge(p) {
+    if (p.badge === 'Çok Satan' || p.badge === 'En Popüler') return ['bestseller', 'ÇOK SATAN'];
+    if (p.isNew) return ['new', 'YENİ'];
+    if (p.oldPrice) return ['sale', 'İNDİRİM'];
+    return ['', ''];
+}
+
+/* Grid card — Trendyol/Hepsiburada tarzı */
+function productCardHTML(p) {
+    window._productCache[p.id] = p;
+    const icon = _pcardIcon(p);
+    const [badgeCls, badgeTxt] = _pcardBadge(p);
+    const waNum = window._siteSettings?.whatsApp ? window._siteSettings.whatsApp.replace(/\D/g,'') : '905327748927';
+    const wa = encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.\nÜrün Kodu: MTM-' + String(p.id).padStart(4,'0') + '\nFiyat: ' + formatPrice(p.price));
+    const altText = p.name + ' ' + (p.categoryLabel || '') + ' elektrikli motor kabini';
+    const imgEl = (p.images && p.images.length)
+        ? '<img src="' + p.images[0] + '" alt="' + altText + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">'
+          + '<i class="fas fa-' + icon + '" style="display:none"></i>'
+        : '<i class="fas fa-' + icon + '"></i>';
+    return '<div class="pcard">'
+        + '<a class="pcard-link" href="urun-detay.html?id=' + p.id + '" aria-label="' + p.name + '"></a>'
+        + '<div class="pcard-img">'
+        +   imgEl
+        +   (badgeCls ? '<span class="pcard-badge ' + badgeCls + '">' + badgeTxt + '</span>' : '')
+        + '</div>'
+        + '<div class="pcard-body">'
+        +   '<div class="pcard-brand">' + p.brand + '</div>'
+        +   '<div class="pcard-name">' + p.name + '</div>'
+        +   '<div class="pcard-price">'
+        +     (p.oldPrice ? '<small>' + formatPrice(p.oldPrice) + '</small>' : '')
+        +     formatPrice(p.price)
+        +   '</div>'
+        +   '<a href="https://wa.me/' + waNum + '?text=' + wa + '" class="pcard-wa" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Sipariş Ver</a>'
+        + '</div>'
+        + '</div>';
+}
+
+/* Row card — list view */
+function productRowHTML(p) {
+    window._productCache[p.id] = p;
+    const icon = _pcardIcon(p);
+    const [badgeCls, badgeTxt] = _pcardBadge(p);
+    const waNum = window._siteSettings?.whatsApp ? window._siteSettings.whatsApp.replace(/\D/g,'') : '905327748927';
+    const wa = encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.\nÜrün Kodu: MTM-' + String(p.id).padStart(4,'0') + '\nFiyat: ' + formatPrice(p.price));
+    const altText = p.name + ' ' + (p.categoryLabel || '') + ' elektrikli motor kabini';
+    const imgEl = (p.images && p.images.length)
+        ? '<img src="' + p.images[0] + '" alt="' + altText + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">'
+          + '<i class="fas fa-' + icon + '" style="display:none"></i>'
+        : '<i class="fas fa-' + icon + '"></i>';
+    return '<div class="pcard">'
+        + '<a class="pcard-link" href="urun-detay.html?id=' + p.id + '" aria-label="' + p.name + '"></a>'
+        + '<div class="pcard-img">'
+        +   imgEl
+        +   (badgeCls ? '<span class="pcard-badge ' + badgeCls + '">' + badgeTxt + '</span>' : '')
+        + '</div>'
+        + '<div class="pcard-body">'
+        +   '<div class="pcard-info">'
+        +     '<div class="pcard-brand">' + p.brand + '</div>'
+        +     '<div class="pcard-name">' + p.name + '</div>'
+        +     '<div class="pcard-price">'
+        +       (p.oldPrice ? '<small>' + formatPrice(p.oldPrice) + '</small>' : '')
+        +       formatPrice(p.price)
+        +     '</div>'
+        +   '</div>'
+        +   '<a href="https://wa.me/' + waNum + '?text=' + wa + '" class="pcard-wa" target="_blank" rel="noopener"><i class="fab fa-whatsapp"></i> Sipariş Ver</a>'
+        + '</div>'
+        + '</div>';
+}
+
+// ===== PRODUCTS DATA =====
+function _imgs(slug, count) {
+    return Array.from({length: count}, (_, i) => 'images/products/' + slug + '/' + (i + 1) + '.jpg');
+}
+
+const _elFeatures = ['Su geçirmez kumaş', 'UV koruyucu kaplama', 'Havalandırmalı tasarım', 'Kolay montaj sistemi', 'Yırtılmaz polyester'];
+const _kasFeatures = ['Alüminyum çerçeve', 'Çift kapılı giriş', 'PVC + kumaş kompozit', 'Kış-yaz kullanım', 'Kolay söküp takma'];
+const _elDesc = 'Elektrikli scooter ve motosikletinizi her mevsim koruyan, özel ölçülerine göre üretilmiş kabin sistemi. Güçlü çerçeve yapısı ve su geçirmez kumaşı ile yağmur, toz ve güneşe karşı tam koruma sağlar.';
+const _kasDesc = '3 tekerlekli elektrikli araçlar için özel üretim, kasanıza tam oturan kabin çözümü. Alüminyum profil çerçeve ve yüksek dayanımlı PVC kaplama ile her hava koşuluna uygun, sağlam ve şık bir koruma.';
+const _elSpecs = [{key:'Araç Tipi',value:'2 Tekerlekli Elektrikli'},{key:'Malzeme',value:'Su geçirmez polyester'},{key:'Çerçeve',value:'Galvanizli çelik'},{key:'Garanti',value:'2 Yıl'}];
+const _kasSpecs = [{key:'Araç Tipi',value:'3 Tekerlekli Elektrikli'},{key:'Malzeme',value:'PVC + kumaş kompozit'},{key:'Çerçeve',value:'Alüminyum profil'},{key:'Garanti',value:'2 Yıl'}];
+
+const products = [
+    // 2 Tekerlekli Elektrikli Motor Kabinleri
+    { id:1,  name:'Mondial E-Mon Capry',        brand:'Mondial',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249, badge:'En Popüler', description:_elDesc, features:_elFeatures, specs:_elSpecs, images:_imgs('mondial-e-mon-capry',4) },
+    { id:2,  name:'RKS Xigma',                  brand:'RKS',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249, badge:'Çok Satan', description:_elDesc, features:_elFeatures, specs:_elSpecs, images:_imgs('rks-xigma',1) },
+    { id:3,  name:'SFM Magneta E 1800',         brand:'SFM',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499, isNew:true,       description:_elDesc, features:_elFeatures, specs:_elSpecs, images:_imgs('sfm-magneta-e-1800',6) },
+
+    // 3 Tekerlekli Kasalı Motor Kabinleri
+    { id:4,  name:'Volta VMS Neo',              brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499, badge:'En Popüler', description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('volta-vms-neo',2) },
+    { id:5,  name:'SFM Ihlara SF 400',          brand:'SFM',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:10699,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('sfm-ihlara-sf-400',12) },
+    { id:6,  name:'Arora Rüzgar Pro',           brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:11699, badge:'Çok Satan', description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('ruzgar-pro-catili',31) },
+    { id:7,  name:'Volta Apec APM2',            brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('apec-resim',12),..._imgs('apec-kurulum',66)] },
+    { id:8,  name:'Volta VM4',                  brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:17249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('volta-vm4',1) },
+    { id:9,  name:'Yuki İki Kişilik',           brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:17249, badge:'Çok Satan', description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('ikili-resim',45) },
+    { id:10, name:'Kasalı Ön Kabin',            brand:'Diğer',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('on-kabin-resim',36),..._imgs('on-kabin-kurulum',6)] },
+    { id:11, name:'Kuba Optimus Max',           brand:'Kuba',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kuba-tavanli',24) },
+    { id:12, name:'Yuki Pony X',                brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249, badge:'Çok Satan', description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('pony-x-resim',66),..._imgs('pony-x-kurulum',141)] },
+    { id:13, name:'Yuki Tek Kişilik',           brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('tek-kisilik-resim',27) },
+    { id:14, name:'Volta Apec APM5',            brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('apec-resim',12) },
+    { id:15, name:'Altemur 3000',               brand:'Altemur',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:16, name:'Arora Angel Pro',            brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:10699,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-angel-pro',43) },
+    { id:17, name:'CSN Confident',              brand:'CSN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('csn-resim',27),..._imgs('csn-yk-n32-resim',27),..._imgs('csn-yk-32-kurulum',24)] },
+    { id:18, name:'Arora Plus 220S',            brand:'Arora',    category:'4-tekerlekli', categoryLabel:'4 Tekerlekli Kabin', price:17499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('arora-plus-4-teker-resim',48),..._imgs('arora-plas-4-teker-kurulum',18)] },
+    { id:19, name:'Kral Vesta 5000',            brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:17249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kral-vesta-5000',2) },
+    { id:20, name:'Motolux Fayton 500 X',       brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249, badge:'Çok Satan', description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('motolux-fayton-500x',2) },
+    { id:21, name:'Arora Navara New XLT 48A',   brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499, isNew:true,        description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-navara-resim',11) },
+    { id:22, name:'Stmax Elit 940-960',         brand:'Stmax',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('elit-940-resim',39),..._imgs('elit-940-kurulum',36)] },
+    { id:23, name:'JPN Avatar VIP',             brand:'JPN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:22499, isNew:true,        description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:24, name:'Skyjet Ecocar 15',           brand:'Skyjet',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('skyjet-ecocar-15',2) },
+    { id:25, name:'Volta Apec APT4',            brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249, isNew:true,        description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('apec-resim',12) },
+    { id:26, name:'Arora Pro Plus 2024',        brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:17499, isNew:true,        description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-pro-plus-2024',4) },
+    { id:27, name:'Skyjet Ecocar',              brand:'Skyjet',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('skyjet-ecocar',5) },
+    { id:28, name:'Arora Rüzgar Tri-2',         brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-ruzgar-new',6) },
+    { id:29, name:'Motolux Fayton FX 08',       brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('motolux-fayton-fx08',1) },
+    { id:30, name:'Yuki Greta YK57',            brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('yuki-yk-59-resim',27) },
+    { id:31, name:'Motolux Fayton 8100',        brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('8100-resim',29),..._imgs('8100-kurulum',18)] },
+    { id:32, name:'Meka Bus Pro 2000 W',        brand:'Meka',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('meka-tavanli-resim',27) },
+    { id:33, name:'Falcon Fulya 9000',          brand:'Falcon',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('falcon-fulya-9000',3) },
+    { id:34, name:'RKS Optimus',                brand:'RKS',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('optimus',21) },
+    { id:35, name:'Kral Mira',                  brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('kral-mira-resim',24),..._imgs('kral-mira-kurulum',39)] },
+    { id:36, name:'JPN Anton',                  brand:'JPN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('jpn-anton-tavanli',66) },
+    { id:37, name:'Arora Felix Pro',            brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-felix-pro',2) },
+    { id:38, name:'JPN Anton Maxct',            brand:'JPN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('jpn-anton-tavanli',66) },
+    { id:39, name:'Yuki YK 58',                 brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('yuki-yk-59-resim',27),..._imgs('yuki-tavanli',18)] },
+    { id:40, name:'Zlin Mutluluk',              brand:'Zlin',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('zlin-mutluluk',3) },
+    { id:41, name:'Motolux Fayton 7700',        brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('7700-resim',15) },
+    { id:42, name:'Motolux Fayton FX 44',       brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('motoluks-fx-44-bursa-resim',24) },
+    { id:43, name:'Mona Liyon',                 brand:'Mona',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('mona-kurulum',42) },
+    { id:44, name:'Yuki YK 56 Pony',            brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('pony-tvin-beyaz',9) },
+    { id:45, name:'Kral KR-306 Tren',           brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kral-kr-306-tren',1) },
+    { id:46, name:'Lukdy Leksas',               brand:'Lukdy',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:47, name:'Arora Rüzgar New',           brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-ruzgar-new',6) },
+    { id:48, name:'Musatty Masilya Max 1600',   brand:'Musatty',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('musatti-masilya',1) },
+    { id:49, name:'Limme Triporter',            brand:'Limme',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:11699,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:50, name:'Arora Felix Pro Premium',    brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-felix-pro',2) },
+    { id:51, name:'Kral B05',                   brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:52, name:'Motolux FX 23',              brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:11600,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('motolux-fx23',2) },
+    { id:53, name:'JPN Avatar',                 brand:'JPN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:54, name:'Zlin Truva',                 brand:'Zlin',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('zlin-truva',6) },
+    { id:55, name:'Stmax Smart 3000',           brand:'Stmax',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('stmax-smart-3000',2) },
+    { id:56, name:'Meka Bus 2000 W',            brand:'Meka',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('meka-tavanli-resim',27) },
+    { id:57, name:'Falcon Family 8000',         brand:'Falcon',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('falcon-family-8000',3) },
+    { id:58, name:'Akeso Yağız',                brand:'Akeso',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('akeso-yagiz',1) },
+    { id:59, name:'Arora Navara',               brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-navara-resim',11) },
+    { id:60, name:'Arora Derya',                brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-derya',3) },
+    { id:61, name:'Motolux Fayton FX22',        brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('fx-22-resim',19) },
+    { id:62, name:'Motolux Fayton 7100',        brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:63, name:'Arora Mini Cargo',           brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-mini-cargo',3) },
+    { id:64, name:'Motolux FX 11',              brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('fx-11-resim',37),..._imgs('fx11-kurulum',18)] },
+    { id:65, name:'Kuba Optimus Ultra',         brand:'Kuba',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:13499,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kuba-optimus-nultra',15) },
+    { id:66, name:'Yuki YK-16 Ilgaz-X',        brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:21499, isNew:true,        description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('yuki-yk-16-ilgaz',3) },
+    { id:67, name:'Apachy Doru',                brand:'Apachy',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('apachy-doru',1) },
+    { id:68, name:'Yuki Pony Twin Plus',        brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('pony-tvin-beyaz',9) },
+    { id:69, name:'Arora XLT 48 Derya',        brand:'Arora',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('arora-xlt-48-derya',2) },
+    { id:70, name:'Kuba Eco Pikap',             brand:'Kuba',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kuba-eco-pikap',1) },
+    { id:71, name:'Apachi Q5',                  brand:'Apachi',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('apachi-q5',1) },
+    { id:72, name:'Kral Ankaa',                 brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kral-ankaa',7) },
+    { id:73, name:'Volta VMS',                  brand:'Volta',    category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:16249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('volta-vms',1) },
+    { id:74, name:'Kral Saray',                 brand:'Kral',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:_imgs('kral-saray',3) },
+    { id:75, name:'Yuki Greta Mini YK-32',      brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('greta-mini',21),..._imgs('yk-32-resim',36),..._imgs('yk-32-kurulum',57)] },
+    { id:76, name:'Yuki YK 32 Greta Pro',       brand:'Yuki',     category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('yk-32-resim',36),..._imgs('yk-32-kurulum',57)] },
+    { id:77, name:'Leksas Humay',               brand:'Leksas',   category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:14249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:78, name:'JPN Tiger 3',                brand:'JPN',      category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs },
+    { id:79, name:'Motolux 7700 X',             brand:'Motolux',  category:'3-tekerlekli', categoryLabel:'3 Tekerlekli Kabin', price:18249,                    description:_kasDesc, features:_kasFeatures, specs:_kasSpecs, images:[..._imgs('motolux-7700-x',12),..._imgs('7700-x-kurulum',6)] },
+];
+
+// ===== LOCAL FILTER / BRAND HELPERS (API fallback) =====
+function filterProductsLocally(params) {
+    let filtered = [...products];
+
+    const category = params.get('category');
+    if (category) filtered = filtered.filter(p => p.category === category);
+
+    const brands = params.getAll('brand');
+    if (brands.length) filtered = filtered.filter(p => brands.includes(p.brand));
+
+    const priceMin = params.get('priceMin');
+    if (priceMin) filtered = filtered.filter(p => p.price >= parseInt(priceMin));
+
+    const priceMax = params.get('priceMax');
+    if (priceMax) filtered = filtered.filter(p => p.price <= parseInt(priceMax));
+
+    if (params.get('isNew') === 'true')      filtered = filtered.filter(p => p.isNew);
+    if (params.get('hasDiscount') === 'true') filtered = filtered.filter(p => p.oldPrice);
+
+    const search = params.get('search');
+    if (search) {
+        const qNorm = normalizeTR(search);
+        if (window.Fuse) {
+            const fuseList = filtered.map(p => ({ ...p, _n: normalizeTR(p.name), _b: normalizeTR(p.brand || '') }));
+            const fuse = new window.Fuse(fuseList, {
+                keys: [{ name: '_n', weight: 2 }, { name: '_b', weight: 1.5 }],
+                threshold: 0.38,
+                ignoreLocation: true
+            });
+            const origById = Object.fromEntries(filtered.map(p => [p.id, p]));
+            filtered = fuse.search(qNorm).map(r => origById[r.item.id]);
+        } else {
+            filtered = filtered.filter(p =>
+                normalizeTR(p.name).includes(qNorm) ||
+                normalizeTR(p.brand || '').includes(qNorm)
+            );
+        }
+    }
+
+    const sortBy = params.get('sortBy') || 'newest';
+    if (sortBy === 'price-asc')  filtered.sort((a, b) => a.price - b.price);
+    else if (sortBy === 'price-desc') filtered.sort((a, b) => b.price - a.price);
+    else if (sortBy === 'name-asc')   filtered.sort((a, b) => a.name.localeCompare(b.name, 'tr'));
+
+    const page     = parseInt(params.get('page') || '1');
+    const pageSize = parseInt(params.get('pageSize') || '12');
+    const totalCount = filtered.length;
+    const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
+    const items = filtered.slice((page - 1) * pageSize, page * pageSize);
+
+    return { items, totalCount, totalPages };
+}
+
+function getBrandsLocally() {
+    return [...new Set(products.map(p => p.brand).filter(Boolean))].sort((a, b) => a.localeCompare(b, 'tr'));
 }

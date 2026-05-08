@@ -286,7 +286,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="../js/products-data.js"></script>
+<script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
     requireAuth();
@@ -296,12 +296,20 @@
     const editId = urlParams.get('id');
     let editProduct = null;
 
-    if (editId) {
-        editProduct = products.find(p => p.id === parseInt(editId));
-        if (editProduct) {
+    async function initForm() {
+        if (!editId) {
+            addFeature(); addFeature();
+            return;
+        }
+        try {
+            const p = await apiGet(`/api/products/${editId}`);
+            if (!p) { showToast('Ürün bulunamadı.', 'error'); return; }
+            editProduct = p;
             document.getElementById('pageTitle').textContent = 'Ürün Düzenle';
-            document.title = 'Düzenle: ' + editProduct.name + ' | Motor Tente Admin';
-            fillForm(editProduct);
+            document.title = 'Düzenle: ' + p.name + ' | Motor Tente Admin';
+            fillForm(p);
+        } catch (err) {
+            showToast('Ürün yüklenemedi: ' + err.message, 'error');
         }
     }
 
@@ -321,16 +329,16 @@
 
     document.getElementById('addFeatureBtn').addEventListener('click', () => addFeature());
 
-    // Başlangıçta 2 boş özellik satırı
-    if (!editProduct) {
-        addFeature();
-        addFeature();
-    }
+    // Başlangıçta form init
+    initForm();
 
     // Görsel yükleme
     const uploadArea = document.getElementById('uploadArea');
     const imageInput = document.getElementById('imageInput');
     const imageGrid = document.getElementById('imageGrid');
+    // { src, name, isExisting }
+    // isExisting: true  → name = relative server path (images/products/slug/n.jpg)
+    // isExisting: false → name = file.name, src = base64
     let uploadedImages = [];
 
     uploadArea.addEventListener('click', () => imageInput.click());
@@ -358,8 +366,9 @@
     function renderImageGrid() {
         imageGrid.innerHTML = uploadedImages.map((img, i) => `
             <div class="image-preview-item">
-                <img src="${img.src}" alt="${escHtml(img.name)}">
+                <img src="${img.src}" alt="${escHtml(img.name)}" onerror="this.style.opacity='0.3'">
                 ${i === 0 ? '<div style="position:absolute;bottom:4px;left:4px;background:var(--admin-primary);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;">KAPAK</div>' : ''}
+                ${img.isExisting ? '<div style="position:absolute;top:4px;left:4px;background:rgba(0,0,0,0.5);color:#fff;font-size:9px;padding:2px 6px;border-radius:4px;">MEVCUT</div>' : ''}
                 <div class="remove-img" onclick="removeImage(${i})" title="Kaldır" role="button" tabindex="0" aria-label="Görseli Kaldır">
                     <i class="fas fa-times"></i>
                 </div>
@@ -397,8 +406,10 @@
         document.getElementById('productDesc').value = p.description || '';
         document.getElementById('productPrice').value = p.price || '';
         document.getElementById('productOldPrice').value = p.oldPrice || '';
-        document.getElementById('linkTrendyol').value = p.trendyolLink || '';
-        document.getElementById('linkHepsiburada').value = p.hepsiburadaLink || '';
+        document.getElementById('linkTrendyol').value = p.trendyolUrl || '';
+        document.getElementById('linkHepsiburada').value = p.hepsiburadaUrl || '';
+        document.getElementById('productActive').checked = p.isActive !== false;
+        document.getElementById('productFeatured').checked = p.isNew || false;
 
         if (p.badge) {
             const radio = document.querySelector(`input[name="badge"][value="${p.badge}"]`);
@@ -412,6 +423,16 @@
             addFeature(); addFeature();
         }
 
+        // Load existing images into preview grid
+        if (p.images && p.images.length > 0) {
+            uploadedImages = p.images.map(path => ({
+                src: '../' + path,
+                name: path,
+                isExisting: true
+            }));
+            renderImageGrid();
+        }
+
         updateDiscountPreview();
     }
 
@@ -419,53 +440,64 @@
     document.getElementById('productForm').addEventListener('submit', handleSave);
     document.getElementById('saveBtn').addEventListener('click', () => document.getElementById('productForm').requestSubmit());
 
-    function handleSave(e) {
+    async function handleSave(e) {
         e.preventDefault();
 
-        const name = document.getElementById('productName').value.trim();
-        const brand = document.getElementById('productBrand').value.trim();
+        const name     = document.getElementById('productName').value.trim();
+        const brand    = document.getElementById('productBrand').value.trim();
         const category = document.getElementById('productCategory').value;
-        const price = parseFloat(document.getElementById('productPrice').value);
+        const price    = parseFloat(document.getElementById('productPrice').value);
 
-        if (!name) { showToast('Ürün adı zorunludur.', 'error'); return; }
-        if (!brand) { showToast('Marka zorunludur.', 'error'); return; }
-        if (!category) { showToast('Kategori seçiniz.', 'error'); return; }
+        if (!name)              { showToast('Ürün adı zorunludur.', 'error'); return; }
+        if (!brand)             { showToast('Marka zorunludur.', 'error'); return; }
+        if (!category)          { showToast('Kategori seçiniz.', 'error'); return; }
         if (!price || price <= 0) { showToast('Geçerli bir fiyat giriniz.', 'error'); return; }
 
         const selectedBadge = document.querySelector('input[name="badge"]:checked')?.value || '';
-        const customBadge = document.getElementById('customBadge').value.trim();
-        const features = Array.from(document.querySelectorAll('.feature-item input'))
+        const customBadge   = document.getElementById('customBadge').value.trim();
+        const features      = Array.from(document.querySelectorAll('.feature-item input'))
             .map(i => i.value.trim()).filter(Boolean);
 
+        // Kategori label'ını select'ten al
+        const catSelect = document.getElementById('productCategory');
+        const categoryLabel = catSelect.options[catSelect.selectedIndex]?.text || category;
+
         const payload = {
-            id: editProduct ? editProduct.id : Date.now(),
             name,
             brand,
             category,
+            categoryLabel,
             description: document.getElementById('productDesc').value.trim(),
             price,
             oldPrice: parseFloat(document.getElementById('productOldPrice').value) || null,
-            badge: customBadge || selectedBadge || null,
-            features,
-            trendyolLink: document.getElementById('linkTrendyol').value.trim(),
-            hepsiburadaLink: document.getElementById('linkHepsiburada').value.trim(),
+            badge:    customBadge || selectedBadge || null,
+            isNew:    document.getElementById('productFeatured').checked,
             isActive: document.getElementById('productActive').checked,
+            features,
+            specs: [],
+            trendyolUrl:     document.getElementById('linkTrendyol').value.trim()     || null,
+            hepsiburadaUrl:  document.getElementById('linkHepsiburada').value.trim()  || null,
             images: uploadedImages.map(i => i.name),
         };
 
-        console.log('Kaydedilecek ürün:', payload);
+        const saveBtn = document.getElementById('saveBtn');
+        saveBtn.disabled = true;
+        saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Kaydediliyor...';
 
-        // TODO: Backend hazır olunca aktif et
-        // const method = editProduct ? 'PUT' : 'POST';
-        // const url = editProduct ? `/api/products/${payload.id}` : '/api/products';
-        // const res = await fetch(url, {
-        //     method,
-        //     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') },
-        //     body: JSON.stringify(payload)
-        // });
-
-        showToast(editProduct ? 'Ürün güncellendi! (Demo mod)' : 'Ürün eklendi! (Demo mod)', 'success');
-        setTimeout(() => window.location.href = 'products.html', 1500);
+        try {
+            if (editProduct) {
+                await apiPut(`/api/admin/products/${editProduct.id}`, payload);
+                showToast('Ürün güncellendi!', 'success');
+            } else {
+                await apiPost('/api/admin/products', payload);
+                showToast('Ürün eklendi!', 'success');
+            }
+            setTimeout(() => window.location.href = 'products.html', 1200);
+        } catch (err) {
+            showToast('Kaydedilemedi: ' + err.message, 'error');
+            saveBtn.disabled = false;
+            saveBtn.innerHTML = '<i class="fas fa-save"></i> Kaydet';
+        }
     }
 
     function escHtml(str) {

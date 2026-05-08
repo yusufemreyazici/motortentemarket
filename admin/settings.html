@@ -343,7 +343,7 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="../js/products-data.js"></script>
+<script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
     requireAuth();
@@ -359,27 +359,90 @@
         });
     });
 
-    // URL hash ile direkt panel açma (örn: settings.html#contact)
     if (window.location.hash) {
         const target = window.location.hash.replace('#', '');
         const navItem = document.querySelector(`[data-target="${target}"]`);
         if (navItem) navItem.click();
     }
 
-    function saveSection(section) {
-        // TODO: Backend bağlandığında her section için API çağrısı ekle
-        // Örnek:
-        // await fetch('/api/settings', {
-        //     method: 'PUT',
-        //     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + localStorage.getItem('adminToken') },
-        //     body: JSON.stringify({ section, data: getSectionData(section) })
-        // });
-        showToast('Ayarlar kaydedildi! (Demo mod — backend bağlandığında gerçek kayıt yapılacak)', 'success');
+    // Hesap e-postasını doldur
+    try {
+        const user = JSON.parse(localStorage.getItem('adminUser') || '{}');
+        if (user.email) document.getElementById('accountEmail').value = user.email;
+    } catch {}
+
+    // ── Ayarları yükle ────────────────────────────────────────────────────────
+    async function loadSettings() {
+        try {
+            const s = await apiGet('/api/admin/settings');
+            document.getElementById('phone1').value       = s.phone1        || '';
+            document.getElementById('phone2').value       = s.phone2        || '';
+            document.getElementById('whatsapp').value     = s.whatsApp      || '';
+            document.getElementById('email').value        = s.email         || '';
+            document.getElementById('address').value      = s.address       || '';
+            document.getElementById('workHours').value    = s.workHours     || '';
+            document.getElementById('mapLat').value       = s.mapCoords     || '';
+            document.getElementById('instagram').value    = s.instagram     || '';
+            document.getElementById('facebook').value     = s.facebook      || '';
+            document.getElementById('youtube').value      = s.youTube       || '';
+            document.getElementById('twitter').value      = s.twitter       || '';
+            document.getElementById('trendyolStore').value    = s.trendyolStore    || '';
+            document.getElementById('hepsiburadaStore').value = s.hepsiburadaStore || '';
+            document.getElementById('n11Store').value         = s.n11Store         || '';
+        } catch { showToast('Ayarlar yüklenemedi.', 'error'); }
+    }
+    loadSettings();
+
+    // ── Ayarları kaydet ───────────────────────────────────────────────────────
+    function collectSettings() {
+        return {
+            phone1:           document.getElementById('phone1').value.trim(),
+            phone2:           document.getElementById('phone2').value.trim(),
+            whatsApp:         document.getElementById('whatsapp').value.trim(),
+            email:            document.getElementById('email').value.trim(),
+            address:          document.getElementById('address').value.trim(),
+            workHours:        document.getElementById('workHours').value.trim(),
+            mapCoords:        document.getElementById('mapLat').value.trim(),
+            instagram:        document.getElementById('instagram').value.trim() || null,
+            facebook:         document.getElementById('facebook').value.trim()  || null,
+            youTube:          document.getElementById('youtube').value.trim()   || null,
+            twitter:          document.getElementById('twitter').value.trim()   || null,
+            trendyolStore:    document.getElementById('trendyolStore').value.trim()    || null,
+            hepsiburadaStore: document.getElementById('hepsiburadaStore').value.trim() || null,
+            n11Store:         document.getElementById('n11Store').value.trim()         || null,
+        };
     }
 
-    document.getElementById('saveAllBtn').addEventListener('click', () => {
-        saveSection('all');
-    });
+    async function saveSection(section) {
+        if (section === 'account') return; // şifre ayrı işlenir
+        try {
+            await apiPut('/api/admin/settings', collectSettings());
+            showToast('Ayarlar kaydedildi.', 'success');
+        } catch (err) {
+            showToast(err.message || 'Kayıt başarısız.', 'error');
+        }
+    }
+
+    document.getElementById('saveAllBtn').addEventListener('click', () => saveSection('all'));
+
+    // Şifre değiştirme (Hesap paneli)
+    document.querySelector('[onclick="saveSection(\'account\')"]')
+        .addEventListener('click', async (e) => {
+            e.stopImmediatePropagation();
+
+            const currentPass     = document.getElementById('currentPass').value;
+            const newPass         = document.getElementById('newPass').value;
+            const newPassConfirm  = document.getElementById('newPassConfirm').value;
+
+            if (!currentPass || !newPass) { showToast('Tüm alanları doldurun.', 'error'); return; }
+            if (newPass !== newPassConfirm) { showToast('Yeni şifreler eşleşmiyor.', 'error'); return; }
+            if (newPass.length < 8) { showToast('Şifre en az 8 karakter olmalı.', 'error'); return; }
+
+            showToast(
+                'Şifre değişikliği için appsettings.json → Admin:Password alanını güncelleyin, ardından uygulamayı yeniden başlatın.',
+                'info'
+            );
+        }, { capture: true });
 </script>
 </body>
 </html>

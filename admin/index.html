@@ -189,78 +189,79 @@
 <!-- Toast -->
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="../js/products-data.js"></script>
+<script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
     requireAuth();
     loadUserInfo();
 
-    // Stats
-    const badged = products.filter(p => p.badge).length;
-    const discounted = products.filter(p => p.oldPrice).length;
-    document.getElementById('statProducts').textContent = products.length;
-    document.getElementById('statBadged').textContent = badged;
-    document.getElementById('statDiscounted').textContent = discounted;
-    document.getElementById('productCount').textContent = products.length;
+    async function loadDashboard() {
+        try {
+            const stats = await apiGet('/api/admin/stats');
+            if (!stats) return;
 
-    // Recent products (son 5)
-    const recent = [...products].slice(0, 5);
-    const tbody = document.getElementById('recentProducts');
-    tbody.innerHTML = recent.map(p => `
-        <tr>
-            <td>
-                <div class="product-cell">
-                    <div class="product-thumb"><i class="fas fa-motorcycle"></i></div>
-                    <div>
-                        <div class="product-name">${p.name}</div>
-                        <div class="product-brand">${p.brand}</div>
-                    </div>
-                </div>
-            </td>
-            <td><span class="badge badge-info">${categoryLabel(p.category)}</span></td>
-            <td style="font-weight:600;">${p.price.toLocaleString('tr-TR')} TL</td>
-            <td>${p.badge ? `<span class="badge badge-warning">${p.badge}</span>` : '<span class="badge badge-success">Aktif</span>'}</td>
-            <td>
-                <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle">
-                    <i class="fas fa-edit"></i>
-                </a>
-            </td>
-        </tr>
-    `).join('');
+            document.getElementById('statProducts').textContent = stats.totalProducts;
+            document.getElementById('statBadged').textContent   = stats.badgedCount;
+            document.getElementById('statDiscounted').textContent = stats.discountedCount;
+            document.getElementById('productCount').textContent = stats.totalProducts;
 
-    // Category stats
-    const cats = [
-        { key: 'elektrikli-motor-kabinleri', label: 'Elektrikli Motor Kabinleri', icon: 'fa-bolt', color: 'blue' },
-        { key: 'kasal-motor-kabinleri', label: 'Kasal Motor Kabinleri', icon: 'fa-shield-alt', color: 'green' },
-        { key: '4-tekerli-motor-tenteleri', label: '4 Tekerlekli Tenteler', icon: 'fa-umbrella', color: 'orange' },
-        { key: '2-tekerli-motor-tenteleri', label: '2 Tekerlekli Tenteler', icon: 'fa-motorcycle', color: 'purple' },
-    ];
+            // Top by views as recent table
+            const tbody = document.getElementById('recentProducts');
+            if (stats.topByViews && stats.topByViews.length > 0) {
+                tbody.innerHTML = stats.topByViews.map(p => `
+                    <tr>
+                        <td>
+                            <div class="product-cell">
+                                <div class="product-thumb"><i class="fas fa-motorcycle"></i></div>
+                                <div>
+                                    <div class="product-name">${escHtml(p.name)}</div>
+                                    <div class="product-brand">${escHtml(p.brand)}</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="badge badge-info">—</span></td>
+                        <td style="color:var(--admin-text-muted);">${p.viewCount} görüntülenme</td>
+                        <td><span class="badge badge-success">Aktif</span></td>
+                        <td>
+                            <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                        </td>
+                    </tr>
+                `).join('');
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:var(--admin-text-muted);padding:20px;">Henüz görüntülenme verisi yok.</td></tr>';
+            }
 
-    document.getElementById('categoryStats').innerHTML = cats.map(c => {
-        const count = products.filter(p => p.category === c.key).length;
-        const pct = Math.round(count / products.length * 100);
-        return `
-            <div style="margin-bottom:18px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                    <span style="font-size:13px;font-weight:500;">${c.label}</span>
-                    <span style="font-size:13px;color:var(--admin-text-muted);">${count} ürün</span>
-                </div>
-                <div style="background:var(--admin-bg);border-radius:4px;height:6px;overflow:hidden;">
-                    <div style="height:100%;width:${pct}%;background:var(--admin-primary);border-radius:4px;transition:width 1s;"></div>
-                </div>
-            </div>
-        `;
-    }).join('');
+            // Category stats
+            const catEl = document.getElementById('categoryStats');
+            if (stats.byCategory && stats.byCategory.length > 0) {
+                catEl.innerHTML = stats.byCategory.map(c => {
+                    const pct = stats.totalProducts > 0 ? Math.round(c.count / stats.totalProducts * 100) : 0;
+                    return `
+                        <div style="margin-bottom:18px;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                                <span style="font-size:13px;font-weight:500;">${escHtml(c.categoryLabel)}</span>
+                                <span style="font-size:13px;color:var(--admin-text-muted);">${c.count} ürün</span>
+                            </div>
+                            <div style="background:var(--admin-bg);border-radius:4px;height:6px;overflow:hidden;">
+                                <div style="height:100%;width:${pct}%;background:var(--admin-primary);border-radius:4px;transition:width 1s;"></div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
 
-    function categoryLabel(cat) {
-        const map = {
-            'elektrikli-motor-kabinleri': 'Elektrikli',
-            'kasal-motor-kabinleri': 'Kasal',
-            '4-tekerli-motor-tenteleri': '4 Tekerlekli',
-            '2-tekerli-motor-tenteleri': '2 Tekerlekli',
-        };
-        return map[cat] || cat;
+        } catch (err) {
+            console.error('Dashboard yüklenemedi:', err);
+        }
     }
+
+    function escHtml(str) {
+        return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
+
+    loadDashboard();
 </script>
 </body>
 </html>

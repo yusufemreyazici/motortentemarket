@@ -2,7 +2,12 @@
 
 // ── Auth ──────────────────────────────────────────────
 function requireAuth() {
-    if (!localStorage.getItem('adminToken')) {
+    const token  = localStorage.getItem('adminToken');
+    const expiry = localStorage.getItem('adminTokenExpiry');
+    if (!token || (expiry && new Date(expiry) < new Date())) {
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        localStorage.removeItem('adminTokenExpiry');
         window.location.href = 'login.html';
     }
 }

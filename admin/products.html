@@ -167,34 +167,47 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
-<script src="../js/products-data.js"></script>
+<script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
     requireAuth();
     loadUserInfo();
 
-    const PER_PAGE = 10;
+    const PER_PAGE = 20;
     let currentPage = 1;
-    let filtered = [...products];
+    let totalCount  = 0;
     let deleteTargetId = null;
 
-    document.getElementById('productCount').textContent = products.length;
+    function escHtml(str) {
+        return String(str ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+    }
 
-    const catLabels = {
-        'elektrikli-motor-kabinleri': 'Elektrikli',
-        'kasal-motor-kabinleri': 'Kasal',
-        '4-tekerli-motor-tenteleri': '4 Tekerlekli',
-        '2-tekerli-motor-tenteleri': '2 Tekerlekli',
-    };
+    async function loadProducts() {
+        const search   = document.getElementById('searchInput').value.trim() || null;
+        const category = document.getElementById('catFilter').value || null;
 
-    function renderTable() {
-        const start = (currentPage - 1) * PER_PAGE;
-        const page = filtered.slice(start, start + PER_PAGE);
+        try {
+            const data = await apiGet(
+                `/api/admin/products?page=${currentPage}&pageSize=${PER_PAGE}` +
+                (search   ? `&search=${encodeURIComponent(search)}`   : '') +
+                (category ? `&category=${encodeURIComponent(category)}` : '')
+            );
+            if (!data) return;
+
+            totalCount = data.totalCount;
+            document.getElementById('resultInfo').textContent = `${totalCount} ürün`;
+            document.getElementById('productCount').textContent = totalCount;
+            renderTable(data.items);
+            renderPagination(data.totalPages);
+        } catch (err) {
+            showToast('Ürünler yüklenemedi: ' + err.message, 'error');
+        }
+    }
+
+    function renderTable(items) {
         const tbody = document.getElementById('productTbody');
 
-        document.getElementById('resultInfo').textContent = `${filtered.length} ürün`;
-
-        if (filtered.length === 0) {
+        if (!items || items.length === 0) {
             document.getElementById('emptyState').style.display = 'block';
             document.getElementById('productTable').style.display = 'none';
             document.getElementById('paginationWrap').style.display = 'none';
@@ -205,33 +218,38 @@
         document.getElementById('productTable').style.display = 'table';
         document.getElementById('paginationWrap').style.display = 'flex';
 
-        tbody.innerHTML = page.map(p => `
-            <tr>
-                <td><input type="checkbox" class="row-check" data-id="${p.id}" aria-label="${p.name} seç"></td>
+        tbody.innerHTML = items.map(p => `
+            <tr style="${!p.isActive ? 'opacity:0.5;' : ''}">
+                <td><input type="checkbox" class="row-check" data-id="${p.id}" aria-label="${escHtml(p.name)} seç"></td>
                 <td>
                     <div class="product-cell">
-                        <div class="product-thumb"><i class="fas fa-motorcycle"></i></div>
+                        ${p.mainImage
+                            ? `<img src="../${escHtml(p.mainImage)}" style="width:40px;height:40px;object-fit:cover;border-radius:6px;" alt="">`
+                            : '<div class="product-thumb"><i class="fas fa-motorcycle"></i></div>'}
                         <div>
-                            <div class="product-name">${p.name}</div>
-                            <div class="product-brand">ID: ${p.id}</div>
+                            <div class="product-name">${escHtml(p.name)}</div>
+                            <div class="product-brand">ID: ${p.id} · ${p.viewCount} görüntülenme</div>
                         </div>
                     </div>
                 </td>
-                <td><span class="badge badge-info">${catLabels[p.category] || p.category}</span></td>
-                <td style="color:var(--admin-text-muted);">${p.brand}</td>
+                <td><span class="badge badge-info">${escHtml(p.categoryLabel || p.category)}</span></td>
+                <td style="color:var(--admin-text-muted);">${escHtml(p.brand)}</td>
                 <td style="font-weight:600; color:var(--admin-success);">${p.price.toLocaleString('tr-TR')} TL</td>
                 <td style="color:var(--admin-text-muted); text-decoration:line-through; font-size:12px;">
                     ${p.oldPrice ? p.oldPrice.toLocaleString('tr-TR') + ' TL' : '—'}
                 </td>
                 <td>
-                    ${p.badge ? `<span class="badge badge-warning">${p.badge}</span>` : '<span style="color:var(--admin-text-muted);font-size:12px;">—</span>'}
+                    ${p.isActive
+                        ? (p.badge ? `<span class="badge badge-warning">${escHtml(p.badge)}</span>` : '<span class="badge badge-success">Aktif</span>')
+                        : '<span class="badge badge-danger">Pasif</span>'}
                 </td>
                 <td>
                     <div style="display:flex;gap:6px;justify-content:flex-end;">
-                        <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle" aria-label="Düzenle">
+                        <a href="product-edit.html?id=${p.id}" class="btn btn-ghost btn-sm btn-icon" title="Düzenle">
                             <i class="fas fa-edit"></i>
                         </a>
-                        <button class="btn btn-danger btn-sm btn-icon delete-btn" data-id="${p.id}" data-name="${p.name}" title="Sil" aria-label="Sil">
+                        <button class="btn btn-danger btn-sm btn-icon delete-btn"
+                                data-id="${p.id}" data-name="${escHtml(p.name)}" title="Sil">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -239,22 +257,6 @@
             </tr>
         `).join('');
 
-        // Pagination
-        const totalPages = Math.ceil(filtered.length / PER_PAGE);
-        document.getElementById('paginationInfo').textContent =
-            `${start + 1}–${Math.min(start + PER_PAGE, filtered.length)} / ${filtered.length} ürün`;
-
-        const btns = document.getElementById('paginationBtns');
-        btns.innerHTML = '';
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement('button');
-            btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
-            btn.textContent = i;
-            btn.addEventListener('click', () => { currentPage = i; renderTable(); });
-            btns.appendChild(btn);
-        }
-
-        // Delete buttons
         document.querySelectorAll('.delete-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 deleteTargetId = parseInt(btn.dataset.id);
@@ -264,46 +266,49 @@
         });
     }
 
-    function applyFilters() {
-        const q = document.getElementById('searchInput').value.toLowerCase();
-        const cat = document.getElementById('catFilter').value;
-        const badge = document.getElementById('badgeFilter').value;
+    function renderPagination(totalPages) {
+        const start = (currentPage - 1) * PER_PAGE + 1;
+        const end   = Math.min(currentPage * PER_PAGE, totalCount);
+        document.getElementById('paginationInfo').textContent = `${start}–${end} / ${totalCount} ürün`;
 
-        filtered = products.filter(p => {
-            const matchQ = !q || p.name.toLowerCase().includes(q) || p.brand.toLowerCase().includes(q);
-            const matchCat = !cat || p.category === cat;
-            const matchBadge = !badge ||
-                (badge === 'badge' && p.badge) ||
-                (badge === 'discount' && p.oldPrice);
-            return matchQ && matchCat && matchBadge;
-        });
-        currentPage = 1;
-        renderTable();
+        const btns = document.getElementById('paginationBtns');
+        btns.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.className = 'page-btn' + (i === currentPage ? ' active' : '');
+            btn.textContent = i;
+            btn.addEventListener('click', () => { currentPage = i; loadProducts(); });
+            btns.appendChild(btn);
+        }
     }
 
-    document.getElementById('searchInput').addEventListener('input', applyFilters);
-    document.getElementById('catFilter').addEventListener('change', applyFilters);
-    document.getElementById('badgeFilter').addEventListener('change', applyFilters);
+    let searchTimeout;
+    document.getElementById('searchInput').addEventListener('input', () => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => { currentPage = 1; loadProducts(); }, 350);
+    });
+    document.getElementById('catFilter').addEventListener('change',   () => { currentPage = 1; loadProducts(); });
+    document.getElementById('badgeFilter').addEventListener('change', () => { currentPage = 1; loadProducts(); });
 
-    // Select all
     document.getElementById('selectAll').addEventListener('change', (e) => {
         document.querySelectorAll('.row-check').forEach(c => c.checked = e.target.checked);
     });
 
-    // Delete modal
-    document.getElementById('modalClose').addEventListener('click', () => {
+    document.getElementById('modalClose').addEventListener('click',   () => document.getElementById('deleteModal').classList.remove('active'));
+    document.getElementById('cancelDelete').addEventListener('click', () => document.getElementById('deleteModal').classList.remove('active'));
+
+    document.getElementById('confirmDelete').addEventListener('click', async () => {
         document.getElementById('deleteModal').classList.remove('active');
-    });
-    document.getElementById('cancelDelete').addEventListener('click', () => {
-        document.getElementById('deleteModal').classList.remove('active');
-    });
-    document.getElementById('confirmDelete').addEventListener('click', () => {
-        document.getElementById('deleteModal').classList.remove('active');
-        // TODO: API çağrısı — DELETE /api/products/{deleteTargetId}
-        showToast('Ürün silindi. (Demo mod — backend bağlandığında gerçek silme yapılacak)', 'info');
+        try {
+            await apiDelete(`/api/admin/products/${deleteTargetId}`);
+            showToast('Ürün silindi.', 'success');
+            loadProducts();
+        } catch (err) {
+            showToast('Silinemedi: ' + err.message, 'error');
+        }
     });
 
-    renderTable();
+    loadProducts();
 </script>
 </body>
 </html>
