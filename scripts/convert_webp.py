@@ -24,7 +24,7 @@ for src in sorted(IMAGES_DIR.rglob("*")):
     if src.suffix.lower() not in EXTENSIONS:
         continue
     dst = src.with_suffix(".webp")
-    if dst.exists():
+    if dst.exists() and dst.stat().st_mtime >= src.stat().st_mtime:
         skipped += 1
         continue
     try:

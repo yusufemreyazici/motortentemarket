@@ -1,5 +1,6 @@
 // ===== API BASE — dev: static server :3000, backend :5275 | prod: same origin =====
-const API_BASE = window.location.port === '3000' ? 'http://localhost:5275' : '';
+// Backend yokken boş string bırak → fetch atlanır, direkt local data kullanılır
+const API_BASE = '';
 
 // ===== PRODUCT CACHE =====
 window._productCache = {};
