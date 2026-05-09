@@ -7,10 +7,10 @@ Statik HTML/CSS/JS sitesi. Sunucu: `npx serve` (proje kökünden).
 ## Teknik Stack
 
 - Saf HTML + CSS + Vanilla JS (framework yok)
-- Font Awesome ikonlar (CDN)
-- Google Fonts: Inter
+- Font Awesome ikonlar — **self-hosted subset** (`css/fa-subset/fa-subset.css`)
+- Google Fonts: Inter + Plus Jakarta Sans (optimize edilmiş weight'ler)
 - `js/products-data.js` — tüm ürün verisi + shared header/footer JS
-- `js/urunler.js` — ürünler sayfası filtre/render
+- `js/urunler.js` — ürünler sayfası filtre/render + Fuse.js fuzzy search
 - `js/urun-detay.js` — ürün detay sayfası
 
 ---
@@ -31,13 +31,45 @@ Statik HTML/CSS/JS sitesi. Sunucu: `npx serve` (proje kökünden).
 - [x] Model `isnet-general-use` → `birefnet-general` yükseltildi (daha keskin kesim)
 - [x] **57 klasör / 1215+ resim işlendi**, `images/products/{slug}/{n}.jpg` olarak kaydedildi
 
-### Ürün Verisi & Fotoğraflar (Son Oturum)
+### Ürün Verisi & Fotoğraflar
 - [x] Excel'den 79 ürün + gerçek fiyatlar `products-data.js`'e işlendi
 - [x] `ürünler_web` klasöründeki yeni fotoğraflar mevcut slug'lara eklendi (sıralı numaralandırma)
 - [x] İnternetten (Trendyol CDN, arora.com.tr, motolux.com.tr vb.) 26 yeni slug klasörü oluşturuldu
 - [x] **70/79 ürüne fotoğraf bağlandı** — kalan 9'un internette görseli yok
 - [x] `_imgs(slug, count)` helper ile tüm ürün kartları ve detay sayfası gerçek görsel gösteriyor
 - [x] Ürün detay sayfası: tıklanabilir thumbnail şeridi + büyük ana görsel
+
+### SEO Paketi
+- [x] Tüm sayfalara `<title>` + `<meta description>` eklendi
+- [x] `sitemap.xml` — 79 ürün + tüm statik sayfalar (Google Search Console'a submit edilmeli)
+- [x] `robots.txt` eklendi
+- [x] Open Graph + Twitter Card tag'leri tüm sayfalara eklendi
+- [x] `<link rel="canonical">` tüm sayfalara eklendi (duplicate content koruması)
+- [x] JSON-LD şemaları: `LocalBusiness`, `Product` (dinamik), `AggregateRating`, `BreadcrumbList`, `Review`
+- [x] Image `alt` text'leri açıklayıcı hale getirildi
+
+### Performans Optimizasyonları
+- [x] **WebP dönüşümü** — 1937 JPG → WebP, 186 MB → 82 MB (**-%56**), `scripts/convert_webp.py`
+- [x] `<picture>` + `<source type="image/webp">` — tüm ürün kartları ve detay sayfası
+- [x] İlk 4 ürün kartı `loading="eager"` (LCP optimizasyonu), geri kalanlar `lazy`
+- [x] Ana ürün görseli `fetchpriority="high"` (detay sayfası LCP)
+- [x] Google Fonts weight optimizasyonu — Inter:300 ve Jakarta italic kaldırıldı (13 → 9 istek)
+- [x] **Font Awesome self-hosted subset** — CDN 175 KB → lokal 12.8 KB (**-%93**)
+  - `scripts/fa_subset.py` ile üretildi (fonttools + brotli)
+  - `css/fa-subset/fa-subset.css` + iki woff2 dosyası
+  - Solid: 78 ikon / 7.7 KB | Brands: 3 ikon / 1.0 KB
+
+### Kullanıcı Deneyimi
+- [x] Lightbox — tam ekran galeri, klavye navigasyonu (← →), swipe (mobil)
+- [x] Fuzzy search — Fuse.js ile yazım hatası toleranslı arama (`arorra` → Arora)
+- [x] Benzer ürünler bölümü — ürün detay altında aynı kategoriden 4 ürün
+- [x] Ürün paylaş butonu — `navigator.share` API + clipboard fallback
+- [x] Breadcrumb navigasyon — ürün detayda + schema.org `BreadcrumbList`
+- [x] "Geri dön" butonu — `sessionStorage` ile filtre state'i korunuyor
+- [x] Müşteri yorumları — index.html'de 6 yorum + `AggregateRating` schema
+- [x] Google Maps iframe — `iletisim.html`'de embed harita
+- [x] Print CSS — `@media print` ile ürün sayfası yazdırma görünümü optimize edildi
+- [x] Favoriler sistemi **İPTAL EDİLDİ** — asla yapılmayacak
 
 ---
 
@@ -63,111 +95,35 @@ Bunların fotoğrafı internette bulunamadı (410 silindi / marka bilinmiyor):
 
 ## Yapılacaklar — Öncelik Sırasıyla
 
-### 🔴 YÜKSEK ÖNCELİK — SEO (Site şu an Google'da neredeyse görünmez)
+### 🔴 YÜKSEK ÖNCELİK
 
-Müşteriler "elektrikli motor kabini" veya "arora rüzgar kabin" diye aradığında bu site çıkmıyor.
-Rakip az, niche pazar — doğru SEO ile ilk sayfaya girmek mümkün.
+- [ ] **Google Analytics GA4** — Measurement ID al (`G-XXXXXXXX`), `gtag.js` ekle
+  - Hangi ürünler bakılıyor, hangi şehir, mobil/masaüstü oranı
+  - Ücretsiz, küçük esnaf için kritik veri — 30 dakika iş
 
-- [ ] **Her sayfaya `<title>` ve `<meta description>` ekle**
-  - Örnek: `<title>Arora Rüzgar Pro Kasalı Motor Kabini | Motor Tente Market</title>`
-  - Ürün detay sayfasında JS ile dinamik olarak set edilmeli (ürün adıyla)
-  - Kategori sayfası: "79 Model Elektrikli Motor Kabini — Motor Tente Market"
+- [ ] **Google Search Console** — `sitemap.xml`'i submit et, indexleme başlasın
 
-- [ ] **JSON-LD Product schema (ürün detay sayfası)**
-  - Google'da fiyat + görsel doğrudan arama sonucunda çıkabilir (rich snippet)
-  - `urun-detay.js` içinde `<script type="application/ld+json">` inject et
-  - Alanlar: `name`, `image`, `description`, `brand`, `offers.price`, `offers.priceCurrency`
+- [ ] **Canlıya al (Vercel)** → gerçek Lighthouse testi çalıştır
 
-- [ ] **`sitemap.xml` oluştur**
-  - Tüm 79 ürün için: `urun-detay.html?id=X`
-  - Kategori sayfaları, statik sayfalar
-  - Google Search Console'a submit et
-
-- [ ] **`robots.txt` ekle** (şu an yok)
-
-- [ ] **Open Graph + Twitter Card tag'leri**
-  - Facebook/Instagram'da paylaşınca ürün görseli + adı çıksın
-  - `og:title`, `og:description`, `og:image` (ilk ürün görseli), `og:url`
-
-- [ ] **Image `alt` text'leri düzelt**
-  - Şu an `alt="Arora Rüzgar Pro"` var ama daha açıklayıcı olmalı
-  - "Arora Rüzgar Pro 3 tekerlekli elektrikli motor kasalı kabin"
-
----
-
-### 🟡 ORTA ÖNCELİK — Kullanıcı Deneyimi
-
-- [ ] **Lightbox / Tam ekran galeri (ürün detay)**
-  - Şu an büyük resme tıklayınca hiçbir şey olmuyor
-  - Basit: CSS `position:fixed` overlay + klavye navigasyonu (← →)
-  - Ya da [GLightbox](https://biati-digital.github.io/glightbox/) CDN (4KB, bağımlılıksız)
-
-- [ ] **Favoriler (localStorage)**
-  - Ürün kartlarına kalp ikonu ekle — tıklayınca localStorage'a kaydet
-  - `favoriler.html` zaten var ama muhtemelen boş — localStorage'dan çekerek ürünleri listele
-  - Badge: header'da favori sayısı (sepet ikonu gibi)
-
-- [ ] **Benzer Ürünler bölümü (ürün detay altı)**
-  - Aynı kategoriden rastgele 4 ürün — "Bunları da inceleyebilirsiniz"
-  - `urun-detay.js` içinde tek fonksiyon, mevcut ürün hariç aynı `category` filtrele
-
-- [ ] **Ürün paylaş butonu**
-  - "Linki kopyala" + "WhatsApp'ta paylaş" — `navigator.share` API veya fallback
-  - Müşteri beğendiği ürünü ailesine/arkadaşına gönderiyor
-
-- [ ] **Breadcrumb navigasyon**
-  - Ürün detayda: Ana Sayfa > Kasalı Kabinler > Arora Rüzgar Pro
-  - Hem kullanıcı deneyimi hem SEO (schema.org BreadcrumbList)
-
-- [ ] **Ürün detayda "Geri dön" butonu**
-  - Şu an tarayıcı geri tuşu çalışıyor ama filtre state'i kaybolabiliyor
-  - Referrer URL'yi sakla, "← Ürünlere Dön" diye geri link ver
-
----
-
-### 🟢 UZUN VADELİ — Büyüme & İçerik
-
-- [ ] **Google Analytics GA4**
-  - Hangi ürünler bakılıyor? Hangi şehirden geliyorlar? Mobil mi masaüstü mü?
-  - Kurulum: `gtag.js` CDN + tek satır ID — 30 dakika iş
-  - Ücretsiz, küçük esnaf için kritik veri
+### 🟡 ORTA ÖNCELİK
 
 - [ ] **Ürün bazında gerçek açıklamalar**
   - Şu an tüm ürünler aynı `_kasDesc` / `_elDesc` kullanıyor
-  - En azından top 10 ürün için özgün açıklama yaz
-  - Bu hem SEO'ya hem güvene katkı sağlar
-
-- [ ] **Müşteri yorumları (statik)**
-  - 5-6 gerçek müşteri yorumu — hakkimizda.html veya ana sayfa
-  - Fotoğraflı olursa daha inandırıcı
-  - Schema.org `Review` markup ile Google'da yıldız gösterir
+  - Top 10 ürün için özgün açıklama — hem SEO hem güven
 
 - [ ] **Kurulum videosu embed (ürün detay)**
-  - YouTube'da kurulum videosu varsa ürün sayfasına göm
-  - `products-data.js`'e `videoId` alanı eklenebilir
-  - Müşteri kurulumu görmeden almaya çekiniyor — video bu engeli kaldırır
+  - `products-data.js`'e `videoId` alanı ekle, YouTube embed
+  - Müşteri kurulumu görmeden almaya çekiniyor
 
-- [ ] **Fuzzy arama (Fuse.js)**
-  - Şu an "arora" yazarsan bulur ama "arorra" yazarsan bulamaz
-  - [Fuse.js](https://fusejs.io/) CDN ile ekle — 5KB, sıfır bağımlılık
-  - Türkçe karakter normalize edilmeli (ü→u, ş→s vb.)
+- [ ] **Sipariş formu (`siparis-ver.html`)**
+  - Formspree/Netlify Forms ile e-posta al
+  - Ya da ürün seçimli WhatsApp mesajı oluştur
 
-- [ ] **Google My Business harita embed**
-  - `iletisim.html`'ye Google Maps iframe
-  - İşletme adı + adres + çalışma saatleri belirgin olmalı
+### 🟢 UZUN VADELİ
 
-- [ ] **WebP dönüşümü + srcset**
-  - Mevcut JPG'leri WebP'ye çeviren script (`scripts/convert_webp.py`)
-  - `<img srcset="foto.webp, foto.jpg">` ile tarayıcı WebP desteklemeyenlere JPG verir
-  - Sayfa yüklenme hızı %30-50 iyileşir → Google sıralama etkisi
-
-- [ ] **Print CSS (ürün sayfası)**
-  - Müşteri ürün sayfasını yazdırıp aile üyelerine gösteriyor
-  - `@media print` ile header/footer gizle, fiyat ve WA numarası belirgin kalsın
-
-- [ ] **Sipariş formu iyileştirme (`siparis-ver.html`)**
-  - Mevcut form nereye gidiyor? Formspree/Netlify Forms ile e-posta al
-  - Veya doğrudan ürün seçimli WhatsApp mesajı oluştur
+- [ ] **Backend (.NET)** — AuthController, ProductsController, AdminProductsController
+  - Admin paneli şu an localStorage auth + static data kullanıyor
+  - API hazır olduğunda `products-data.js` fallback otomatik devre dışı kalır
 
 ---
 
@@ -189,6 +145,12 @@ images:[..._imgs('resim-slug', N),..._imgs('kurulum-slug', M)]
 1. `images/products/{slug}/` klasörü oluştur
 2. Fotoğrafları `1.jpg`, `2.jpg`, ... olarak kaydet
 3. `products-data.js`'de ilgili ürüne `images:_imgs('slug', adet)` ekle
+
+### Font Awesome Subset Yenileme
+Siteye yeni ikon eklenirse:
+1. `scripts/fa_subset.py` içindeki `USED_SOLID` listesine ikon adını ekle
+2. `python scripts/fa_subset.py` çalıştır — CSS + woff2 otomatik yenilenir
+3. Script kendi temp dosyalarını temizler; `css/fa-subset/` içinde sadece 3 dosya kalmalı
 
 ### Trendyol CDN URL Formatı
 `https://cdn.dsmcdn.com/ty{XXXX}/prod/.../{n}_org_zoom.jpg`

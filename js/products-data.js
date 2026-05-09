@@ -214,15 +214,20 @@ function _pcardBadge(p) {
 }
 
 /* Grid card — Trendyol/Hepsiburada tarzı */
-function productCardHTML(p) {
+function productCardHTML(p, eager) {
     window._productCache[p.id] = p;
     const icon = _pcardIcon(p);
     const [badgeCls, badgeTxt] = _pcardBadge(p);
     const waNum = window._siteSettings?.whatsApp ? window._siteSettings.whatsApp.replace(/\D/g,'') : '905327748927';
     const wa = encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.\nÜrün Kodu: MTM-' + String(p.id).padStart(4,'0') + '\nFiyat: ' + formatPrice(p.price));
     const altText = p.name + ' ' + (p.categoryLabel || '') + ' elektrikli motor kabini';
+    const webp   = p.images?.[0]?.replace(/\.(jpg|jpeg|png)$/i, '.webp') || '';
+    const loadAttr = eager ? 'eager' : 'lazy';
     const imgEl = (p.images && p.images.length)
-        ? '<img src="' + p.images[0] + '" alt="' + altText + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">'
+        ? '<picture>'
+          +   '<source srcset="' + webp + '" type="image/webp">'
+          +   '<img src="' + p.images[0] + '" alt="' + altText + '" loading="' + loadAttr + '" width="800" height="800" onerror="this.closest(\'picture\').style.display=\'none\';this.closest(\'picture\').nextElementSibling.style.display=\'\'">'
+          + '</picture>'
           + '<i class="fas fa-' + icon + '" style="display:none"></i>'
         : '<i class="fas fa-' + icon + '"></i>';
     return '<div class="pcard">'
@@ -251,8 +256,12 @@ function productRowHTML(p) {
     const waNum = window._siteSettings?.whatsApp ? window._siteSettings.whatsApp.replace(/\D/g,'') : '905327748927';
     const wa = encodeURIComponent('Merhaba, "' + p.name + '" ürünü hakkında bilgi almak istiyorum.\nÜrün Kodu: MTM-' + String(p.id).padStart(4,'0') + '\nFiyat: ' + formatPrice(p.price));
     const altText = p.name + ' ' + (p.categoryLabel || '') + ' elektrikli motor kabini';
+    const webpR  = p.images?.[0]?.replace(/\.(jpg|jpeg|png)$/i, '.webp') || '';
     const imgEl = (p.images && p.images.length)
-        ? '<img src="' + p.images[0] + '" alt="' + altText + '" loading="lazy" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'\'">'
+        ? '<picture>'
+          +   '<source srcset="' + webpR + '" type="image/webp">'
+          +   '<img src="' + p.images[0] + '" alt="' + altText + '" loading="lazy" width="800" height="800" onerror="this.closest(\'picture\').style.display=\'none\';this.closest(\'picture\').nextElementSibling.style.display=\'\'">'
+          + '</picture>'
           + '<i class="fas fa-' + icon + '" style="display:none"></i>'
         : '<i class="fas fa-' + icon + '"></i>';
     return '<div class="pcard">'

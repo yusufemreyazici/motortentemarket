@@ -2,8 +2,23 @@
 document.addEventListener('DOMContentLoaded', async () => {
     initHeader();
     initTabs();
+    initSearch();
     await loadProduct();
 });
+
+function initSearch() {
+    const doSearch = el => {
+        const q = el?.value?.trim();
+        if (q) window.location.href = `urunler.html?ara=${encodeURIComponent(q)}`;
+    };
+    ['headerSearch', 'mobileSearchInput'].forEach(id => {
+        const el = document.getElementById(id);
+        el?.addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(el); });
+    });
+    document.getElementById('searchToggleBtn')?.addEventListener('click', () => {
+        doSearch(document.getElementById('headerSearch'));
+    });
+}
 
 async function loadProduct() {
     const params  = new URLSearchParams(window.location.search);
@@ -54,6 +69,10 @@ function renderProduct(product) {
     const pageUrl   = `https://motortentemarket.com/urun-detay.html?id=${product.id}`;
 
     document.title = pageTitle;
+
+    // Canonical URL
+    const canonical = document.getElementById('canonicalTag');
+    if (canonical) canonical.href = pageUrl;
 
     // Dynamic meta tags
     _setMeta('description', pageDesc);
@@ -169,14 +188,25 @@ function renderProduct(product) {
         const galleryMain = document.getElementById('galleryMain');
         const placeholder = galleryMain.querySelector('.gallery-placeholder');
 
+        const _webp = src => src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+
+        const mainPicture = document.createElement('picture');
+        const mainSource  = document.createElement('source');
+        mainSource.type   = 'image/webp';
+        mainSource.srcset = _webp(imgs[0]);
         const mainImg = document.createElement('img');
         mainImg.src = imgs[0];
         mainImg.alt = product.name;
         mainImg.className = 'gallery-main-img';
-        mainImg.loading = 'eager';
+        mainImg.loading         = 'eager';
+        mainImg.fetchPriority   = 'high';
+        mainImg.width   = 800;
+        mainImg.height  = 800;
         mainImg.title = 'Büyütmek için tıklayın';
         mainImg.style.cursor = 'zoom-in';
-        if (placeholder) placeholder.replaceWith(mainImg);
+        mainPicture.appendChild(mainSource);
+        mainPicture.appendChild(mainImg);
+        if (placeholder) placeholder.replaceWith(mainPicture);
 
         // Thumbnails strip
         let thumbsEl = null;
@@ -184,7 +214,7 @@ function renderProduct(product) {
             thumbsEl = document.createElement('div');
             thumbsEl.className = 'gallery-thumbs';
             thumbsEl.innerHTML = imgs.slice(0, Math.min(imgs.length, 20)).map((src, i) =>
-                `<img src="${src}" alt="${product.name}" loading="lazy" class="gallery-thumb${i === 0 ? ' active' : ''}">`
+                `<picture><source srcset="${_webp(src)}" type="image/webp"><img src="${src}" alt="${product.name}" loading="lazy" width="120" height="120" class="gallery-thumb${i === 0 ? ' active' : ''}"></picture>`
             ).join('');
             galleryMain.after(thumbsEl);
 
@@ -215,6 +245,7 @@ function renderProduct(product) {
         function navigate(idx) {
             currentIdx = (idx + imgs.length) % imgs.length;
             mainImg.src = imgs[currentIdx];
+            mainSource.srcset = _webp(imgs[currentIdx]);
 
             const counter = galleryMain.querySelector('.gallery-counter');
             if (counter) counter.textContent = `${currentIdx + 1} / ${imgs.length}`;

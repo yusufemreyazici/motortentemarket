@@ -249,7 +249,7 @@ function renderProducts(items) {
         grid.innerHTML = items.map(p => productRowHTML(p)).join('');
     } else {
         grid.className = 'pcard-grid';
-        grid.innerHTML = items.map(p => productCardHTML(p)).join('');
+        grid.innerHTML = items.map((p, i) => productCardHTML(p, i < 4)).join('');
     }
     // Save current URL so product detail "Geri Dön" can restore filter state
     grid.querySelectorAll('.pcard-link').forEach(a => {
