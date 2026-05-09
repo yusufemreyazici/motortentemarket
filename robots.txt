@@ -1,4 +1,5 @@
-User-agent: *
+﻿User-agent: *
 Allow: /
 
-Sitemap: https://motortentemarket.com/sitemap.xml
+Sitemap: https://motor-tente-market.vercel.app/sitemap.xml
+
