@@ -1,8 +1,6 @@
 /* ===== ADMIN API HELPER ===== */
 
-// Dev: npx serve runs on :3000, backend on :5275 → use full URL
-// Prod: same origin → relative URL
-const API_BASE = window.location.port === '3000' ? 'http://localhost:5275' : '';
+const API_BASE = '';
 
 async function apiCall(method, path, body = null) {
     const token = localStorage.getItem('adminToken');
