@@ -1,9 +1,6 @@
 .claude/
 memory/
 
-# WebP dosyalari - <picture> elementi JPG'e fallback yapar, commit'lemeye gerek yok
-images/products/**/*.webp
-
 # Geçici FA subset download dosyaları (scripts/fa_subset.py tarafından oluşturulur/silinir)
 css/fa-subset/_*
 css/fa-subset/webfonts/_*
