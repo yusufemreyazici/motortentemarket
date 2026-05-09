@@ -1,2 +1,0 @@
-C:\Users\Emre\AppData\Local\Programs\Python\Python311\Lib\site-packages\rembg\sessions\birefnet_general.py:18: RuntimeWarning: overflow encountered in exp
-  return 1 / (1 + np.exp(-mat))

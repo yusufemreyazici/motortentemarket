@@ -7,3 +7,8 @@ images/products/**/*.webp
 # Geçici FA subset download dosyaları (scripts/fa_subset.py tarafından oluşturulur/silinir)
 css/fa-subset/_*
 css/fa-subset/webfonts/_*
+
+# Python cache
+scripts/__pycache__/
+**/__pycache__/
+*.pyc

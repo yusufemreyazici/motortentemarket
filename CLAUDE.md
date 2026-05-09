@@ -152,6 +152,18 @@ Siteye yeni ikon eklenirse:
 2. `python scripts/fa_subset.py` çalıştır — CSS + woff2 otomatik yenilenir
 3. Script kendi temp dosyalarını temizler; `css/fa-subset/` içinde sadece 3 dosya kalmalı
 
+### Aktif Scripts (scripts/ klasörü)
+| Script | Amaç |
+|--------|------|
+| `enhance_images.py` | Yeni ham ürün fotoğrafı işleme — rembg birefnet-general, 1000x1000 |
+| `polish_images.py` | Mevcut işlenmiş fotoğrafları iyileştirme — bg→beyaz, enhance, upscale |
+| `convert_webp.py` | JPG→WebP toplu dönüşüm (stale WebP'leri de günceller) |
+| `fa_subset.py` | Font Awesome self-hosted subset üretimi |
+
+**Silinen scripts (2026-05-09):** `process_images.py` (enhance_images.py ile değiştirildi),
+`run_process.py` (wrapper), `test_one.py`, `test_enhance.py` (test), log dosyaları,
+`AUDIT_REPORT.md`, `PERFORMANCE_TEST_REPORT.md` (AI raporları — bilgiler CLAUDE.md'de).
+
 ### Trendyol CDN URL Formatı
 `https://cdn.dsmcdn.com/ty{XXXX}/prod/.../{n}_org_zoom.jpg`
 → URL'deki `mnresize/W/H/` önekini kaldır → tam çözünürlük
