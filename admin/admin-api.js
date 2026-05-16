@@ -1,6 +1,6 @@
 /* ===== ADMIN API HELPER ===== */
 
-const API_BASE = '';
+if (typeof API_BASE === 'undefined') var API_BASE = '';
 
 async function apiCall(method, path, body = null) {
     const token = localStorage.getItem('adminToken');

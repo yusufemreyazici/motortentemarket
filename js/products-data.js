@@ -1,6 +1,6 @@
 // ===== API BASE — dev: static server :3000, backend :5275 | prod: same origin =====
 // Backend yokken boş string bırak → fetch atlanır, direkt local data kullanılır
-const API_BASE = '';
+if (typeof API_BASE === 'undefined') var API_BASE = '';
 
 // ===== PRODUCT CACHE =====
 window._productCache = {};
