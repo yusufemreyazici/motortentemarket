@@ -54,6 +54,18 @@ function renderMobileStrip(productList) {
         .slice(0, 12);
     if (!items.length) return;
     el.innerHTML = items.map(p => productCardHTML(p)).join('');
+
+    // Otomatik scroll — 3sn aralıkla, dokunuşta durur
+    const cardW = () => el.firstElementChild ? el.firstElementChild.offsetWidth + 12 : el.offsetWidth * 0.72 + 12;
+    let timer = setInterval(() => {
+        const maxScroll = el.scrollWidth - el.clientWidth;
+        if (el.scrollLeft + cardW() >= maxScroll - 4) {
+            el.scrollTo({ left: 0, behavior: 'smooth' });
+        } else {
+            el.scrollBy({ left: cardW(), behavior: 'smooth' });
+        }
+    }, 3000);
+    el.addEventListener('touchstart', () => clearInterval(timer), { passive: true });
 }
 
 function makeCarousel(el, items) {
