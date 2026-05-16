@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fotoğraf Yönetimi | Motor Tente Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js"></script>
+    <style>
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            min-height: 120px;
+        }
+        .photo-item {
+            position: relative;
+            aspect-ratio: 1/1;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid var(--admin-border);
+            background: var(--admin-surface2);
+            cursor: grab;
+            transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+            user-select: none;
+        }
+        .photo-item:hover { border-color: var(--admin-primary); box-shadow: 0 4px 16px rgba(26,86,219,.15); }
+        .photo-item.sortable-chosen { cursor: grabbing; box-shadow: 0 8px 32px rgba(26,86,219,.3); transform: scale(1.03); border-color: var(--admin-primary); }
+        .photo-item.sortable-ghost { opacity: 0.35; }
+        .photo-item img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
+        .photo-num {
+            position: absolute; top: 6px; left: 6px;
+            background: rgba(0,0,0,.55); color: #fff;
+            font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 5px;
+            line-height: 1.4;
+        }
+        .photo-cover {
+            position: absolute; bottom: 6px; left: 6px;
+            background: var(--admin-primary); color: #fff;
+            font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: .5px;
+        }
+        .photo-drag-hint {
+            position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+            background: rgba(26,86,219,.07); opacity: 0; transition: opacity .2s;
+        }
+        .photo-item:hover .photo-drag-hint { opacity: 1; }
+        .photo-drag-hint i { font-size: 22px; color: var(--admin-primary); }
+        .empty-state {
+            grid-column: 1/-1;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            padding: 60px 20px; color: var(--admin-text-muted); text-align: center; gap: 12px;
+        }
+        .empty-state i { font-size: 48px; opacity: .3; }
+        .product-select { font-size: 14px; }
+        .action-bar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+        .count-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--admin-surface2); border: 1px solid var(--admin-border);
+            border-radius: 8px; padding: 6px 14px; font-size: 13px; color: var(--admin-text-muted);
+        }
+        .count-badge strong { color: var(--admin-text); }
+        .order-changed { animation: pulse 0.4s ease; }
+        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.5; } }
+        #photoGrid.drag-active .photo-item { border-style: dashed; }
+    </style>
+</head>
+<body>
+<div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <div class="sidebar-logo-icon"><i class="fas fa-motorcycle"></i></div>
+            <div class="sidebar-logo-text">
+                <strong>Motor Tente</strong>
+                <span>Yönetim Paneli</span>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <div class="nav-section-title">Genel</div>
+                <a href="index.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-chart-pie"></i></span> Dashboard
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Katalog</div>
+                <a href="products.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-box"></i></span> Ürünler
+                </a>
+                <a href="photos.html" class="nav-item active">
+                    <span class="nav-icon"><i class="fas fa-images"></i></span> Fotoğraf Yönetimi
+                </a>
+                <a href="product-edit.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-plus-circle"></i></span> Yeni Ürün Ekle
+                </a>
+            </div>
+            <div class="nav-section">
+                <div class="nav-section-title">Yönetim</div>
+                <a href="settings.html" class="nav-item">
+                    <span class="nav-icon"><i class="fas fa-cog"></i></span> Site Ayarları
+                </a>
+                <a href="../index.html" class="nav-item" target="_blank">
+                    <span class="nav-icon"><i class="fas fa-external-link-alt"></i></span> Siteyi Görüntüle
+                </a>
+            </div>
+        </nav>
+        <div class="sidebar-footer">
+            <div class="sidebar-user" id="logoutBtn" title="Çıkış Yap">
+                <div class="user-avatar" id="userAvatar">A</div>
+                <div class="user-info">
+                    <strong id="userName">Admin</strong>
+                    <span>Çıkış Yap</span>
+                </div>
+                <i class="fas fa-sign-out-alt" style="color:var(--admin-text-muted);font-size:14px;"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="admin-main">
+        <div class="admin-topbar">
+            <button class="topbar-btn" id="sidebarToggle" title="Menü" aria-label="Menüyü Aç/Kapat">
+                <i class="fas fa-bars"></i>
+            </button>
+            <span class="topbar-title">Fotoğraf Yönetimi</span>
+            <div class="topbar-actions">
+                <button class="btn btn-ghost btn-sm" id="resetBtn" style="display:none">
+                    <i class="fas fa-undo"></i> Sıfırla
+                </button>
+                <button class="btn btn-primary btn-sm" id="exportBtn" disabled>
+                    <i class="fas fa-download"></i> photo-order.js İndir
+                </button>
+            </div>
+        </div>
+
+        <div class="admin-content">
+
+            <!-- Ürün Seçimi -->
+            <div class="card" style="margin-bottom:20px;">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-search" style="color:var(--admin-primary);margin-right:8px;"></i>Ürün Seç</span>
+                </div>
+                <div class="card-body">
+                    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+                        <div class="form-group" style="flex:1;min-width:240px;margin:0;">
+                            <select id="productSelect" class="form-control product-select" title="Ürün seçin">
+                                <option value="">-- Ürün seçin --</option>
+                            </select>
+                        </div>
+                        <div class="count-badge" id="countBadge" style="display:none;">
+                            <i class="fas fa-images"></i>
+                            <span><strong id="photoCount">0</strong> fotoğraf</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fotoğraf Grid -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-title"><i class="fas fa-grip-dots" style="color:var(--admin-info);margin-right:8px;"></i>Sürükle &amp; Bırak ile Sırala</span>
+                    <span style="font-size:12px;color:var(--admin-text-muted);">İlk fotoğraf kapak görseli olarak kullanılır</span>
+                </div>
+                <div class="card-body">
+                    <div id="photoGrid" class="photo-grid">
+                        <div class="empty-state">
+                            <i class="fas fa-images"></i>
+                            <div>Yukarıdan bir ürün seçin</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bilgi Kutusu -->
+            <div style="margin-top:16px;padding:14px 18px;background:rgba(26,86,219,.07);border:1px solid rgba(26,86,219,.18);border-radius:10px;font-size:13px;color:var(--admin-text-muted);display:flex;gap:10px;align-items:flex-start;">
+                <i class="fas fa-circle-info" style="color:var(--admin-primary);margin-top:2px;flex-shrink:0;"></i>
+                <div>
+                    Sıralamayı değiştirdikten sonra <strong>"photo-order.js İndir"</strong> butonuna tıklayın.
+                    İndirilen dosyayı <code style="background:var(--admin-surface2);padding:1px 6px;border-radius:4px;">js/</code> klasörüne koyun.
+                    Sıralama otomatik olarak siteye yansır.
+                    Her ürün bağımsız sıralanır — diğer ürünler etkilenmez.
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="admin-api.js"></script>
+<script src="admin.js"></script>
+<script src="../js/photo-order.js"></script>
+<script src="../js/products-data.js"></script>
+<script>
+requireAuth();
+loadUserInfo();
+
+// ---- State ----
+let currentProduct   = null;
+let currentOrder     = [];   // [1-based file indices in display order]
+let savedOrders      = JSON.parse(localStorage.getItem('photoOrders') || '{}');
+let sortableInstance = null;
+
+// ---- Init product dropdown ----
+const sel = document.getElementById('productSelect');
+products
+    .filter(p => p.images && p.images.length > 0)
+    .sort((a, b) => a.name.localeCompare(b.name, 'tr'))
+    .forEach(p => {
+        const opt = document.createElement('option');
+        opt.value = p.id;
+        opt.textContent = p.name + ' (' + p.images.length + ' foto)';
+        sel.appendChild(opt);
+    });
+
+// ---- Product change ----
+sel.addEventListener('change', () => {
+    const id = parseInt(sel.value);
+    currentProduct = products.find(p => p.id === id) || null;
+    loadPhotos();
+});
+
+function loadPhotos() {
+    const grid = document.getElementById('photoGrid');
+    document.getElementById('countBadge').style.display = 'none';
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('exportBtn').disabled = true;
+
+    if (sortableInstance) { sortableInstance.destroy(); sortableInstance = null; }
+
+    if (!currentProduct || !currentProduct.images || currentProduct.images.length === 0) {
+        grid.innerHTML = '<div class="empty-state"><i class="fas fa-images"></i><div>Bu ürünün fotoğrafı yok</div></div>';
+        return;
+    }
+
+    // Determine initial order: saved order or 1..N
+    const slug     = slugOf(currentProduct);
+    const n        = currentProduct.images.length;
+    const saved    = savedOrders[slug];
+    currentOrder   = (saved && saved.length === n) ? [...saved] : Array.from({length: n}, (_, i) => i + 1);
+
+    renderGrid();
+
+    document.getElementById('countBadge').style.display = '';
+    document.getElementById('photoCount').textContent = n;
+
+    // Init Sortable
+    sortableInstance = Sortable.create(grid, {
+        animation:     180,
+        ghostClass:    'sortable-ghost',
+        chosenClass:   'sortable-chosen',
+        onStart: () => grid.classList.add('drag-active'),
+        onEnd:   () => { grid.classList.remove('drag-active'); syncOrderFromDOM(); },
+    });
+}
+
+function slugOf(p) {
+    // Extract slug from first image path: images/products/SLUG/1.jpg
+    const m = (p.images[0] || '').match(/images\/products\/(.+?)\//);
+    return m ? decodeURIComponent(m[1]) : p.name;
+}
+
+function renderGrid() {
+    const grid   = document.getElementById('photoGrid');
+    const slug   = slugOf(currentProduct);
+    const safePth = slug.replace(/ /g, '%20');
+
+    grid.innerHTML = currentOrder.map((n, pos) => {
+        const src = '../images/products/' + safePth + '/' + n + '.jpg';
+        return `
+        <div class="photo-item" data-index="${n}">
+            <img src="${src}" alt="Fotoğraf ${n}" loading="lazy"
+                 onerror="this.closest('.photo-item').style.opacity='.35';this.style.display='none';">
+            <div class="photo-num">${n}.jpg</div>
+            ${pos === 0 ? '<div class="photo-cover">Kapak</div>' : ''}
+            <div class="photo-drag-hint"><i class="fas fa-up-down-left-right"></i></div>
+        </div>`;
+    }).join('');
+}
+
+function syncOrderFromDOM() {
+    const items = document.querySelectorAll('#photoGrid .photo-item');
+    currentOrder = Array.from(items).map(el => parseInt(el.dataset.index));
+
+    // Update cover badge
+    document.querySelectorAll('.photo-cover').forEach(el => el.remove());
+    if (items[0]) {
+        const cover = document.createElement('div');
+        cover.className = 'photo-cover';
+        cover.textContent = 'Kapak';
+        items[0].appendChild(cover);
+    }
+
+    // Update number badges
+    items.forEach((el, pos) => {
+        const nb = el.querySelector('.photo-num');
+        if (nb) nb.textContent = parseInt(el.dataset.index) + '.jpg';
+    });
+
+    // Save to localStorage
+    const slug = slugOf(currentProduct);
+    savedOrders[slug] = currentOrder;
+    localStorage.setItem('photoOrders', JSON.stringify(savedOrders));
+
+    document.getElementById('resetBtn').style.display = '';
+    document.getElementById('exportBtn').disabled = false;
+    showToast('Sıralama kaydedildi — "İndir" ile export edin', 'success');
+}
+
+// ---- Reset button ----
+document.getElementById('resetBtn').addEventListener('click', () => {
+    if (!currentProduct) return;
+    const n    = currentProduct.images.length;
+    const slug = slugOf(currentProduct);
+    currentOrder = Array.from({length: n}, (_, i) => i + 1);
+    delete savedOrders[slug];
+    localStorage.setItem('photoOrders', JSON.stringify(savedOrders));
+    renderGrid();
+    sortableInstance.destroy();
+    sortableInstance = Sortable.create(document.getElementById('photoGrid'), {
+        animation: 180, ghostClass: 'sortable-ghost', chosenClass: 'sortable-chosen',
+        onStart: () => document.getElementById('photoGrid').classList.add('drag-active'),
+        onEnd:   () => { document.getElementById('photoGrid').classList.remove('drag-active'); syncOrderFromDOM(); },
+    });
+    document.getElementById('resetBtn').style.display = 'none';
+    document.getElementById('exportBtn').disabled = Object.keys(savedOrders).length === 0;
+    showToast('Sıralama sıfırlandı', 'info');
+});
+
+// ---- Export ----
+document.getElementById('exportBtn').addEventListener('click', () => {
+    const entries = Object.entries(savedOrders)
+        .map(([slug, order]) => `  ${JSON.stringify(slug)}: [${order.join(', ')}]`)
+        .join(',\n');
+
+    const content = `// Fotograf siralama — admin/photos.html'den Disa Aktar ile uretildi
+// Format: { 'Klasor Adi': [1-indeksli-sira-dizisi], ... }
+window.PHOTO_ORDER = {\n${entries}\n};\n`;
+
+    const blob = new Blob([content], {type: 'text/javascript'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = 'photo-order.js';
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('photo-order.js indirildi — js/ klasörüne koyun', 'success');
+});
+</script>
+</body>
+</html>
