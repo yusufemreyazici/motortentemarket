@@ -272,12 +272,13 @@ function renderGrid() {
     const safePth = slug.replace(/ /g, '%20');
 
     grid.innerHTML = currentOrder.map((n, pos) => {
-        const src = '../images/products/' + safePth + '/' + n + '.jpg';
+        const src = '../images/products/' + safePth + '/' + safePth + '%20' + n + '.jpg';
+        const srcWebp = '../images/products/' + safePth + '/' + safePth + '%20' + n + '.webp';
         return `
         <div class="photo-item" data-index="${n}">
-            <img src="${src}" alt="Fotoğraf ${n}" loading="lazy"
-                 onerror="this.closest('.photo-item').style.opacity='.35';this.style.display='none';">
-            <div class="photo-num">${n}.jpg</div>
+            <img src="${srcWebp}" alt="Fotoğraf ${n}" loading="lazy"
+                 onerror="this.src='${src}';this.onerror=function(){this.closest('.photo-item').style.opacity='.35';this.style.display='none';};">
+            <div class="photo-num">${n}</div>
             ${pos === 0 ? '<div class="photo-cover">Kapak</div>' : ''}
             <div class="photo-drag-hint"><i class="fas fa-up-down-left-right"></i></div>
         </div>`;
