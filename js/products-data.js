@@ -290,7 +290,7 @@ function _imgs(slug, count) {
     const order = window.PHOTO_ORDER && window.PHOTO_ORDER[slug];
     const indices = (order && order.length) ? order : Array.from({length: count}, (_, i) => i + 1);
     const safePath = slug.replace(/ /g, '%20');
-    return indices.map(n => 'images/products/' + safePath + '/' + n + '.jpg');
+    return indices.map(n => 'images/products/' + safePath + '/' + safePath + '%20' + n + '.jpg');
 }
 
 const _elFeatures = ['Su geçirmez kumaş', 'UV koruyucu kaplama', 'Havalandırmalı tasarım', 'Kolay montaj sistemi', 'Yırtılmaz polyester'];

@@ -11,3 +11,6 @@ scripts/__pycache__/
 *.pyc
 
 .vercel
+
+# Ham PNG kaynak dosyaları (Gemini/rembg çıktısı) — sitede kullanılmıyor
+images/**/*.png
