@@ -276,6 +276,8 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
+<script src="../js/photo-order.js"></script>
+<script src="../js/products-data.js"></script>
 <script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
@@ -293,13 +295,20 @@
         }
         try {
             const p = await apiGet(`/api/products/${editId}`);
-            if (!p) { showToast('Ürün bulunamadı.', 'error'); return; }
+            if (!p) throw new Error('no data');
             editProduct = p;
             document.getElementById('pageTitle').textContent = 'Ürün Düzenle';
             document.title = 'Düzenle: ' + p.name + ' | Motor Tente Admin';
             fillForm(p);
-        } catch (err) {
-            showToast('Ürün yüklenemedi: ' + err.message, 'error');
+        } catch {
+            // Fallback: local products-data.js
+            if (typeof products === 'undefined') { showToast('Ürün bulunamadı.', 'error'); return; }
+            const p = products.find(x => x.id === parseInt(editId));
+            if (!p) { showToast('Ürün bulunamadı.', 'error'); return; }
+            editProduct = { ...p, isActive: true, viewCount: 0 };
+            document.getElementById('pageTitle').textContent = 'Ürün Düzenle';
+            document.title = 'Düzenle: ' + p.name + ' | Motor Tente Admin';
+            fillForm(editProduct);
         }
     }
 
