@@ -11,6 +11,7 @@ async function loadHomeProducts() {
         const { items } = await resp.json();
         renderFeatured(items);
         renderBestsellers(items);
+        renderMobileStrip(items);
         // Apply settings now that cards are in DOM (WA links etc.)
         if (window._siteSettings) applySettingsToDOM(window._siteSettings);
     } catch {
@@ -18,6 +19,7 @@ async function loadHomeProducts() {
         if (typeof products !== 'undefined') {
             renderFeatured(products);
             renderBestsellers(products);
+            renderMobileStrip(products);
         }
     }
 }
@@ -41,6 +43,17 @@ function renderBestsellers(productList) {
         .slice(0, 10);
     if (!top.length) return;
     makeCarousel(el, top);
+}
+
+function renderMobileStrip(productList) {
+    const el = document.getElementById('mobStrip');
+    if (!el || window.innerWidth > 767) return;
+    const items = productList
+        .filter(p => p.badge)
+        .concat(productList.filter(p => !p.badge && p.images && p.images.length))
+        .slice(0, 12);
+    if (!items.length) return;
+    el.innerHTML = items.map(p => productCardHTML(p)).join('');
 }
 
 function makeCarousel(el, items) {
