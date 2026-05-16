@@ -9,3 +9,5 @@ css/fa-subset/webfonts/_*
 scripts/__pycache__/
 **/__pycache__/
 *.pyc
+
+.vercel
