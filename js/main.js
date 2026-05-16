@@ -46,6 +46,11 @@ function renderBestsellers(productList) {
 function makeCarousel(el, items) {
     if (!el || !items.length) return;
 
+    if (window.innerWidth <= 599) {
+        el.innerHTML = '<div class="crsl-scroll">' + items.map(p => productCardHTML(p)).join('') + '</div>';
+        return;
+    }
+
     el.innerHTML =
         '<div class="crsl">' +
             '<button class="crsl-btn crsl-btn--prev" aria-label="Önceki" disabled><i class="fas fa-chevron-left"></i></button>' +
