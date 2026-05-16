@@ -434,8 +434,8 @@ a{text-decoration:none;color:inherit;cursor:pointer;touch-action:manipulation;}
 /* === CATEGORY GRID (v2) === */
 .cat2-grid{
   display:grid;
-  grid-template-columns:1.5fr 1fr 1fr;
-  grid-template-rows:220px 220px;
+  grid-template-columns:repeat(3,1fr);
+  grid-template-rows:240px;
   gap:18px;
 }
 .cat2{
@@ -476,10 +476,10 @@ a{text-decoration:none;color:inherit;cursor:pointer;touch-action:manipulation;}
   font-size:22px;letter-spacing:-0.5px;line-height:1.15;
   margin-bottom:6px;color:#fff !important;
 }
-.cat2.featured h3{font-size:32px;}
+.cat2.featured h3{font-size:26px;}
 .cat2 p{font-size:12.5px;color:rgba(255,255,255,.7);line-height:1.5;}
-.cat2.featured{grid-row:span 2;}
-.cat2.featured .cat2-glyph{font-size:240px;}
+.cat2.featured{grid-row:span 1;}
+.cat2.featured .cat2-glyph{font-size:160px;}
 
 /* === PRODUCT CARDS (v2) === */
 .prods2{
