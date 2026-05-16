@@ -170,6 +170,8 @@
 
 <div class="toast-container" id="toastContainer"></div>
 
+<script src="../js/photo-order.js"></script>
+<script src="../js/products-data.js"></script>
 <script src="admin-api.js"></script>
 <script src="admin.js"></script>
 <script>
@@ -195,15 +197,33 @@
                 (search   ? `&search=${encodeURIComponent(search)}`   : '') +
                 (category ? `&category=${encodeURIComponent(category)}` : '')
             );
-            if (!data) return;
+            if (!data) throw new Error('no data');
 
             totalCount = data.totalCount;
             document.getElementById('resultInfo').textContent = `${totalCount} ürün`;
             document.getElementById('productCount').textContent = totalCount;
             renderTable(data.items);
             renderPagination(data.totalPages);
-        } catch (err) {
-            showToast('Ürünler yüklenemedi: ' + err.message, 'error');
+        } catch {
+            // Backend yok — local products-data.js fallback
+            if (typeof products === 'undefined') return;
+            let items = [...products];
+            if (search) {
+                const q = search.toLowerCase();
+                items = items.filter(p => p.name.toLowerCase().includes(q) || (p.brand||'').toLowerCase().includes(q));
+            }
+            if (category) items = items.filter(p => p.category === category);
+            totalCount = items.length;
+            const totalPages = Math.ceil(totalCount / PER_PAGE) || 1;
+            const pageItems = items.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+            document.getElementById('resultInfo').textContent = `${totalCount} ürün (yerel veri)`;
+            document.getElementById('productCount').textContent = totalCount;
+            renderTable(pageItems.map(p => ({
+                id: p.id, name: p.name, brand: p.brand, category: p.category,
+                price: p.price, isActive: true, viewCount: 0,
+                mainImage: p.images?.[0] || null, badge: p.badge || null
+            })));
+            renderPagination(totalPages);
         }
     }
 
