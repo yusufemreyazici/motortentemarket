@@ -313,7 +313,7 @@ function openLightbox(imgs, startIdx) {
         <button class="lightbox-nav lightbox-prev" aria-label="Önceki"><i class="fas fa-chevron-left"></i></button>
         <button class="lightbox-nav lightbox-next" aria-label="Sonraki"><i class="fas fa-chevron-right"></i></button>` : ''}
         <div class="lightbox-body">
-            <img class="lightbox-img" src="${imgs[idx]}" alt="">
+            <img class="lightbox-img" src="" alt="">
         </div>
         ${imgs.length > 1 ? `<div class="lightbox-counter">${idx + 1} / ${imgs.length}</div>` : ''}
     `;
@@ -323,12 +323,16 @@ function openLightbox(imgs, startIdx) {
 
     const lbImg = lb.querySelector('.lightbox-img');
     const lbCounter = lb.querySelector('.lightbox-counter');
+    const _lbWebp = src => src.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+    lbImg.src = _lbWebp(imgs[idx]);
+    lbImg.onerror = () => { lbImg.src = imgs[idx]; lbImg.onerror = null; };
 
     function goTo(newIdx) {
         idx = (newIdx + imgs.length) % imgs.length;
         lbImg.classList.add('lightbox-img--fade');
         setTimeout(() => {
-            lbImg.src = imgs[idx];
+            lbImg.src = _lbWebp(imgs[idx]);
+            lbImg.onerror = () => { lbImg.src = imgs[idx]; lbImg.onerror = null; };
             lbImg.classList.remove('lightbox-img--fade');
         }, 120);
         if (lbCounter) lbCounter.textContent = `${idx + 1} / ${imgs.length}`;
