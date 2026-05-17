@@ -304,6 +304,7 @@ a{text-decoration:none;color:inherit;cursor:pointer;touch-action:manipulation;}
   color:rgba(255,255,255,.92);font-size:90px;
   position:relative;
 }
+.hero2-card-img picture,.hero2-card-img img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;}
 .hero2-card-img::after{
   content:'';position:absolute;
   inset:auto -10% -30% -10%;height:50%;
