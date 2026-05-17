@@ -1041,8 +1041,8 @@ a{text-decoration:none;color:inherit;cursor:pointer;touch-action:manipulation;}
   border-radius:10px 10px 0 0;
 }
 .pcard-img i{font-size:56px;color:#bdc8d9;transition:transform .3s;}
-.pcard-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s;}
-.pcard:hover .pcard-img i,.pcard:hover .pcard-img img{transform:scale(1.06);}
+.pcard-img img{width:100%;height:100%;object-fit:contain;transform:scale(0.9);transition:transform .3s;}
+.pcard:hover .pcard-img i,.pcard:hover .pcard-img img{transform:scale(1.0);}
 
 /* List view: ikon ayrı kutu gibi durmasın, kart tek renk */
 .pcard-list .pcard-img{
